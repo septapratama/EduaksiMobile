@@ -1,6 +1,6 @@
 {
-    "name": "education_apps",
-    "short_name": "education_apps",
+    "name": "eduapp",
+    "short_name": "eduapp",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

@@ -1,4 +1,4 @@
-# education_apps
+# eduapp
 
 A new Flutter project.
 
