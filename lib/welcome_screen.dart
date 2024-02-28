@@ -1,4 +1,6 @@
+import 'package:eduapp/login_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 
 class WelcomeScreen extends StatefulWidget {
   @override
@@ -8,6 +10,7 @@ class WelcomeScreen extends StatefulWidget {
 class _WelcomeScreenState extends State<WelcomeScreen> {
   int _currentPage = 0;
   final PageController _pageController = PageController();
+  final int _totalPages = 3; // Total number of pages
 
   @override
   void initState() {
@@ -34,54 +37,72 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const Padding(
-              padding: EdgeInsets.only(top: 20.0, right: 15.0),
-              child: Align(
-                alignment: Alignment.topRight,
-                child: Text(
-                  'Skip',
-                  style: TextStyle(
-                    fontFamily: 'Poppins_SemiBold',
-                    color: Color.fromRGBO(30, 84, 135, 1),
-                    fontSize: 16.0,
+            GestureDetector(
+              onTap: () {
+                // Navigate to the login screen
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => LoginScreen(),
+                  ),
+                );
+              },
+              child: const Padding(
+                padding: EdgeInsets.only(top: 20.0, right: 15.0),
+                child: Align(
+                  alignment: Alignment.topRight,
+                  child: Text(
+                    'Skip',
+                    style: TextStyle(
+                      fontFamily: 'Poppins_SemiBold',
+                      color: Color.fromRGBO(30, 84, 135, 1),
+                      fontSize: 16.0,
+                    ),
                   ),
                 ),
               ),
             ),
             Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                child: PageView(
-                  controller: _pageController,
-                  children: [
-                    _buildPage(
-                      imagePath: 'assets/images/education_welcome.png',
-                      title: 'Selamat Datang',
-                      description:
-                          'Tempat terbaik untuk mendukung anda sebagai orang tua dalam mendidik dan merawat anak-anak anda.',
-                    ),
-                    _buildPage(
-                      imagePath: 'assets/images/education_welcome.png',
-                      title: 'Selamat Datang',
-                      description:
-                          'Tempat terbaik untuk mendukung anda sebagai orang tua dalam mendidik dan merawat anak-anak anda.',
-                    ),
-                    _buildPage(
-                      imagePath: 'assets/images/education_welcome.png',
-                      title: 'Selamat Datang',
-                      description:
-                          'Tempat terbaik untuk mendukung anda sebagai orang tua dalam mendidik dan merawat anak-anak anda.',
-                    ),
-                    // Add more pages as needed
-                  ],
-                ),
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  return PageView(
+                    controller: _pageController,
+                    children: [
+                      _buildPage(
+                        animation:
+                            Lottie.asset('assets/images/splahscreen_3.json'),
+                        title: 'Selamat Datang',
+                        description:
+                            'Tempat terbaik untuk mendukung anda sebagai orang tua dalam mendidik dan merawat anak-anak anda.',
+                        constraints: constraints,
+                      ),
+                      _buildPage(
+                        animation:
+                            Lottie.asset('assets/images/splahscreen_2.json'),
+                        title: 'Selamat Datang',
+                        description:
+                            'Temukan konten yang disesuakan dengan tahapan perkembangan anak anda.',
+                        constraints: constraints,
+                      ),
+                      _buildPage(
+                        animation:
+                            Lottie.asset('assets/images/splahscreen_1.json'),
+                        title: 'Selamat Datang',
+                        description:
+                            'Dapatkan saran yang relevan sesuai dengan usia dan kebutuhan anak anda.',
+                        constraints: constraints,
+                      ),
+                      // Add more pages as needed
+                    ],
+                  );
+                },
               ),
             ),
             const SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: List.generate(
-                3, // Number of pages in the carousel
+                _totalPages, // Number of pages in the carousel
                 (index) => buildDot(index),
               ),
             ),
@@ -94,7 +115,20 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   width: 100,
                   child: ElevatedButton(
                     onPressed: () {
-                      // Add your button onPressed logic here
+                      if (_currentPage == _totalPages - 1) {
+                        // Navigate to the login screen
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => LoginScreen(),
+                          ),
+                        );
+                      } else {
+                        _pageController.nextPage(
+                          duration: Duration(milliseconds: 500),
+                          curve: Curves.ease,
+                        );
+                      }
                     },
                     style: ElevatedButton.styleFrom(
                       padding: EdgeInsets.zero,
@@ -104,10 +138,10 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                         borderRadius: BorderRadius.circular(5.0),
                       ),
                     ),
-                    child: const Padding(
+                    child: Padding(
                       padding: EdgeInsets.all(12.0),
                       child: Text(
-                        'Lanjut',
+                        _currentPage == _totalPages - 1 ? 'Mulai!' : 'Lanjut',
                         style: TextStyle(
                           fontFamily: 'Poppins_SemiBold',
                           fontWeight: FontWeight.w600,
@@ -140,17 +174,17 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   }
 
   Widget _buildPage({
-    required String imagePath,
+    required Widget animation, // Change imagePath to animation
     required String title,
     required String description,
+    required BoxConstraints constraints,
   }) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Image.asset(
-          imagePath,
-          width: 281,
-          height: 200,
+        SizedBox(
+          height: constraints.maxHeight * 0.6, // Adjust as per requirement
+          child: animation, // Use the 'animation' widget directly
         ),
         const SizedBox(height: 25),
         Text(
