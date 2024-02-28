@@ -42,8 +42,18 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                 // Navigate to the login screen
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(
-                    builder: (context) => LoginScreen(),
+                  PageRouteBuilder(
+                    pageBuilder: (_, __, ___) => LoginScreen(),
+                    transitionsBuilder: (_, animation, __, child) {
+                      return SlideTransition(
+                        position: Tween<Offset>(
+                          begin: const Offset(
+                              1.0, 0.0), // Start off screen to the right
+                          end: Offset.zero, // End at the center of the screen
+                        ).animate(animation),
+                        child: child,
+                      );
+                    },
                   ),
                 );
               },
@@ -125,7 +135,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                         );
                       } else {
                         _pageController.nextPage(
-                          duration: Duration(milliseconds: 500),
+                          duration: const Duration(milliseconds: 500),
                           curve: Curves.ease,
                         );
                       }
@@ -135,14 +145,14 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                       foregroundColor: Colors.white,
                       backgroundColor: const Color.fromRGBO(30, 84, 135, 1),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5.0),
+                        borderRadius: BorderRadius.circular(8.0),
                       ),
                     ),
                     child: Padding(
-                      padding: EdgeInsets.all(12.0),
+                      padding: const EdgeInsets.all(12.0),
                       child: Text(
                         _currentPage == _totalPages - 1 ? 'Mulai!' : 'Lanjut',
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontFamily: 'Poppins_SemiBold',
                           fontWeight: FontWeight.w600,
                           fontSize: 18,
