@@ -1,3 +1,5 @@
+import 'package:eduapp/login_screen.dart';
+import 'package:eduapp/register_screen.dart';
 import 'package:flutter/material.dart';
 import 'splash_screen.dart';
 
@@ -14,7 +16,7 @@ class MyApp extends StatelessWidget {
       title: 'My App',
       theme: ThemeData(),
       debugShowCheckedModeBanner: false,
-      home: SplashScreen(), // Navigate to SplashScreen first
+      home: Register(), // Navigate to SplashScreen first
     );
   }
 }

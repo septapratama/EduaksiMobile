@@ -1,11 +1,12 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class LoginScreen extends StatefulWidget {
+class Register extends StatefulWidget {
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  _Register createState() => _Register();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _Register extends State<Register> {
   bool _isPasswordVisible = false;
 
   @override
@@ -28,7 +29,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 const SizedBox(height: 0.0),
                 const Text(
-                  'Selamat Datang',
+                  'Tambah Akun',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontFamily: 'Poppins_SemiBold',
@@ -37,22 +38,12 @@ class _LoginScreenState extends State<LoginScreen> {
                     fontSize: 20.0,
                   ),
                 ),
-                const Text(
-                  'EduAksi Parenting',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontFamily: 'Poppins_SemiBold',
-                    fontWeight: FontWeight.w800,
-                    color: Color.fromRGBO(30, 84, 135, 1),
-                    fontSize: 18.0,
-                  ),
-                ),
                 const SizedBox(height: 60.0),
                 const Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Username',
+                      'Nama',
                       style: TextStyle(
                         fontFamily: 'Poppins_SemiBold',
                         color: Color.fromRGBO(30, 84, 135, 1),
@@ -62,7 +53,48 @@ class _LoginScreenState extends State<LoginScreen> {
                     SizedBox(height: 5.0),
                     TextField(
                       decoration: InputDecoration(
-                        labelText: 'Username',
+                        labelText: 'Nama',
+                        labelStyle: TextStyle(
+                          color: Color.fromRGBO(
+                              30, 84, 135, 1), // Default text color
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Color.fromRGBO(30, 84, 135,
+                                1), // Border color for the enabled state
+                            width: 2.0, // Border width for the enabled state
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Color.fromARGB(255, 21, 76,
+                                206), // Border color for the focused state
+                            width: 2.0, // Border width for the focused state
+                          ),
+                        ),
+                      ),
+                      style: TextStyle(
+                        color: Colors.black, // Text color for the input text
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 10.0),
+                const Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'No Telepon',
+                      style: TextStyle(
+                        fontFamily: 'Poppins_SemiBold',
+                        color: Color.fromRGBO(30, 84, 135, 1),
+                        fontSize: 16.0,
+                      ),
+                    ),
+                    SizedBox(height: 5.0),
+                    TextField(
+                      decoration: InputDecoration(
+                        labelText: 'No Telepon',
                         labelStyle: TextStyle(
                           color: Color.fromRGBO(
                               30, 84, 135, 1), // Default text color
@@ -93,7 +125,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text(
-                      'Password',
+                      'Masukkan Kata Sandi',
                       style: TextStyle(
                         fontFamily: 'Poppins_SemiBold',
                         color: Color.fromRGBO(30, 84, 135, 1),
@@ -104,7 +136,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     TextField(
                       obscureText: !_isPasswordVisible,
                       decoration: InputDecoration(
-                        labelText: 'Username',
+                        labelText: 'Masukkan Kata Sandi',
                         labelStyle: const TextStyle(
                           color: Color.fromRGBO(
                               30, 84, 135, 1), // Default text color
@@ -149,22 +181,64 @@ class _LoginScreenState extends State<LoginScreen> {
                   ],
                 ),
                 const SizedBox(height: 10.0),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: TextButton(
-                    onPressed: () {
-                      // Tambahkan logika untuk proses lupa kata sandi
-                    },
-                    child: const Text(
-                      'Lupa Kata Sandi?',
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Ulangi Kata Sandi',
                       style: TextStyle(
-                        fontFamily: 'Poppins',
+                        fontFamily: 'Poppins_SemiBold',
                         color: Color.fromRGBO(30, 84, 135, 1),
-                        fontSize: 14.0,
-                        fontWeight: FontWeight.bold,
+                        fontSize: 16.0,
                       ),
                     ),
-                  ),
+                    const SizedBox(height: 5.0),
+                    TextField(
+                      obscureText: !_isPasswordVisible,
+                      decoration: InputDecoration(
+                        labelText: 'Ulangi Kata Sandi',
+                        labelStyle: const TextStyle(
+                          color: Color.fromRGBO(
+                              30, 84, 135, 1), // Default text color
+                        ),
+                        enabledBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Color.fromRGBO(30, 84, 135,
+                                1), // Border color for the enabled state
+                            width: 2.0, // Border width for the enabled state
+                          ),
+                        ),
+                        focusedBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Color.fromARGB(255, 21, 76,
+                                206), // Border color for the focused state
+                            width: 2.0, // Border width for the focused state
+                          ),
+                        ),
+                        suffixIcon: Padding(
+                          padding: const EdgeInsets.only(
+                              right: 8.0), // Adjust the right padding as needed
+                          child: IconButton(
+                            icon: Icon(
+                              _isPasswordVisible
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                              color: Colors
+                                  .black, // Adjust the color of the visibility icon
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _isPasswordVisible = !_isPasswordVisible;
+                              });
+                            },
+                          ),
+                        ),
+                      ),
+                      style: const TextStyle(
+                        color: Colors.black, // Text color for the input text
+                      ),
+                    ),
+                  ],
                 ),
                 const SizedBox(height: 40.0),
                 Padding(
@@ -189,59 +263,11 @@ class _LoginScreenState extends State<LoginScreen> {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Text(
-                            'Masuk',
+                            'Daftar',
                             style: TextStyle(
                               fontFamily: 'Poppins_SemiBold',
                               fontWeight: FontWeight.w600,
                               fontSize: 18,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 30.0),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: Center(
-                    child: TextButton(
-                      onPressed: () {
-                        // Add your logic for "Masuk dengan Google" here
-                      },
-                      style: ButtonStyle(
-                        padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-                          const EdgeInsets.symmetric(vertical: 12.0),
-                        ),
-                        shape: MaterialStateProperty.all<OutlinedBorder>(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8.0),
-                            side: const BorderSide(color: Colors.transparent),
-                          ),
-                        ),
-                        backgroundColor: MaterialStateProperty.all<Color>(
-                          Colors.transparent,
-                        ),
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Image.asset(
-                            'assets/images/google.png',
-                            width: 54,
-                            height: 54,
-                          ),
-                          const SizedBox(width: 2),
-                          const Flexible(
-                            child: Text(
-                              'Masuk dengan Google',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontFamily: 'Poppins_SemiBold',
-                                fontWeight: FontWeight.w600,
-                                fontSize: 16,
-                                color: Colors.black,
-                              ),
                             ),
                           ),
                         ],
@@ -274,14 +300,14 @@ class _LoginScreenState extends State<LoginScreen> {
                           children: [
                             Flexible(
                               child: Text(
-                                'Belum punya akun?',
+                                'Apakah anda sudah memiliki akun?',
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
                                   fontSize: fontSize,
                                   fontWeight: FontWeight.bold,
                                   fontFamily: 'Poppins_SemiBold',
-                                  color: const Color.fromRGBO(0, 0, 0, 0.445),
+                                  color: Color.fromRGBO(0, 0, 0, 0.445),
                                 ),
                               ),
                             ),
@@ -290,13 +316,13 @@ class _LoginScreenState extends State<LoginScreen> {
                                 // Add logic to navigate to the registration page
                               },
                               child: Text(
-                                'Daftar Disini',
+                                'Masuk',
                                 style: TextStyle(
                                   fontSize:
                                       fontSize, // Use the fontSize variable here
                                   fontWeight: FontWeight.bold,
                                   fontFamily: 'Poppins_SemiBold',
-                                  color: const Color.fromRGBO(30, 84, 135, 1),
+                                  color: Color.fromRGBO(30, 84, 135, 1),
                                 ),
                               ),
                             ),

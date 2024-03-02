@@ -72,6 +72,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                 ),
               ),
             ),
+            
             Expanded(
               child: LayoutBuilder(
                 builder: (context, constraints) {
