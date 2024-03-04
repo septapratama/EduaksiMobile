@@ -1,4 +1,8 @@
 import 'package:eduapp/login_screen.dart';
+import 'package:eduapp/res/buttons/custom_button.dart';
+import 'package:eduapp/res/colors/custom_colors.dart';
+import 'package:eduapp/res/route/pagemove.dart';
+import 'package:eduapp/res/style/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
@@ -40,34 +44,15 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             GestureDetector(
               onTap: () {
                 // Navigate to the login screen
-                Navigator.pushReplacement(
-                  context,
-                  PageRouteBuilder(
-                    pageBuilder: (_, __, ___) => LoginScreen(),
-                    transitionsBuilder: (_, animation, __, child) {
-                      return SlideTransition(
-                        position: Tween<Offset>(
-                          begin: const Offset(
-                              1.0, 0.0), // Start off screen to the right
-                          end: Offset.zero, // End at the center of the screen
-                        ).animate(animation),
-                        child: child,
-                      );
-                    },
-                  ),
-                );
+               Navigator.pushReplacement(context, pageMove.movepage(LoginScreen()));
               },
-              child: const Padding(
+              child: Padding(
                 padding: EdgeInsets.only(top: 20.0, right: 15.0),
                 child: Align(
                   alignment: Alignment.topRight,
                   child: Text(
                     'Skip',
-                    style: TextStyle(
-                      fontFamily: 'Poppins_SemiBold',
-                      color: Color.fromRGBO(30, 84, 135, 1),
-                      fontSize: 16.0,
-                    ),
+                    style: customText.Poppins_SemiBold(16.0, customColor.primaryColors)
                   ),
                 ),
               ),
@@ -128,11 +113,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     onPressed: () {
                       if (_currentPage == _totalPages - 1) {
                         // Navigate to the login screen
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => LoginScreen(),
-                          ),
+                         Navigator.pushReplacement(context, pageMove.movepage(LoginScreen())
                         );
                       } else {
                         _pageController.nextPage(
@@ -141,13 +122,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                         );
                       }
                     },
-                    style: ElevatedButton.styleFrom(
-                      padding: EdgeInsets.zero,
-                      foregroundColor: Colors.white,
-                      backgroundColor: const Color.fromRGBO(30, 84, 135, 1),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8.0),
-                      ),
+                    style: CustomButton.overallButtonStyle(
                     ),
                     child: Padding(
                       padding: const EdgeInsets.all(12.0),
