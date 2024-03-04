@@ -1,8 +1,8 @@
-import 'package:eduapp/login_screen.dart';
-import 'package:eduapp/res/buttons/custom_button.dart';
-import 'package:eduapp/res/colors/custom_colors.dart';
-import 'package:eduapp/res/route/pagemove.dart';
-import 'package:eduapp/res/style/custom_text.dart';
+import 'package:eduapp/pages/login_screen.dart';
+import 'package:eduapp/component/custom_button.dart';
+import 'package:eduapp/component/custom_colors.dart';
+import 'package:eduapp/component/custom_pagemove.dart';
+import 'package:eduapp/component/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 

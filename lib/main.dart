@@ -1,7 +1,5 @@
-import 'package:eduapp/login_screen.dart';
-import 'package:eduapp/register_screen.dart';
 import 'package:flutter/material.dart';
-import 'splash_screen.dart';
+import 'pages/login_screen.dart';
 
 void main() {
   runApp(const MyApp());
