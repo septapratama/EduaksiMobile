@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'dart:async';
+import 'package:eduapp/controller/controller_splashscreen.dart';
 import 'welcome_screen.dart'; // Import your welcome screen file
+import 'dart:async';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -12,37 +13,34 @@ class _SplashScreenState extends State<SplashScreen> {
   double _mainImageOpacity = 0.0;
   double _newImageOpacity = 0.0;
   bool _showNewImage = false;
-  bool _blink = true;
-  late Timer _mainImageTimer;
-  late Timer _newImageTimer;
-  Timer? _blinkTimer; // Initialize as nullable Timer
   bool _splashScreenEnded = false;
-
+  late SplashScreenController _splashScreenController;
+  bool _blink = true;
   @override
   void initState() {
     super.initState();
+    _splashScreenController = SplashScreenController();
 
-    // Fade in the main image after 1 second
-    _mainImageTimer = Timer(const Duration(seconds: 1), () {
-      setState(() {
-        _mainImageOpacity = 1.0;
-      });
-    });
-
-    // Show the new image after 3 seconds
-    _newImageTimer = Timer(const Duration(seconds: 3), () {
-      setState(() {
-        _showNewImage = true;
-      });
-      // Start the fade-in animation for the new image
-      Future.delayed(const Duration(milliseconds: 100), () {
+    _splashScreenController.startTimers(
+      () {
         setState(() {
-          _newImageOpacity = 1.0;
-          _startBlinking(); // Start blinking effect
-          _moveMainImage(); // Move the main image up
+          _mainImageOpacity = 1.0;
         });
-      });
-    });
+      },
+      () {
+        setState(() {
+          _showNewImage = true;
+        });
+        // Start the fade-in animation for the new image
+        Future.delayed(const Duration(milliseconds: 100), () {
+          setState(() {
+            _newImageOpacity = 1.0;
+            _startBlinking(); // Start blinking effect
+            _moveMainImage(); // Move the main image up
+          });
+        });
+      },
+    );
 
     // Navigate to WelcomeScreen after 5 seconds
     // Navigate to WelcomeScreen after 5 seconds with transition effect
@@ -78,13 +76,12 @@ class _SplashScreenState extends State<SplashScreen> {
 
   // Method to start blinking effect
   void _startBlinking() {
-    _blinkTimer = Timer.periodic(const Duration(milliseconds: 500), (timer) {
+    _splashScreenController.startBlinking((bool blink) {
       if (!mounted) {
-        timer.cancel(); // Cancel the timer if the widget is disposed
         return;
       }
       setState(() {
-        _blink = !_blink; // Toggle blink state
+        _blink = blink; // Toggle blink state
       });
     });
   }
@@ -98,10 +95,8 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   void dispose() {
-    // Cancel _blinkTimer if it is not null
-    _blinkTimer?.cancel();
-    _mainImageTimer.cancel();
-    _newImageTimer.cancel();
+    _splashScreenController.cancelBlinking();
+    _splashScreenController.cancelTimers();
     super.dispose();
   }
 
@@ -176,7 +171,6 @@ class _SplashScreenState extends State<SplashScreen> {
                               ),
                             ),
                           ],
-                          
                         ),
                       ),
                     ),

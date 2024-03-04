@@ -44,20 +44,19 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             GestureDetector(
               onTap: () {
                 // Navigate to the login screen
-               Navigator.pushReplacement(context, pageMove.movepage(LoginScreen()));
+                Navigator.pushReplacement(
+                    context, pageMove.movepage(LoginScreen()));
               },
               child: Padding(
                 padding: EdgeInsets.only(top: 20.0, right: 15.0),
                 child: Align(
                   alignment: Alignment.topRight,
-                  child: Text(
-                    'Skip',
-                    style: customText.Poppins_SemiBold(16.0, customColor.primaryColors)
-                  ),
+                  child: Text('Skip',
+                      style: customText.Poppins_SemiBold(
+                          16, customColor.primaryColors, FontWeight.w600)),
                 ),
               ),
             ),
-            
             Expanded(
               child: LayoutBuilder(
                 builder: (context, constraints) {
@@ -113,8 +112,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     onPressed: () {
                       if (_currentPage == _totalPages - 1) {
                         // Navigate to the login screen
-                         Navigator.pushReplacement(context, pageMove.movepage(LoginScreen())
-                        );
+                        Navigator.pushReplacement(
+                            context, pageMove.movepage(LoginScreen()));
                       } else {
                         _pageController.nextPage(
                           duration: const Duration(milliseconds: 500),
@@ -122,8 +121,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                         );
                       }
                     },
-                    style: CustomButton.overallButtonStyle(
-                    ),
+                    style: CustomButton.overallButtonStyle(),
                     child: Padding(
                       padding: const EdgeInsets.all(12.0),
                       child: Text(
