@@ -1,5 +1,7 @@
+import 'package:eduapp/pages/login_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:eduapp/component/custom_pagemove.dart';
 
 class Register extends StatefulWidget {
   @override
@@ -314,6 +316,8 @@ class _Register extends State<Register> {
                             TextButton(
                               onPressed: () {
                                 // Add logic to navigate to the registration page
+                                Navigator.pushReplacement(context,
+                                    pageMove.movepage(LoginScreen()));
                               },
                               child: Text(
                                 'Masuk',

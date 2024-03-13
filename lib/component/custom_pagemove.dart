@@ -5,12 +5,29 @@ class pageMove {
     return PageRouteBuilder(
       pageBuilder: (_, __, ___) => tujuan,
       transitionsBuilder: (_, animation, __, child) {
-        return SlideTransition(
-          position: Tween<Offset>(
-            begin: const Offset(1.0, 0.0), // Start off screen to the right
-            end: Offset.zero, // End at the center of the screen
-          ).animate(animation),
-          child: child,
+        return Stack(
+          children: [
+            FadeTransition(
+              opacity: Tween<double>(
+                begin: 0.0,
+                end: 1.0,
+              ).animate(animation),
+              child: child,
+            ),
+            IgnorePointer(
+              child: AnimatedBuilder(
+                animation: animation,
+                builder: (context, _) {
+                  return Offstage(
+                    offstage: animation.status != AnimationStatus.reverse,
+                    child: const Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ],
         );
       },
     );

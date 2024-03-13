@@ -1,6 +1,7 @@
 import 'package:eduapp/pages/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'pages/login_screen.dart';
+import 'pages/pages_lupakatasandi.dart';
 
 void main() {
   runApp(const MyApp());

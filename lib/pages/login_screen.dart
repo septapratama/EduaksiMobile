@@ -1,4 +1,10 @@
+import 'package:eduapp/pages/register_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:eduapp/component/custom_button.dart';
+import 'package:eduapp/component/custom_colors.dart';
+import 'package:eduapp/component/custom_pagemove.dart';
+import 'package:eduapp/component/custom_text.dart';
+import 'package:eduapp/pages/pages_lupakatasandi.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -104,7 +110,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     TextField(
                       obscureText: !_isPasswordVisible,
                       decoration: InputDecoration(
-                        labelText: 'Username',
+                        labelText: 'Password',
                         labelStyle: const TextStyle(
                           color: Color.fromRGBO(
                               30, 84, 135, 1), // Default text color
@@ -154,6 +160,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: TextButton(
                     onPressed: () {
                       // Tambahkan logika untuk proses lupa kata sandi
+                      Navigator.pushReplacement(
+                          context, pageMove.movepage(const Lupakatasandi()));
                     },
                     child: const Text(
                       'Lupa Kata Sandi?',
@@ -287,6 +295,8 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                             TextButton(
                               onPressed: () {
+                                Navigator.pushReplacement(
+                                    context, pageMove.movepage(Register()));
                                 // Add logic to navigate to the registration page
                               },
                               child: Text(
