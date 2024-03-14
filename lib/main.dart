@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
       title: 'My App',
       theme: ThemeData(),
       debugShowCheckedModeBanner: false,
-      home: SplashScreen(), // Navigate to SplashScreen first
+      home: LoginScreen(), // Navigate to SplashScreen first
     );
   }
 }

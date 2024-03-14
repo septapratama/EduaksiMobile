@@ -74,6 +74,8 @@ class _LoginScreenState extends State<LoginScreen> {
                               30, 84, 135, 1), // Default text color
                         ),
                         enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                              Radius.circular(8.0)), // Set border radius here
                           borderSide: BorderSide(
                             color: Color.fromRGBO(30, 84, 135,
                                 1), // Border color for the enabled state
@@ -81,12 +83,19 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                         focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                              Radius.circular(8.0)), // Set border radius here
                           borderSide: BorderSide(
                             color: Color.fromARGB(255, 21, 76,
                                 206), // Border color for the focused state
                             width: 2.0, // Border width for the focused state
                           ),
                         ),
+                        contentPadding: EdgeInsets.symmetric(
+                            vertical: 10.0,
+                            horizontal: 20.0), // Add margin around text
+                        floatingLabelBehavior: FloatingLabelBehavior
+                            .never, // Prevent moving animation
                       ),
                       style: TextStyle(
                         color: Colors.black, // Text color for the input text
