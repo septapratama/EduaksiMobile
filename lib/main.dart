@@ -1,3 +1,4 @@
+import 'package:eduapp/pages/register_screen.dart';
 import 'package:eduapp/pages/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'pages/login_screen.dart';
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
       title: 'Eduaksi',
       theme: ThemeData(),
       debugShowCheckedModeBanner: false,
-      home: LoginScreen(), // Navigate to SplashScreen first
+      home: RegisterScreen(), // Navigate to SplashScreen first
     );
   }
 }

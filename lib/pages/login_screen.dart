@@ -1,10 +1,11 @@
-import 'package:eduapp/pages/register_screen.dart';
+import 'package:eduapp/controller/controller_register.dart';
 import 'package:flutter/material.dart';
 import 'package:eduapp/component/custom_button.dart';
 import 'package:eduapp/component/custom_colors.dart';
 import 'package:eduapp/component/custom_pagemove.dart';
 import 'package:eduapp/component/custom_text.dart';
 import 'package:eduapp/pages/pages_lupakatasandi.dart';
+import 'package:eduapp/pages/register_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -70,35 +71,37 @@ class _LoginScreenState extends State<LoginScreen> {
                       decoration: InputDecoration(
                         labelText: 'Username',
                         labelStyle: TextStyle(
-                          color: Color.fromRGBO(
-                              30, 84, 135, 1), // Default text color
-                        ),
+                            color: Color.fromRGBO(30, 84, 135, 1),
+                            fontWeight: FontWeight.w400),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.all(
-                              Radius.circular(8.0)), // Set border radius here
+                            Radius.circular(8.0),
+                          ),
                           borderSide: BorderSide(
-                            color: Color.fromRGBO(30, 84, 135,
-                                1), // Border color for the enabled state
-                            width: 2.0, // Border width for the enabled state
+                            color: Color.fromRGBO(30, 84, 135, 1),
+                            width: 2.0,
                           ),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.all(
-                              Radius.circular(8.0)), // Set border radius here
+                            Radius.circular(8.0),
+                          ),
                           borderSide: BorderSide(
-                            color: Color.fromARGB(255, 21, 76,
-                                206), // Border color for the focused state
-                            width: 2.0, // Border width for the focused state
+                            color: Color.fromARGB(255, 21, 76, 206),
+                            width: 2.0,
                           ),
                         ),
                         contentPadding: EdgeInsets.symmetric(
-                            vertical: 10.0,
-                            horizontal: 20.0), // Add margin around text
-                        floatingLabelBehavior: FloatingLabelBehavior
-                            .never, // Prevent moving animation
+                          vertical: 10.0,
+                          horizontal: 20.0,
+                        ),
+                        floatingLabelBehavior: FloatingLabelBehavior.never,
                       ),
                       style: TextStyle(
-                        color: Colors.black, // Text color for the input text
+                        color: Color.fromRGBO(30, 84, 135, 1),
+                        fontSize: 16.0, // Change the font size here
+                        fontFamily:
+                            'Poppins_SemiBold', // Change the font type here
                       ),
                     ),
                   ],
@@ -108,7 +111,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text(
-                      'Password',
+                      'Kata Sandi',
                       style: TextStyle(
                         fontFamily: 'Poppins_SemiBold',
                         color: Color.fromRGBO(30, 84, 135, 1),
@@ -119,11 +122,12 @@ class _LoginScreenState extends State<LoginScreen> {
                     TextField(
                       obscureText: !_isPasswordVisible,
                       decoration: InputDecoration(
-                        labelText: 'Password',
+                        labelText: 'Kata Sandi',
                         labelStyle: const TextStyle(
-                          color: Color.fromRGBO(
-                              30, 84, 135, 1), // Default text color
-                        ),
+                            color: Color.fromRGBO(30, 84, 135, 1),
+                            fontWeight: FontWeight.w400
+                            // Default text color
+                            ),
                         enabledBorder: const OutlineInputBorder(
                           borderRadius: BorderRadius.all(
                               Radius.circular(8.0)), // Set border radius here
@@ -166,7 +170,10 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                       style: const TextStyle(
-                        color: Colors.black, // Text color for the input text
+                        color: Color.fromRGBO(30, 84, 135, 1),
+                        fontSize: 16.0, // Change the font size here
+                        fontFamily:
+                            'Poppins_SemiBold', // Change the font type here
                       ),
                     ),
                   ],
@@ -312,8 +319,8 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                             TextButton(
                               onPressed: () {
-                                Navigator.pushReplacement(
-                                    context, pageMove.movepage(Register()));
+                                Navigator.pushReplacement(context,
+                                    pageMove.movepage(RegisterScreen()));
                                 // Add logic to navigate to the registration page
                               },
                               child: Text(

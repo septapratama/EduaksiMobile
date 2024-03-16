@@ -1,15 +1,23 @@
-import 'package:eduapp/pages/login_screen.dart';
-import 'package:flutter/cupertino.dart';
+// register_screen.dart
 import 'package:flutter/material.dart';
-import 'package:eduapp/component/custom_pagemove.dart';
+import 'package:eduapp/controller/controller_register.dart';
 
-class Register extends StatefulWidget {
+class RegisterScreen extends StatefulWidget {
   @override
-  _Register createState() => _Register();
+  _RegisterScreenState createState() => _RegisterScreenState();
 }
 
-class _Register extends State<Register> {
+class _RegisterScreenState extends State<RegisterScreen> {
   bool _isPasswordVisible = false;
+  bool _isPasswordVisible1 = false;
+  String _passwordStrength = '';
+  final RegisterController _controller = RegisterController();
+  @override
+  void initState() {
+    super.initState();
+    // Inisialisasi nilai _passwordStrength ke 'Rendah' saat form pertama kali dibuka
+    _passwordStrength = 'Rendah';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,26 +65,28 @@ class _Register extends State<Register> {
                       decoration: InputDecoration(
                         labelText: 'Nama',
                         labelStyle: TextStyle(
-                          color: Color.fromRGBO(
-                              30, 84, 135, 1), // Default text color
+                          color: Color.fromRGBO(30, 84, 135, 1),
                         ),
                         enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(8.0)),
                           borderSide: BorderSide(
-                            color: Color.fromRGBO(30, 84, 135,
-                                1), // Border color for the enabled state
-                            width: 2.0, // Border width for the enabled state
+                            color: Color.fromRGBO(30, 84, 135, 1),
+                            width: 2.0,
                           ),
                         ),
                         focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(8.0)),
                           borderSide: BorderSide(
-                            color: Color.fromARGB(255, 21, 76,
-                                206), // Border color for the focused state
-                            width: 2.0, // Border width for the focused state
+                            color: Color.fromARGB(255, 21, 76, 206),
+                            width: 2.0,
                           ),
                         ),
+                        contentPadding: EdgeInsets.symmetric(
+                            vertical: 10.0, horizontal: 20.0),
+                        floatingLabelBehavior: FloatingLabelBehavior.never,
                       ),
                       style: TextStyle(
-                        color: Colors.black, // Text color for the input text
+                        color: Colors.black,
                       ),
                     ),
                   ],
@@ -98,26 +108,28 @@ class _Register extends State<Register> {
                       decoration: InputDecoration(
                         labelText: 'No Telepon',
                         labelStyle: TextStyle(
-                          color: Color.fromRGBO(
-                              30, 84, 135, 1), // Default text color
+                          color: Color.fromRGBO(30, 84, 135, 1),
                         ),
                         enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(8.0)),
                           borderSide: BorderSide(
-                            color: Color.fromRGBO(30, 84, 135,
-                                1), // Border color for the enabled state
-                            width: 2.0, // Border width for the enabled state
+                            color: Color.fromRGBO(30, 84, 135, 1),
+                            width: 2.0,
                           ),
                         ),
                         focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(8.0)),
                           borderSide: BorderSide(
-                            color: Color.fromARGB(255, 21, 76,
-                                206), // Border color for the focused state
-                            width: 2.0, // Border width for the focused state
+                            color: Color.fromARGB(255, 21, 76, 206),
+                            width: 2.0,
                           ),
                         ),
+                        contentPadding: EdgeInsets.symmetric(
+                            vertical: 10.0, horizontal: 20.0),
+                        floatingLabelBehavior: FloatingLabelBehavior.never,
                       ),
                       style: TextStyle(
-                        color: Colors.black, // Text color for the input text
+                        color: Colors.black,
                       ),
                     ),
                   ],
@@ -127,7 +139,7 @@ class _Register extends State<Register> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text(
-                      'Masukkan Kata Sandi',
+                      'Kata Sandi',
                       style: TextStyle(
                         fontFamily: 'Poppins_SemiBold',
                         color: Color.fromRGBO(30, 84, 135, 1),
@@ -136,37 +148,43 @@ class _Register extends State<Register> {
                     ),
                     const SizedBox(height: 5.0),
                     TextField(
+                      onChanged: (password) {
+                        setState(() {
+                          _passwordStrength =
+                              _controller.evaluatePasswordStrength(password);
+                        });
+                      },
                       obscureText: !_isPasswordVisible,
                       decoration: InputDecoration(
-                        labelText: 'Masukkan Kata Sandi',
+                        labelText: 'Kata Sandi',
                         labelStyle: const TextStyle(
-                          color: Color.fromRGBO(
-                              30, 84, 135, 1), // Default text color
+                          color: Color.fromRGBO(30, 84, 135, 1),
                         ),
                         enabledBorder: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(8.0)),
                           borderSide: BorderSide(
-                            color: Color.fromRGBO(30, 84, 135,
-                                1), // Border color for the enabled state
-                            width: 2.0, // Border width for the enabled state
+                            color: Color.fromRGBO(30, 84, 135, 1),
+                            width: 2.0,
                           ),
                         ),
                         focusedBorder: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(8.0)),
                           borderSide: BorderSide(
-                            color: Color.fromARGB(255, 21, 76,
-                                206), // Border color for the focused state
-                            width: 2.0, // Border width for the focused state
+                            color: Color.fromARGB(255, 21, 76, 206),
+                            width: 2.0,
                           ),
                         ),
+                        contentPadding: const EdgeInsets.symmetric(
+                            vertical: 10.0, horizontal: 20.0),
+                        floatingLabelBehavior: FloatingLabelBehavior.never,
                         suffixIcon: Padding(
-                          padding: const EdgeInsets.only(
-                              right: 8.0), // Adjust the right padding as needed
+                          padding: const EdgeInsets.only(right: 8.0),
                           child: IconButton(
                             icon: Icon(
                               _isPasswordVisible
                                   ? Icons.visibility
                                   : Icons.visibility_off,
-                              color: Colors
-                                  .black, // Adjust the color of the visibility icon
+                              color: Colors.black,
                             ),
                             onPressed: () {
                               setState(() {
@@ -177,12 +195,49 @@ class _Register extends State<Register> {
                         ),
                       ),
                       style: const TextStyle(
-                        color: Colors.black, // Text color for the input text
+                        color: Colors.black,
+                      ),
+                    ),
+                    const SizedBox(height: 10.0),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          right: 8.0), // Sesuaikan jarak kanan sesuai kebutuhan
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment
+                            .end, // Meletakkan widget di sebelah kanan
+                        children: [
+                          Text(
+                            _passwordStrength,
+                            style: TextStyle(
+                              color: (_passwordStrength == 'Kuat')
+                                  ? Colors.green
+                                  : (_passwordStrength == 'Sedang')
+                                      ? Colors.orange
+                                      : Colors.red,
+                            ),
+                          ),
+                          const SizedBox(
+                              width: 8), // Spasi antara teks dan animasi
+                          AnimatedContainer(
+                            duration: const Duration(milliseconds: 300),
+                            height: 5.0,
+                            width: (_passwordStrength == 'Kuat')
+                                ? 100.0
+                                : // Sesuaikan lebar animasi sesuai kekuatan kata sandi
+                                (_passwordStrength == 'Sedang')
+                                    ? 50.0
+                                    : 25.0,
+                            color: (_passwordStrength == 'Kuat')
+                                ? Colors.green
+                                : (_passwordStrength == 'Sedang')
+                                    ? Colors.orange
+                                    : Colors.red,
+                          ),
+                        ],
                       ),
                     ),
                   ],
                 ),
-                const SizedBox(height: 10.0),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -196,56 +251,56 @@ class _Register extends State<Register> {
                     ),
                     const SizedBox(height: 5.0),
                     TextField(
-                      obscureText: !_isPasswordVisible,
+                      obscureText: !_isPasswordVisible1,
                       decoration: InputDecoration(
                         labelText: 'Ulangi Kata Sandi',
                         labelStyle: const TextStyle(
-                          color: Color.fromRGBO(
-                              30, 84, 135, 1), // Default text color
+                          color: Color.fromRGBO(30, 84, 135, 1),
                         ),
                         enabledBorder: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(8.0)),
                           borderSide: BorderSide(
-                            color: Color.fromRGBO(30, 84, 135,
-                                1), // Border color for the enabled state
-                            width: 2.0, // Border width for the enabled state
+                            color: Color.fromRGBO(30, 84, 135, 1),
+                            width: 2.0,
                           ),
                         ),
                         focusedBorder: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(8.0)),
                           borderSide: BorderSide(
-                            color: Color.fromARGB(255, 21, 76,
-                                206), // Border color for the focused state
-                            width: 2.0, // Border width for the focused state
+                            color: Color.fromARGB(255, 21, 76, 206),
+                            width: 2.0,
                           ),
                         ),
+                        contentPadding: const EdgeInsets.symmetric(
+                            vertical: 10.0, horizontal: 20.0),
+                        floatingLabelBehavior: FloatingLabelBehavior.never,
                         suffixIcon: Padding(
-                          padding: const EdgeInsets.only(
-                              right: 8.0), // Adjust the right padding as needed
+                          padding: const EdgeInsets.only(right: 8.0),
                           child: IconButton(
                             icon: Icon(
-                              _isPasswordVisible
+                              _isPasswordVisible1
                                   ? Icons.visibility
                                   : Icons.visibility_off,
-                              color: Colors
-                                  .black, // Adjust the color of the visibility icon
+                              color: Colors.black,
                             ),
                             onPressed: () {
                               setState(() {
-                                _isPasswordVisible = !_isPasswordVisible;
+                                _isPasswordVisible1 = !_isPasswordVisible1;
                               });
                             },
                           ),
                         ),
                       ),
                       style: const TextStyle(
-                        color: Colors.black, // Text color for the input text
+                        color: Colors.black,
                       ),
                     ),
+                    const SizedBox(height: 5.0),
                   ],
                 ),
-                const SizedBox(height: 40.0),
+                const SizedBox(height: 10.0),
                 Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 20.0), // Adjust horizontal padding as needed
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
                   child: ElevatedButton(
                     onPressed: () {
                       // Add your onPressed logic here
@@ -259,8 +314,7 @@ class _Register extends State<Register> {
                       ),
                     ),
                     child: const Padding(
-                      padding: EdgeInsets.symmetric(
-                          vertical: 12.0), // Adjust vertical padding as needed
+                      padding: EdgeInsets.symmetric(vertical: 12.0),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
@@ -281,10 +335,9 @@ class _Register extends State<Register> {
                 Center(
                   child: LayoutBuilder(
                     builder: (context, constraints) {
-                      double fontSize = 15.0; // Initial font size
+                      double fontSize = 15.0;
                       double screenWidth = MediaQuery.of(context).size.width;
 
-                      // Adjust the font size based on the width of the screen
                       if (screenWidth < 400) {
                         fontSize = 12.0;
                       } else if (screenWidth < 600) {
@@ -294,8 +347,7 @@ class _Register extends State<Register> {
                       }
 
                       return Container(
-                        width: MediaQuery.of(context).size.width *
-                            0.8, // Adjust the width as needed
+                        width: MediaQuery.of(context).size.width * 0.8,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -309,24 +361,21 @@ class _Register extends State<Register> {
                                   fontSize: fontSize,
                                   fontWeight: FontWeight.bold,
                                   fontFamily: 'Poppins_SemiBold',
-                                  color: Color.fromRGBO(0, 0, 0, 0.445),
+                                  color: const Color.fromRGBO(0, 0, 0, 0.445),
                                 ),
                               ),
                             ),
                             TextButton(
                               onPressed: () {
                                 // Add logic to navigate to the registration page
-                                Navigator.pushReplacement(context,
-                                    pageMove.movepage(LoginScreen()));
                               },
                               child: Text(
                                 'Masuk',
                                 style: TextStyle(
-                                  fontSize:
-                                      fontSize, // Use the fontSize variable here
+                                  fontSize: fontSize,
                                   fontWeight: FontWeight.bold,
                                   fontFamily: 'Poppins_SemiBold',
-                                  color: Color.fromRGBO(30, 84, 135, 1),
+                                  color: const Color.fromRGBO(30, 84, 135, 1),
                                 ),
                               ),
                             ),
