@@ -296,7 +296,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       } else {
                         fontSize = 16.0;
                       }
-
+                      
                       return Container(
                         width: MediaQuery.of(context).size.width *
                             0.8, // Adjust the width as needed
