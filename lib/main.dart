@@ -1,6 +1,7 @@
 import 'package:eduapp/pages/beranda_pages.dart';
 import 'package:eduapp/pages/pages_EdukasiMenu.dart';
 import 'package:eduapp/pages/pages_auth.dart';
+import 'package:eduapp/pages/pages_authSuccess.dart';
 import 'package:eduapp/pages/pages_profil.dart';
 import 'package:eduapp/pages/register_screen.dart';
 import 'package:eduapp/pages/splash_screen.dart';
@@ -22,7 +23,7 @@ class MyApp extends StatelessWidget {
       title: 'Eduaksi',
       theme: ThemeData(),
       debugShowCheckedModeBanner: false,
-      home: OTPScreen(), // Navigate to SplashScreen first
+      home: OTPSuccess(), // Navigate to SplashScreen first
     );
   }
 }
