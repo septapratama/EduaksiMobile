@@ -1,7 +1,8 @@
 import 'package:eduapp/component/custom_colors.dart';
 import 'package:eduapp/component/custom_text.dart';
+import 'package:eduapp/pages/login_screen.dart';
 import 'package:flutter/material.dart';
-
+import 'package:eduapp/component/custom_pagemove.dart';
 class Lupakatasandi extends StatefulWidget {
   const Lupakatasandi({Key? key}) : super(key: key);
 
@@ -39,12 +40,44 @@ class _LupakatasandiState extends State<Lupakatasandi> {
                     FontWeight.normal,
                   ),
                 ),
+                const SizedBox(height: 25),
+                const TextField(
+                  decoration: InputDecoration(
+                    labelText: 'Masukan Email Aktif Anda!',
+                    labelStyle: TextStyle(
+                      color: Color.fromRGBO(30, 84, 135, 1),
+                      fontSize: 14,
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                      borderSide: BorderSide(
+                        color: Color.fromRGBO(30, 84, 135, 1),
+                        width: 2.0,
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                      borderSide: BorderSide(
+                        color: Color.fromARGB(255, 21, 76, 206),
+                        width: 2.0,
+                      ),
+                    ),
+                    contentPadding:
+                        EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+                    floatingLabelBehavior: FloatingLabelBehavior.never,
+                  ),
+                  style: TextStyle(
+                    color: Colors.black,
+                  ),
+                ),
                 const SizedBox(height: 60.0),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20.0),
                   child: ElevatedButton(
                     onPressed: () {
                       // Add your onPressed logic here
+                       Navigator.pushReplacement(context,
+                                      pageMove.movepage(LoginScreen()));
                     },
                     style: ElevatedButton.styleFrom(
                       padding: EdgeInsets.zero,
@@ -54,8 +87,8 @@ class _LupakatasandiState extends State<Lupakatasandi> {
                         borderRadius: BorderRadius.circular(8.0),
                       ),
                     ),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 12.0),
+                    child: const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 12.0),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
@@ -72,7 +105,7 @@ class _LupakatasandiState extends State<Lupakatasandi> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 30.0),
+                const SizedBox(height: 20.0),
                 Center(
                   child: LayoutBuilder(
                     builder: (context, constraints) {
@@ -95,7 +128,7 @@ class _LupakatasandiState extends State<Lupakatasandi> {
                           children: [
                             Flexible(
                               child: Text(
-                                'Anda belum menerima kode OTP?',
+                                'belum menerima kode OTP?',
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(

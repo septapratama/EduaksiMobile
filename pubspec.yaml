@@ -38,6 +38,9 @@ dependencies:
   carousel_slider: ^4.0.0
   lottie: ^3.1.0
   flutter_svg: ^0.22.0
+  image_picker: ^1.0.7
+  sms_otp_auto_verify: ^2.1.0
+  pin_input_text_field: ^4.5.1
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -58,7 +61,7 @@ flutter:
   assets:
     - assets/images/
   fonts:
-    - family: Poppins
+    - family: Poppins_Regular
       fonts:
         - asset: assets/fonts/Poppins-Regular.ttf
     - family: Poppins_Bold
