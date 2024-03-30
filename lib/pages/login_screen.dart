@@ -1,4 +1,5 @@
 import 'package:eduapp/controller/controller_register.dart';
+import 'package:eduapp/utils/navigationbar.dart';
 import 'package:flutter/material.dart';
 import 'package:eduapp/component/custom_button.dart';
 import 'package:eduapp/component/custom_colors.dart';
@@ -6,7 +7,7 @@ import 'package:eduapp/component/custom_pagemove.dart';
 import 'package:eduapp/component/custom_text.dart';
 import 'package:eduapp/pages/pages_lupakatasandi.dart';
 import 'package:eduapp/pages/register_screen.dart';
-
+import 'package:eduapp/utils/navigationbar.dart';
 class LoginScreen extends StatefulWidget {
   @override
   _LoginScreenState createState() => _LoginScreenState();
@@ -205,6 +206,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: ElevatedButton(
                     onPressed: () {
                       // Add your onPressed logic here
+                      Navigator.pushReplacement(context,
+                                    pageMove.movepage(BottomNav()));
                     },
                     style: ElevatedButton.styleFrom(
                       padding: EdgeInsets.zero,

@@ -1,66 +1,51 @@
 import 'package:eduapp/component/custom_colors.dart';
+import 'package:eduapp/pages/beranda_pages.dart';
+import 'package:eduapp/pages/pages_EdukasiMenu.dart';
+import 'package:eduapp/pages/pages_profil.dart';
 import 'package:flutter/material.dart';
 
-class navigationbar extends StatefulWidget {
+class BottomNav extends StatefulWidget {
+  const BottomNav({super.key});
+
   @override
-  _navigationbarstate createState() => _navigationbarstate();
+  State<BottomNav> createState() => _BottomNavState();
 }
 
-class _navigationbarstate extends State<navigationbar> {
-  int _selectedIndex = 0;
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
+class _BottomNavState extends State<BottomNav> {
+  int currentIndex = 0;
+  final List<Widget> body = [Beranda(), EdukasiMenu(), ProfilPages()];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Bottom Navigation Demo'),
-      ),
-      body: Center(
-        child: Text(
-          'Selected Index: $_selectedIndex',
-          style: TextStyle(fontSize: 24.0),
-        ),
-      ),
+      body: body[currentIndex],
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors
-            .red, // Change this color to the desired background color/ Change this color to the desired color
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
-        selectedItemColor: customColor.selectednavbar,
-        unselectedItemColor: customColor.unselectednavbar,
+        onTap: ontap,
+        currentIndex: currentIndex,
         items: [
           BottomNavigationBarItem(
-            backgroundColor: customColor.bottomnavigationColors,
-            icon: Image.asset('assets/images/ant-design_home-filled.png',
-                width: 24, height: 24),
-            label: 'Home',
-          ),
+              icon: Icon(Icons.home, color: customColor.gray),
+              label: 'Home',
+              activeIcon:
+                  Icon(Icons.home, color: customColor.bottomnavigationColors)),
           BottomNavigationBarItem(
-            backgroundColor: customColor.bottomnavigationColors,
-            icon: Image.asset('assets/images/ant-design_home-filled.png',
-                width: 24, height: 24),
-            label: 'Home',
-          ),
+              icon: Icon(Icons.child_care, color: customColor.gray),
+              label: 'Konseling',
+              activeIcon: Icon(Icons.child_care,
+                  color: customColor.bottomnavigationColors)),
           BottomNavigationBarItem(
-            backgroundColor: customColor.bottomnavigationColors,
-            icon: Image.asset('assets/images/ant-design_home-filled.png',
-                width: 24, height: 24),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            backgroundColor: customColor.bottomnavigationColors,
-            icon: Image.asset('assets/images/ant-design_home-filled.png',
-                width: 24, height: 24),
-            label: 'Home',
-          ),
+              icon: Icon(Icons.person, color: customColor.gray),
+              label: 'Profil',
+              activeIcon: Icon(Icons.person,
+                  color: customColor.bottomnavigationColors)),
         ],
       ),
     );
+  }
+
+  void ontap(int index) {
+    setState(() {
+      currentIndex = index;
+    });
   }
 }

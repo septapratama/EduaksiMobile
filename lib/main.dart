@@ -5,6 +5,8 @@ import 'package:eduapp/pages/pages_authSuccess.dart';
 import 'package:eduapp/pages/pages_profil.dart';
 import 'package:eduapp/pages/register_screen.dart';
 import 'package:eduapp/pages/splash_screen.dart';
+import 'package:eduapp/pages/welcome_screen.dart';
+import 'package:eduapp/utils/navigationbar.dart';
 import 'package:flutter/material.dart';
 import 'pages/login_screen.dart';
 import 'pages/pages_lupakatasandi.dart';
@@ -23,7 +25,7 @@ class MyApp extends StatelessWidget {
       title: 'Eduaksi',
       theme: ThemeData(),
       debugShowCheckedModeBanner: false,
-      home: OTPSuccess(), // Navigate to SplashScreen first
+      home: WelcomeScreen(), // Navigate to SplashScreen first
     );
   }
 }
