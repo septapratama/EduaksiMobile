@@ -5,6 +5,7 @@ import 'package:eduapp/pages/pages_lupakatasandi.dart';
 import 'package:flutter/material.dart';
 import 'package:eduapp/controller/controller_register.dart';
 import 'package:eduapp/component/custom_pagemove.dart';
+import 'package:eduapp/utils/ApiService.dart';
 
 class RegisterScreen extends StatefulWidget {
   @override
@@ -16,8 +17,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
   bool _isPasswordVisible1 = false;
   String _passwordStrength = '';
   final RegisterController _controller = RegisterController();
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>(); // Add this line
-  TextEditingController _verificationController = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  // Add this line
+  final ApiService apiService = ApiService();
+  TextEditingController namaController = TextEditingController();
+  TextEditingController nomorController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController confirmPasswordController = TextEditingController();
+
   bool _verificationFilled = false;
   @override
   void initState() {
@@ -25,16 +32,67 @@ class _RegisterScreenState extends State<RegisterScreen> {
     // Inisialisasi nilai _passwordStrength ke 'Rendah' saat form pertama kali dibuka
     _passwordStrength = 'Rendah';
   }
+  void alert(BuildContext context, String message, String title, IconData icon, Color color) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          elevation: 0,
+          backgroundColor: Colors.transparent,
+          child: contentBox(context, message, title, icon, color),
+        );
+      },
+    );
+  }
+  void _register() async {
+    String nama_lengkap = namaController.text;
+    String kata_sandi = passwordController.text;
+    String no_telp = nomorController.text;
+    String konfirmasi = confirmPasswordController.text;
+
+    // Validasi form, misalnya memastikan semua field terisi dengan benar
+    if (nama_lengkap.isEmpty ||
+        kata_sandi.isEmpty ||
+        no_telp.isEmpty ||
+        konfirmasi.isEmpty) {
+      // Tampilkan pesan alert jika ada field yang kosong
+      alert(context, "Harap lengkapi semua data.", "gagal mendaftar!",Icons.error, Colors.red);
+      return;
+    } else if (kata_sandi == konfirmasi) {
+      try {
+        Map<String, dynamic> response =
+        await apiService.register(nama_lengkap, kata_sandi, no_telp);
+
+        if (response['status'] == 'success') {
+          print('Registration successful');
+
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => LoginScreen(),
+            ),
+
+          );
+          alert(context, "Silahkan Masuk","Berhasil Mendaftar!",Icons.check, Colors.green);
+        } else {
+          print('Registration failed: ${response['message']}');
+          // Tambahkan logika penanganan jika registrasi gagal
+        }
+      } catch (e) {
+        print('Error during registration: $e');
+        // Tambahkan logika penanganan jika terjadi error
+      }
+    } else {
+      alert(context, "Sandi dan konfirmasi sandi tidak sesuai.", "gagal mendaftar!", Icons.error,Colors.red);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(
-        title: 'Berat Atau Tinggi Ideal',
-        leadingOnPressed: () {
-          Navigator.pushReplacement(context, pageMove.movepage(LoginScreen()));
-        },
-      ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
@@ -64,10 +122,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                   ),
                   const SizedBox(height: 60.0),
-                  const Column(
+                  Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
+                      const Text(
                         'Nama',
                         style: TextStyle(
                           fontFamily: 'Poppins_SemiBold',
@@ -75,9 +133,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           fontSize: 16.0,
                         ),
                       ),
-                      SizedBox(height: 5.0),
+                      const SizedBox(height: 5.0),
                       TextField(
-                        decoration: InputDecoration(
+                        controller: namaController,
+                        decoration: const InputDecoration(
                           labelText: 'Nama',
                           labelStyle: TextStyle(
                             color: Color.fromRGBO(30, 84, 135, 1),
@@ -102,17 +161,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               vertical: 10.0, horizontal: 20.0),
                           floatingLabelBehavior: FloatingLabelBehavior.never,
                         ),
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: Colors.black,
                         ),
                       ),
                     ],
                   ),
                   const SizedBox(height: 10.0),
-                  const Column(
+                  Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
+                      const Text(
                         'No Telepon',
                         style: TextStyle(
                           fontFamily: 'Poppins_SemiBold',
@@ -120,9 +179,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           fontSize: 16.0,
                         ),
                       ),
-                      SizedBox(height: 5.0),
+                      const SizedBox(height: 5.0),
                       TextField(
-                        decoration: InputDecoration(
+                        controller: nomorController,
+                        decoration: const InputDecoration(
                           labelText: 'No Telepon',
                           labelStyle: TextStyle(
                             color: Color.fromRGBO(30, 84, 135, 1),
@@ -147,7 +207,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               vertical: 10.0, horizontal: 20.0),
                           floatingLabelBehavior: FloatingLabelBehavior.never,
                         ),
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: Colors.black,
                         ),
                       ),
@@ -167,6 +227,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                       const SizedBox(height: 5.0),
                       TextField(
+                        controller: passwordController,
                         onChanged: (password) {
                           setState(() {
                             _passwordStrength =
@@ -238,8 +299,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                         : Colors.red,
                               ),
                             ),
-                            const SizedBox(
-                                width: 8), // Spasi antara teks dan animasi
+                            const SizedBox(width: 8), // Spasi antara teks dan animasi
                             AnimatedContainer(
                               duration: const Duration(milliseconds: 300),
                               height: 5.0,
@@ -260,6 +320,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                     ],
                   ),
+
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -273,6 +334,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                       const SizedBox(height: 5.0),
                       TextField(
+                        controller: confirmPasswordController,
                         obscureText: !_isPasswordVisible1,
                         decoration: InputDecoration(
                           labelText: 'Ulangi Kata Sandi',
@@ -327,7 +389,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     padding: const EdgeInsets.symmetric(horizontal: 20.0),
                     child: ElevatedButton(
                       onPressed: () {
-                        // Add your onPressed logic here
+                        _register();
                       },
                       style: ElevatedButton.styleFrom(
                         padding: EdgeInsets.zero,
@@ -419,4 +481,78 @@ class _RegisterScreenState extends State<RegisterScreen> {
       ),
     );
   }
+}
+Widget contentBox(BuildContext context, String message, String title, IconData icon, Color color) {
+  return Stack(
+    children: <Widget>[
+      Container(
+        padding: EdgeInsets.only(
+          left: 20,
+          top: 45,
+          right: 20,
+          bottom: 20,
+        ),
+        margin: EdgeInsets.only(top: 45),
+        decoration: BoxDecoration(
+          shape: BoxShape.rectangle,
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black,
+              offset: Offset(0, 10),
+              blurRadius: 10,
+            ),
+          ],
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Text(
+              title,
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            SizedBox(height: 15),
+            Text(
+              message,
+              style: TextStyle(
+                fontSize: 18,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(height: 22),
+            Align(
+              alignment: Alignment.bottomRight,
+              child: TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text(
+                  'OKE',
+                  style: TextStyle(color: Color.fromRGBO(203, 164, 102, 1)),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+      Positioned(
+        top: 0,
+        left: 20,
+        right: 20,
+        child: CircleAvatar(
+          backgroundColor: color,
+          radius: 30,
+          child: Icon(
+            icon,
+            color: Colors.white,
+            size: 40,
+          ),
+        ),
+      ),
+    ],
+  );
 }
