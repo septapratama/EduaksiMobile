@@ -1,6 +1,6 @@
 import 'package:eduapp/component/custom_colors.dart';
 import 'package:eduapp/component/custom_text.dart';
-import 'package:eduapp/pages/login_screen.dart';
+import 'package:eduapp/pages/pages_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:eduapp/component/custom_pagemove.dart';
 class Lupakatasandi extends StatefulWidget {
@@ -77,7 +77,7 @@ class _LupakatasandiState extends State<Lupakatasandi> {
                     onPressed: () {
                       // Add your onPressed logic here
                        Navigator.pushReplacement(context,
-                                      pageMove.movepage(LoginScreen()));
+                                      pageMove.movepage(OTPScreen()));
                     },
                     style: ElevatedButton.styleFrom(
                       padding: EdgeInsets.zero,

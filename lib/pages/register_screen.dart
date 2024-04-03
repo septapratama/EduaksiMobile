@@ -20,8 +20,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   // Add this line
   final ApiService apiService = ApiService();
+  TextEditingController emailController = TextEditingController();
   TextEditingController namaController = TextEditingController();
-  TextEditingController nomorController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
 
@@ -48,45 +48,91 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
   void _register() async {
+    String email = emailController.text;
     String nama_lengkap = namaController.text;
     String kata_sandi = passwordController.text;
-    String no_telp = nomorController.text;
     String konfirmasi = confirmPasswordController.text;
 
     // Validasi form, misalnya memastikan semua field terisi dengan benar
-    if (nama_lengkap.isEmpty ||
-        kata_sandi.isEmpty ||
-        no_telp.isEmpty ||
-        konfirmasi.isEmpty) {
-      // Tampilkan pesan alert jika ada field yang kosong
-      alert(context, "Harap lengkapi semua data.", "gagal mendaftar!",Icons.error, Colors.red);
+    if(email.isEmpty || email == null){
+      alert(context, "Email tidak boleh kosong !", "gagal mendaftar!",Icons.error, Colors.red);
       return;
-    } else if (kata_sandi == konfirmasi) {
-      try {
-        Map<String, dynamic> response =
-        await apiService.register(nama_lengkap, kata_sandi, no_telp);
-
-        if (response['status'] == 'success') {
-          print('Registration successful');
-
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => LoginScreen(),
-            ),
-
-          );
-          alert(context, "Silahkan Masuk","Berhasil Mendaftar!",Icons.check, Colors.green);
-        } else {
-          print('Registration failed: ${response['message']}');
-          // Tambahkan logika penanganan jika registrasi gagal
-        }
-      } catch (e) {
-        print('Error during registration: $e');
-        // Tambahkan logika penanganan jika terjadi error
+    }
+    if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(email)) {
+      alert(context, "Email tidak valid!", "Gagal mendaftar!", Icons.error, Colors.red);
+      return;
+    }
+    if(nama_lengkap.isEmpty || nama_lengkap == null){
+      alert(context, "Nama Lengkap tidak boleh kosong !", "gagal mendaftar!",Icons.error, Colors.red);
+      return;
+    }
+    if(kata_sandi.isEmpty || kata_sandi == null){
+      alert(context, "Kata sandi tidak boleh kosong !", "gagal mendaftar!",Icons.error, Colors.red);
+      return;
+    }
+    if (kata_sandi.length < 8) {
+      alert(context, "Kata sandi harus terdiri dari minimal 8 karakter !", "Gagal mendaftar!", Icons.error, Colors.red);
+      return;
+    }
+    if (!RegExp(r'[A-Z]').hasMatch(kata_sandi)) {
+      alert(context, "Kata sandi harus mengandung minimal 1 huruf kapital !", "Gagal mendaftar!", Icons.error, Colors.red);
+      return;
+    }
+    if (!RegExp(r'[a-z]').hasMatch(kata_sandi)) {
+      alert(context, "Kata sandi harus mengandung minimal 1 huruf kecil !", "Gagal mendaftar!", Icons.error, Colors.red);
+      return;
+    }
+    if (!RegExp(r'\d').hasMatch(kata_sandi)) {
+      alert(context, "Kata sandi harus mengandung minimal 1 angka!", "Gagal mendaftar!", Icons.error, Colors.red);
+      return;
+    }
+    if (!RegExp(r'[!@#\$%^&*]').hasMatch(kata_sandi)) {
+      alert(context, "Kata sandi harus mengandung minimal 1 karakter unik !", "Gagal mendaftar!", Icons.error, Colors.red);
+      return;
+    }
+    if(konfirmasi.isEmpty || konfirmasi == null){
+      alert(context, "Ulangi kata sandi tidak boleh kosong !", "gagal mendaftar!",Icons.error, Colors.red);
+      return;
+    }
+    if (konfirmasi.length < 8) {
+      alert(context, "Ulangi kata sandi harus terdiri dari minimal 8 karakter !", "Gagal mendaftar!", Icons.error, Colors.red);
+      return;
+    }
+    if (!RegExp(r'[A-Z]').hasMatch(konfirmasi)) {
+      alert(context, "Ulangi kata sandi harus mengandung minimal 1 huruf kapital !", "Gagal mendaftar!", Icons.error, Colors.red);
+      return;
+    }
+    if (!RegExp(r'[a-z]').hasMatch(konfirmasi)) {
+      alert(context, "Ulangi kata sandi harus mengandung minimal 1 huruf kecil !", "Gagal mendaftar!", Icons.error, Colors.red);
+      return;
+    }
+    if (!RegExp(r'\d').hasMatch(konfirmasi)) {
+      alert(context, "Ulangi kata sandi harus mengandung minimal 1 angka !", "Gagal mendaftar!", Icons.error, Colors.red);
+      return;
+    }
+    if (!RegExp(r'[!@#\$%^&*]').hasMatch(konfirmasi)) {
+      alert(context, "Ulangi kata sandi harus mengandung minimal 1 karakter unik !", "Gagal mendaftar!", Icons.error, Colors.red);
+      return;
+    }
+    if (kata_sandi != konfirmasi) {
+      alert(context, "Kata sandi dan Ulangi kata sandi tidak sesuai !", "gagal mendaftar!", Icons.error,Colors.red);
+      return;
+    }
+    try {
+      Map<String, dynamic> response = await apiService.register(email, nama_lengkap, kata_sandi, konfirmasi);
+      if (response['status'] == 'success') {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => LoginScreen(),
+          ),
+        );
+        alert(context, "Silahkan Masuk","Berhasil Mendaftar!",Icons.check, Colors.green);
+      } else {
+        alert(context, "${response['message']}", "gagal mendaftar!", Icons.error,Colors.red);
       }
-    } else {
-      alert(context, "Sandi dan konfirmasi sandi tidak sesuai.", "gagal mendaftar!", Icons.error,Colors.red);
+    } catch (e) {
+      print('Error during registration: $e');
     }
   }
 
@@ -126,7 +172,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text(
-                        'Nama',
+                        'Email',
                         style: TextStyle(
                           fontFamily: 'Poppins_SemiBold',
                           color: Color.fromRGBO(30, 84, 135, 1),
@@ -135,9 +181,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                       const SizedBox(height: 5.0),
                       TextField(
-                        controller: namaController,
+                        controller: emailController,
                         decoration: const InputDecoration(
-                          labelText: 'Nama',
+                          labelText: 'Email',
                           labelStyle: TextStyle(
                             color: Color.fromRGBO(30, 84, 135, 1),
                           ),
@@ -172,7 +218,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text(
-                        'No Telepon',
+                        'Nama Lengkap',
                         style: TextStyle(
                           fontFamily: 'Poppins_SemiBold',
                           color: Color.fromRGBO(30, 84, 135, 1),
@@ -181,9 +227,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                       const SizedBox(height: 5.0),
                       TextField(
-                        controller: nomorController,
+                        controller: namaController,
                         decoration: const InputDecoration(
-                          labelText: 'No Telepon',
+                          labelText: 'Nama Lengkap',
                           labelStyle: TextStyle(
                             color: Color.fromRGBO(30, 84, 135, 1),
                           ),

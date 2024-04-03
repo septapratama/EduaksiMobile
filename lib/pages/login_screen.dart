@@ -1,5 +1,6 @@
 import 'package:eduapp/controller/controller_register.dart';
 import 'package:eduapp/utils/ApiService.dart';
+import 'package:eduapp/utils/Google_login.dart';
 import 'package:eduapp/utils/navigationbar.dart';
 import 'package:eduapp/utils/user_model_baru.dart';
 import 'package:eduapp/utils/user_provider.dart';
@@ -20,9 +21,10 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   bool _isPasswordVisible = false;
-  TextEditingController usernameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   final ApiService apiService = ApiService();
+  final GoogleLogin googlelogin = GoogleLogin();
 
   void alert(BuildContext context, String message) {
     showDialog(
@@ -41,42 +43,60 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void _login(BuildContext context) async {
-    String nama_lengkap = usernameController.text;
+    String email = emailController.text;
     String kata_sandi = passwordController.text;
-
     // Validasi form, misalnya memastikan semua field terisi dengan benar
-
+    if(email.isEmpty || email == null){
+      alert(context, "Email tidak boleh kosong !");
+      return;
+    }
+    if(kata_sandi.isEmpty || kata_sandi == null){
+      alert(context, "Kata sandi tidak boleh kosong !");
+      return;
+    }
     try {
-      Map<String, dynamic> response =
-          await apiService.loginBaru(nama_lengkap, kata_sandi);
-
-      print('Response from server: $response'); // Cetak respons ke konsol
-
+      Map<String, dynamic> response = await apiService.login(email, kata_sandi);
+      // print(response);
+      // print(response['data']);
       if (response['status'] == 'success') {
-        print('Login successful');
-        // Tambahkan logika navigasi atau tindakan setelah login berhasil
-
+        // Set the user data using the provider
+        // context.read()<UserProvider>().setUserBaru(
+        //       UserModelBaru(
+        //         email: email,
+        //         nama_lengkap: response['data']['nama_lengkap'] ?? '',
+        //         no_hp: response['data']['no_hp'] ?? '',
+        //         foto_profil: response['data']['foto_profil'] ?? '',
+        //       ),
+        //     );
+        Navigator.pushReplacement(context, pageMove.movepage(BottomNav()));
+      } else {
+        alert(context, response['message']);
+      }
+    } catch (e) {
+      print('Error saat login: $e');
+    }
+  }
+  void _loginGoogle(BuildContext context) async {
+    try{
+    final response = await googlelogin.loginGoogle();
+      if (response['status'] == 'success') {
         // Set the user data using the provider
         context.read()<UserProvider>().setUserBaru(
               UserModelBaru(
-                nama_lengkap: response['nama_lengkap'] ?? '',
-                no_hp: response['email'] ?? '',
-                email: response['no_hp'] ?? '',
-                foto_profil: response['foto_profil'] ?? '',
+                nama_lengkap: response['data']['nama_lengkap'] ?? '',
+                no_hp: response['data']['email'] ?? '',
+                email: response['data']['no_hp'] ?? '',
+                foto_profil: response['data']['foto_profil'] ?? '',
               ),
             );
 
         Navigator.pushReplacement(context, pageMove.movepage(BottomNav()));
-      } else if (response['status'] == 'errorValid') {
-        alert(context, "username atau sandi tidak valid");
       } else {
-        print('Login failed: ${response['message']}');
-
+        // print('Login failed: ${response['message']}');
         alert(context, "terjadi kesalahan pada jaringan");
       }
-    } catch (e) {
-      print('Error during login: $e');
-      // Tambahkan logika penanganan jika terjadi error
+    }catch(e){
+      throw(e);
     }
   }
 
@@ -124,7 +144,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Username',
+                      'Email',
                       style: TextStyle(
                         fontFamily: 'Poppins_SemiBold',
                         color: Color.fromRGBO(30, 84, 135, 1),
@@ -133,9 +153,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     SizedBox(height: 5.0),
                     TextField(
-                      controller: usernameController,
+                      controller: emailController,
                       decoration: InputDecoration(
-                        labelText: 'Username',
+                        labelText: 'Email',
                         labelStyle: TextStyle(
                             color: Color.fromRGBO(30, 84, 135, 1),
                             fontWeight: FontWeight.w400),
@@ -271,7 +291,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       horizontal: 20.0), // Adjust horizontal padding as needed
                   child: ElevatedButton(
                     onPressed: () {
-                      // Add your onPressed logic here
                       _login(context);
                     },
                     style: ElevatedButton.styleFrom(
@@ -307,7 +326,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Center(
                     child: TextButton(
                       onPressed: () {
-                        // Add your logic for "Masuk dengan Google" here
+                        _loginGoogle(context);
                       },
                       style: ButtonStyle(
                         padding: MaterialStateProperty.all<EdgeInsetsGeometry>(

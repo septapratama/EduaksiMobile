@@ -1,21 +1,90 @@
-import 'dart:convert';
 import 'dart:io';
+import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 
 class ApiService {
-  // final String baseUrl = "http://172.17.202.137:8080/coba/mobile";
-  // final String imgUrl = "http://172.17.202.137:8080/coba/mobile/images/";
-  // final String fotoProfilUrl = "http://172.17.202.137:8080/coba/mobile/images/profil/";
-
-  final String baseUrl = "http://192.168.0.101:80/eduaksi/mobile";
-  final String imgUrl = "http://192.168.0.101:80/eduaksi/mobile/images/";
+  final String baseUrl = "http://192.168.0.101:8000/api/mobile";
+  final String imgUrl = "http://192.168.0.101:8000/img/";
   final String fotoProfilUrl =
       "http://192.168.0.101:80/eduaksi/mobile/images/profil/";
-
-  // ApiService(this.baseUrl);
-
   Future<Map<String, dynamic>> register(
+      String email, String nama_lengkap, String kata_sandi, String kata_sandi_ulang) async {
+    try {
+      final response = await http.post(
+        Uri.parse('$baseUrl/users/register'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{
+          'email': email,
+          'nama_lengkap': nama_lengkap,
+          'password': kata_sandi,
+          'password_confirm': kata_sandi_ulang,
+        }),
+      );
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> responseData = json.decode(response.body);
+        return responseData;
+      } else {
+        final Map<String, dynamic> responseData = json.decode(response.body);
+        return responseData;
+      }
+    } catch (e) {
+      throw Exception('Error during registration: $e');
+    }
+  }
+  //Login
+  Future<Map<String, dynamic>> login(
+      String email, String kata_sandi) async {
+    try {
+      final response = await http.post(
+        Uri.parse('$baseUrl/users/login'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{
+          'email': email,
+          'password': kata_sandi,
+        }),
+      );
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> responseData = json.decode(response.body);
+        return responseData;
+      } else {
+        final Map<String, dynamic> responseData = json.decode(response.body);
+        return responseData;
+      }
+    } catch (e) {
+      throw Exception('Error saat login: $e');
+    }
+  }
+  //Send data google login
+  Future<Map<String, dynamic>> loginGoogle(
+      String email) async {
+    try {
+      final response = await http.post(
+        Uri.parse('$baseUrl/users/login/google'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{
+          'email': email,
+        }),
+      );
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> responseData = json.decode(response.body);
+        return responseData;
+      } else {
+        final Map<String, dynamic> responseData = json.decode(response.body);
+        return responseData;
+      }
+    } catch (e) {
+      throw Exception('Error saat login: $e');
+    }
+  }
+  //lupa kata sandi
+  Future<Map<String, dynamic>> lupaPassword(
       String nama_lengkap, String kata_sandi, String no_hp) async {
     try {
       final response = await http.post(
@@ -34,44 +103,63 @@ class ApiService {
         final Map<String, dynamic> responseData = json.decode(response.body);
         return responseData;
       } else {
-        throw Exception(
-            'Registration failed. Server error: ${response.statusCode}');
+        final Map<String, dynamic> responseData = json.decode(response.body);
+        return responseData;
       }
     } catch (e) {
-      throw Exception('Error during registration: $e');
+      throw Exception('Error saat lupa password : $e');
     }
   }
-  //Login
-Future<Map<String, dynamic>> loginBaru(
-    String nama_lengkap, String kata_sandi) async {
-  try {
-    final response = await http.post(
-      Uri.parse('$baseUrl/login.php'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(<String, String>{
-        'nama_lengkap': nama_lengkap,
-        'kata_sandi': kata_sandi,
-      }),
-    );
-
-    print("Response Body: ${response.body}"); // Print response body
-
-    if (response.statusCode == 200) {
-      final Map<String, dynamic> responseData = json.decode(response.body);
-      print("Decoded JSON Data: $responseData"); // Print decoded JSON data
-      return responseData;
-    } else {
-      throw Exception(
-          'Login failed. Server error: ${response.statusCode}');
+  //send otp
+  Future<Map<String, dynamic>> sendOtp(
+      String nama_lengkap, String kata_sandi, String no_hp) async {
+    try {
+      final response = await http.post(
+        Uri.parse('$baseUrl/register.php'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{
+          'nama_lengkap': nama_lengkap,
+          'kata_sandi': kata_sandi,
+          'no_hp': no_hp,
+        }),
+      );
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> responseData = json.decode(response.body);
+        return responseData;
+      } else {
+        final Map<String, dynamic> responseData = json.decode(response.body);
+        return responseData;
+      }
+    } catch (e) {
+      throw Exception('Error saat kirim otp : $e');
     }
-  } catch (e) {
-    print("Error during login: $e"); // Print error message
-    throw Exception('Error during login: $e');
   }
-}
-
-
-
+  //kirim ulang kode otp
+  Future<Map<String, dynamic>> resendCodeOtp(
+      String email, String kata_sandi, String no_hp) async {
+    try {
+      final response = await http.post(
+        Uri.parse('$baseUrl/users/'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{
+          'email': email,
+          'kata_sandi': kata_sandi,
+          'no_hp': no_hp,
+        }),
+      );
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> responseData = json.decode(response.body);
+        return responseData;
+      } else {
+        final Map<String, dynamic> responseData = json.decode(response.body);
+        return responseData;
+      }
+    } catch (e) {
+      throw Exception('Error saat kirim ulang otp : $e');
+    }
+  }
 }
