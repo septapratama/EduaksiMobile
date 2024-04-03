@@ -41,5 +41,37 @@ class ApiService {
       throw Exception('Error during registration: $e');
     }
   }
+  //Login
+Future<Map<String, dynamic>> loginBaru(
+    String nama_lengkap, String kata_sandi) async {
+  try {
+    final response = await http.post(
+      Uri.parse('$baseUrl/login.php'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'nama_lengkap': nama_lengkap,
+        'kata_sandi': kata_sandi,
+      }),
+    );
+
+    print("Response Body: ${response.body}"); // Print response body
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> responseData = json.decode(response.body);
+      print("Decoded JSON Data: $responseData"); // Print decoded JSON data
+      return responseData;
+    } else {
+      throw Exception(
+          'Login failed. Server error: ${response.statusCode}');
+    }
+  } catch (e) {
+    print("Error during login: $e"); // Print error message
+    throw Exception('Error during login: $e');
+  }
+}
+
+
 
 }

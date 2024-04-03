@@ -1,5 +1,8 @@
 import 'package:eduapp/controller/controller_register.dart';
+import 'package:eduapp/utils/ApiService.dart';
 import 'package:eduapp/utils/navigationbar.dart';
+import 'package:eduapp/utils/user_model_baru.dart';
+import 'package:eduapp/utils/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:eduapp/component/custom_button.dart';
 import 'package:eduapp/component/custom_colors.dart';
@@ -8,6 +11,8 @@ import 'package:eduapp/component/custom_text.dart';
 import 'package:eduapp/pages/pages_lupakatasandi.dart';
 import 'package:eduapp/pages/register_screen.dart';
 import 'package:eduapp/utils/navigationbar.dart';
+import 'package:provider/provider.dart';
+
 class LoginScreen extends StatefulWidget {
   @override
   _LoginScreenState createState() => _LoginScreenState();
@@ -15,6 +20,65 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   bool _isPasswordVisible = false;
+  TextEditingController usernameController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  final ApiService apiService = ApiService();
+
+  void alert(BuildContext context, String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          elevation: 0,
+          backgroundColor: Colors.transparent,
+          child: contentBox(context, message),
+        );
+      },
+    );
+  }
+
+  void _login(BuildContext context) async {
+    String nama_lengkap = usernameController.text;
+    String kata_sandi = passwordController.text;
+
+    // Validasi form, misalnya memastikan semua field terisi dengan benar
+
+    try {
+      Map<String, dynamic> response =
+          await apiService.loginBaru(nama_lengkap, kata_sandi);
+
+      print('Response from server: $response'); // Cetak respons ke konsol
+
+      if (response['status'] == 'success') {
+        print('Login successful');
+        // Tambahkan logika navigasi atau tindakan setelah login berhasil
+
+        // Set the user data using the provider
+        context.read()<UserProvider>().setUserBaru(
+              UserModelBaru(
+                nama_lengkap: response['nama_lengkap'] ?? '',
+                no_hp: response['email'] ?? '',
+                email: response['no_hp'] ?? '',
+                foto_profil: response['foto_profil'] ?? '',
+              ),
+            );
+
+        Navigator.pushReplacement(context, pageMove.movepage(BottomNav()));
+      } else if (response['status'] == 'errorValid') {
+        alert(context, "username atau sandi tidak valid");
+      } else {
+        print('Login failed: ${response['message']}');
+
+        alert(context, "terjadi kesalahan pada jaringan");
+      }
+    } catch (e) {
+      print('Error during login: $e');
+      // Tambahkan logika penanganan jika terjadi error
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +120,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 const SizedBox(height: 60.0),
-                const Column(
+                Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
@@ -69,6 +133,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     SizedBox(height: 5.0),
                     TextField(
+                      controller: usernameController,
                       decoration: InputDecoration(
                         labelText: 'Username',
                         labelStyle: TextStyle(
@@ -121,6 +186,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     const SizedBox(height: 5.0),
                     TextField(
+                      controller: passwordController,
                       obscureText: !_isPasswordVisible,
                       decoration: InputDecoration(
                         labelText: 'Kata Sandi',
@@ -206,8 +272,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: ElevatedButton(
                     onPressed: () {
                       // Add your onPressed logic here
-                      Navigator.pushReplacement(context,
-                                    pageMove.movepage(BottomNav()));
+                      _login(context);
                     },
                     style: ElevatedButton.styleFrom(
                       padding: EdgeInsets.zero,
@@ -299,7 +364,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       } else {
                         fontSize = 16.0;
                       }
-                      
+
                       return Container(
                         width: MediaQuery.of(context).size.width *
                             0.8, // Adjust the width as needed
@@ -350,4 +415,79 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
   }
+}
+
+Widget contentBox(BuildContext context, String message) {
+  return Stack(
+    children: <Widget>[
+      Container(
+        padding: EdgeInsets.only(
+          left: 20,
+          top: 45,
+          right: 20,
+          bottom: 20,
+        ),
+        margin: EdgeInsets.only(top: 45),
+        decoration: BoxDecoration(
+          shape: BoxShape.rectangle,
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black,
+              offset: Offset(0, 10),
+              blurRadius: 10,
+            ),
+          ],
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Text(
+              'Gagal Login!',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            SizedBox(height: 15),
+            Text(
+              message,
+              style: TextStyle(
+                fontSize: 18,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(height: 22),
+            Align(
+              alignment: Alignment.bottomRight,
+              child: TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text(
+                  'OKE',
+                  style: TextStyle(color: Color.fromRGBO(203, 164, 102, 1)),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+      Positioned(
+        top: 0,
+        left: 20,
+        right: 20,
+        child: CircleAvatar(
+          backgroundColor: Colors.redAccent,
+          radius: 30,
+          child: Icon(
+            Icons.error_outline,
+            color: Colors.white,
+            size: 40,
+          ),
+        ),
+      ),
+    ],
+  );
 }
