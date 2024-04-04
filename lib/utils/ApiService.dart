@@ -236,6 +236,7 @@ class ApiService {
       throw Exception('Error saat get digital literasi : $e');
     }
   }
+
   //get digital literasi dengan usia
   Future<Map<String, dynamic>> getDisiUsia(String usia) async {
     try {
@@ -297,6 +298,7 @@ class ApiService {
       throw Exception('Error saat get emosi mental : $e');
     }
   }
+
   //get emosi mental dengan usia
   Future<Map<String, dynamic>> getEmotalUsia(String usia) async {
     try {
@@ -358,6 +360,7 @@ class ApiService {
       throw Exception('Error saat get nutrisi : $e');
     }
   }
+
   //get nutrisi dengan usia
   Future<Map<String, dynamic>> getNutrisiUsia(String usia) async {
     try {
@@ -419,6 +422,7 @@ class ApiService {
       throw Exception('Error saat get pengasuhan : $e');
     }
   }
+
   //get pengasuhan dengan usia
   Future<Map<String, dynamic>> getPengasuhanUsia(String usia) async {
     try {
@@ -462,18 +466,68 @@ class ApiService {
       throw Exception('Error saat get detail pengasuhan : $e');
     }
   }
+  //buat pencatatan
+  Future<Map<String, dynamic>> sendCreatePencatatan(
+      String nama_lengkap, umur,) async {
+    try {
+      final response = await http.post(
+        Uri.parse('$baseUrl/users/login'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{
+          'nama_lengkap': nama_lengkap,
+        }),
+      );
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> responseData = json.decode(response.body);
+        return responseData;
+      } else {
+        final Map<String, dynamic> responseData = json.decode(response.body);
+        return responseData;
+      }
+    } catch (e) {
+      throw Exception('Error saat kirim tambah pencatatan : $e');
+    }
+  }
+
+  //update pencatatan
+  Future<Map<String, dynamic>> sendUpdatePencatatan(
+      String nama_lengkap, umur) async {
+    try {
+      final response = await http.put(
+        Uri.parse('$baseUrl/users/login'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{
+          'nama_lengkap': nama_lengkap,
+        }),
+      );
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> responseData = json.decode(response.body);
+        return responseData;
+      } else {
+        final Map<String, dynamic> responseData = json.decode(response.body);
+        return responseData;
+      }
+    } catch (e) {
+      throw Exception('Error saat kirim update pencatatan : $e');
+    }
+  }
 
   //get konsultasi
-  Future<List<Map<String, dynamic>>> getKonsultasi() async {
+  Future<Map<String, dynamic>> getKonsultasi() async {
     try {
       final response = await http.get(Uri.parse('$baseUrl/konsultasi'));
       if (response.statusCode == 200) {
-        final List<Map<String, dynamic>> responseData =
-            List<Map<String, dynamic>>.from(json.decode(response.body));
+        final Map<String, dynamic> responseData = json.decode(response.body);
         return responseData;
+        // List<dynamic> responseData = jsonResponse['data'];
+        // List<Map<String, dynamic>> parsedData = responseData.cast<Map<String, dynamic>>();
       } else {
-        throw Exception(
-            'Failed to get products. Server error: ${response.statusCode}');
+        final Map<String, dynamic> responseData = json.decode(response.body);
+        return responseData;
       }
     } catch (e) {
       throw Exception('Error getting products: $e');
