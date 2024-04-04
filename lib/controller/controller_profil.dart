@@ -10,4 +10,17 @@ class ImagePickerHelper {
     }
     return null;
   }
+  String evaluatePasswordStrength(String password) {
+    if (password.length >= 8 &&
+        password.contains(RegExp(r'[0-9]')) &&
+        password.contains(RegExp(r'[a-zA-Z]'))) {
+      return 'Kuat';
+    } else if (password.length >= 8 &&
+        (password.contains(RegExp(r'[0-9]')) ||
+            password.contains(RegExp(r'[a-zA-Z]')))) {
+      return 'Sedang';
+    } else {
+      return 'Rendah';
+    }
+  }
 }

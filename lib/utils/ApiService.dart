@@ -168,7 +168,7 @@ class ApiService {
       String email, String kata_sandi, String no_hp) async {
     try {
       final response = await http.post(
-        Uri.parse('$baseUrl/users/'),
+        Uri.parse('$baseUrl/users/profile'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -194,7 +194,7 @@ class ApiService {
       String email, String nama_lengkap, String no_hp, String kata_sandi) async {
     try {
       final response = await http.post(
-        Uri.parse('$baseUrl/users/'),
+        Uri.parse('$baseUrl/users/update'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -204,6 +204,40 @@ class ApiService {
           'no_hp': no_hp,
           'kata_sandi': kata_sandi,
         }),
+      );
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> responseData = json.decode(response.body);
+        return responseData;
+      } else {
+        final Map<String, dynamic> responseData = json.decode(response.body);
+        return responseData;
+      }
+    } catch (e) {
+      throw Exception('Error saat update profile : $e');
+    }
+  }
+  Future<List<Map<String, dynamic>>> getKonsultasi() async {
+    try {
+      final response = await http.get(Uri.parse('$baseUrl/'));
+      if (response.statusCode == 200) {
+        final List<Map<String, dynamic>> responseData =
+            List<Map<String, dynamic>>.from(json.decode(response.body));
+        return responseData;
+      } else {
+        throw Exception(
+            'Failed to get products. Server error: ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Error getting products: $e');
+    }
+  }
+  //get konsultasi detail
+  Future<Map<String, dynamic>> getKonsultasiDetail(String idKonsultasi) async {
+    try {
+      final response = await http.get(
+        Uri.parse('$baseUrl/konsultasi/$idKonsultasi'),
+        headers: <String, String>{
+        },
       );
       if (response.statusCode == 200) {
         final Map<String, dynamic> responseData = json.decode(response.body);
