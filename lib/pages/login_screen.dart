@@ -43,6 +43,8 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void _login(BuildContext context) async {
+    Navigator.pushReplacement(context, pageMove.movepage(BottomNav()));
+    return;
     String email = emailController.text;
     String kata_sandi = passwordController.text;
     // Validasi form, misalnya memastikan semua field terisi dengan benar
