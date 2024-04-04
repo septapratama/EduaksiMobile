@@ -233,7 +233,7 @@ class ApiService {
         return responseData;
       }
     } catch (e) {
-      throw Exception('Error getting products: $e');
+      throw Exception('Error saat get digital literasi : $e');
     }
   }
   //get digital literasi dengan usia
@@ -256,7 +256,7 @@ class ApiService {
         return responseData;
       }
     } catch (e) {
-      throw Exception('Error getting products: $e');
+      throw Exception('Error saat get digital literasi dari usia : $e');
     }
   }
 
@@ -276,7 +276,68 @@ class ApiService {
         return responseData;
       }
     } catch (e) {
-      throw Exception('Error saat update profile : $e');
+      throw Exception('Error saat get detail digital literasi : $e');
+    }
+  }
+
+  //get emosi mental
+  Future<Map<String, dynamic>> getEmotal() async {
+    try {
+      final response = await http.get(Uri.parse('$baseUrl/emotal'));
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> responseData = json.decode(response.body);
+        return responseData;
+        // List<dynamic> responseData = jsonResponse['data'];
+        // List<Map<String, dynamic>> parsedData = responseData.cast<Map<String, dynamic>>();
+      } else {
+        final Map<String, dynamic> responseData = json.decode(response.body);
+        return responseData;
+      }
+    } catch (e) {
+      throw Exception('Error saat get emosi mental : $e');
+    }
+  }
+  //get emosi mental dengan usia
+  Future<Map<String, dynamic>> getEmotalUsia(String usia) async {
+    try {
+      List<String> parts = usia.split('-');
+      if (parts.length == 2) {
+        usia = parts.join('-');
+      } else {
+        usia = usia.trim();
+      }
+      final response = await http.get(Uri.parse('$baseUrl/emotal/usia/$usia'));
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> responseData = json.decode(response.body);
+        return responseData;
+        // List<dynamic> responseData = jsonResponse['data'];
+        // List<Map<String, dynamic>> parsedData = responseData.cast<Map<String, dynamic>>();
+      } else {
+        final Map<String, dynamic> responseData = json.decode(response.body);
+        return responseData;
+      }
+    } catch (e) {
+      throw Exception('Error saat get emosi mental dari usia : $e');
+    }
+  }
+
+  //get emosi mental detail
+  Future<Map<String, dynamic>> getEmotalDetail(String idDisi) async {
+    try {
+      final response = await http.get(
+        Uri.parse('$baseUrl/emotal/$idDisi'),
+        headers: <String, String>{
+        },
+      );
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> responseData = json.decode(response.body);
+        return responseData;
+      } else {
+        final Map<String, dynamic> responseData = json.decode(response.body);
+        return responseData;
+      }
+    } catch (e) {
+      throw Exception('Error saat get detail emosi mental : $e');
     }
   }
 
