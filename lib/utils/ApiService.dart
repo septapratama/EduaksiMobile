@@ -402,6 +402,67 @@ class ApiService {
     }
   }
 
+  //get pengasuhan
+  Future<Map<String, dynamic>> getPengasuhan() async {
+    try {
+      final response = await http.get(Uri.parse('$baseUrl/pengasuhan'));
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> responseData = json.decode(response.body);
+        return responseData;
+        // List<dynamic> responseData = jsonResponse['data'];
+        // List<Map<String, dynamic>> parsedData = responseData.cast<Map<String, dynamic>>();
+      } else {
+        final Map<String, dynamic> responseData = json.decode(response.body);
+        return responseData;
+      }
+    } catch (e) {
+      throw Exception('Error saat get pengasuhan : $e');
+    }
+  }
+  //get pengasuhan dengan usia
+  Future<Map<String, dynamic>> getPengasuhanUsia(String usia) async {
+    try {
+      List<String> parts = usia.split('-');
+      if (parts.length == 2) {
+        usia = parts.join('-');
+      } else {
+        usia = usia.trim();
+      }
+      final response = await http.get(Uri.parse('$baseUrl/pengasuhan/usia/$usia'));
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> responseData = json.decode(response.body);
+        return responseData;
+        // List<dynamic> responseData = jsonResponse['data'];
+        // List<Map<String, dynamic>> parsedData = responseData.cast<Map<String, dynamic>>();
+      } else {
+        final Map<String, dynamic> responseData = json.decode(response.body);
+        return responseData;
+      }
+    } catch (e) {
+      throw Exception('Error saat get pengasuhan dari usia : $e');
+    }
+  }
+
+  //get pengasuhan detail
+  Future<Map<String, dynamic>> getPengasuhanDetail(String idDisi) async {
+    try {
+      final response = await http.get(
+        Uri.parse('$baseUrl/pengasuhan/$idDisi'),
+        headers: <String, String>{
+        },
+      );
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> responseData = json.decode(response.body);
+        return responseData;
+      } else {
+        final Map<String, dynamic> responseData = json.decode(response.body);
+        return responseData;
+      }
+    } catch (e) {
+      throw Exception('Error saat get detail pengasuhan : $e');
+    }
+  }
+
   //get konsultasi
   Future<List<Map<String, dynamic>>> getKonsultasi() async {
     try {
