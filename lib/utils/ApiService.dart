@@ -1,10 +1,19 @@
 import 'dart:convert';
+import 'package:eduapp/utils/JwtProvider.dart';
 import 'package:http/http.dart' as http;
+
 class ApiService {
+  final JwtProvider jwtProvider = JwtProvider();
   final String baseUrl = "http://192.168.0.101:8000/api/mobile";
   // final String baseUrl = "https://eduaksi.amirzan.my.id/api/mobile";
   final String imgUrl = "http://192.168.0.101:8000/img/";
   final String fotoProfilUrl = "http://192.168.0.101:80/eduaksi/mobile/img/profile/users/";
+  Future<String> getAuthToken() async {
+    if(await jwtProvider.isExpired()){
+      return 'expired';
+    }
+    return jwtProvider.getJwt();
+  }
   Future<Map<String, dynamic>> register(
       String email, String nama_lengkap, String kata_sandi, String kata_sandi_ulang) async {
     try {
@@ -42,12 +51,14 @@ class ApiService {
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: jsonEncode(<String, String>{
+          // 'email': 'UserTesting1@gmail.com',
           'email': email,
           'password': kata_sandi,
         }),
       );
       if (response.statusCode == 200) {
         final Map<String, dynamic> responseData = json.decode(response.body);
+        await jwtProvider.setJwt(responseData['data']);
         return responseData;
       } else {
         final Map<String, dynamic> responseData = json.decode(response.body);
@@ -73,6 +84,7 @@ class ApiService {
       );
       if (response.statusCode == 200) {
         final Map<String, dynamic> responseData = json.decode(response.body);
+        await jwtProvider.setJwt(responseData['data']);
         return responseData;
       } else {
         final Map<String, dynamic> responseData = json.decode(response.body);
@@ -163,31 +175,30 @@ class ApiService {
       throw Exception('Error saat kirim ulang otp : $e');
     }
   }
-
-  //get profile
-  Future<Map<String, dynamic>> getProfile(
-      String email, String kata_sandi, String no_hp) async {
+  //logout
+  Future<Map<String, dynamic>> logout(
+      String email, int number) async {
     try {
       final response = await http.post(
-        Uri.parse('$baseUrl/users/profile'),
+        Uri.parse('$baseUrl/users/logout'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: jsonEncode(<String, String>{
           'email': email,
-          'kata_sandi': kata_sandi,
-          'no_hp': no_hp,
+          'number': number.toString(),
         }),
       );
       if (response.statusCode == 200) {
         final Map<String, dynamic> responseData = json.decode(response.body);
+        jwtProvider.logout();
         return responseData;
       } else {
         final Map<String, dynamic> responseData = json.decode(response.body);
         return responseData;
       }
     } catch (e) {
-      throw Exception('Error saat kirim ulang otp : $e');
+      throw Exception('Error saat login: $e');
     }
   }
 
@@ -195,9 +206,14 @@ class ApiService {
   Future<Map<String, dynamic>> updateProfile(
       String email, String nama_lengkap, String no_hp, String kata_sandi) async {
     try {
+      final auth = await getAuthToken();
+      if(auth == 'expired'){
+        return  {'message' : 'token expired'};
+      }
       final response = await http.post(
         Uri.parse('$baseUrl/users/update'),
         headers: <String, String>{
+          'Authorization': auth,
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: jsonEncode(<String, String>{
@@ -222,7 +238,13 @@ class ApiService {
   //get digital literasi
   Future<Map<String, dynamic>> getDisi() async {
     try {
-      final response = await http.get(Uri.parse('$baseUrl/disi'));
+      final auth = await getAuthToken();
+      if(auth == 'expired'){
+        return  {'message' : 'token expired'};
+      }
+      final response = await http.get(Uri.parse('$baseUrl/disi'), headers: <String, String>{
+        'Authorization': auth,
+      });
       if (response.statusCode == 200) {
         final Map<String, dynamic> responseData = json.decode(response.body);
         return responseData;
@@ -246,7 +268,13 @@ class ApiService {
       } else {
         usia = usia.trim();
       }
-      final response = await http.get(Uri.parse('$baseUrl/disi/usia/$usia'));
+      final auth = await getAuthToken();
+      if(auth == 'expired'){
+        return  {'message' : 'token expired'};
+      }
+      final response = await http.get(Uri.parse('$baseUrl/disi/usia/$usia'), headers: <String, String>{
+        'Authorization': auth,
+      });
       if (response.statusCode == 200) {
         final Map<String, dynamic> responseData = json.decode(response.body);
         return responseData;
@@ -264,10 +292,15 @@ class ApiService {
   //get digital literasi detail
   Future<Map<String, dynamic>> getDisiDetail(String idDisi) async {
     try {
+      final auth = await getAuthToken();
+      if(auth == 'expired'){
+        return  {'message' : 'token expired'};
+      }
       final response = await http.get(
-        Uri.parse('$baseUrl/disi/$idDisi'),
+        Uri.parse('$baseUrl/disi/$idDisi'), 
         headers: <String, String>{
-        },
+          'Authorization': auth,
+        }
       );
       if (response.statusCode == 200) {
         final Map<String, dynamic> responseData = json.decode(response.body);
@@ -284,7 +317,13 @@ class ApiService {
   //get emosi mental
   Future<Map<String, dynamic>> getEmotal() async {
     try {
-      final response = await http.get(Uri.parse('$baseUrl/emotal'));
+      final auth = await getAuthToken();
+      if(auth == 'expired'){
+        return  {'message' : 'token expired'};
+      }
+      final response = await http.get(Uri.parse('$baseUrl/emotal'), headers: <String, String>{
+        'Authorization': auth,
+      });
       if (response.statusCode == 200) {
         final Map<String, dynamic> responseData = json.decode(response.body);
         return responseData;
@@ -308,7 +347,13 @@ class ApiService {
       } else {
         usia = usia.trim();
       }
-      final response = await http.get(Uri.parse('$baseUrl/emotal/usia/$usia'));
+      final auth = await getAuthToken();
+      if(auth == 'expired'){
+        return  {'message' : 'token expired'};
+      }
+      final response = await http.get(Uri.parse('$baseUrl/emotal/usia/$usia'), headers: <String, String>{
+        'Authorization': auth,
+      });
       if (response.statusCode == 200) {
         final Map<String, dynamic> responseData = json.decode(response.body);
         return responseData;
@@ -326,10 +371,15 @@ class ApiService {
   //get emosi mental detail
   Future<Map<String, dynamic>> getEmotalDetail(String idDisi) async {
     try {
+      final auth = await getAuthToken();
+      if(auth == 'expired'){
+        return  {'message' : 'token expired'};
+      }
       final response = await http.get(
-        Uri.parse('$baseUrl/emotal/$idDisi'),
+        Uri.parse('$baseUrl/emotal/$idDisi'), 
         headers: <String, String>{
-        },
+          'Authorization': auth,
+        }
       );
       if (response.statusCode == 200) {
         final Map<String, dynamic> responseData = json.decode(response.body);
@@ -346,7 +396,13 @@ class ApiService {
   //get nutrisi
   Future<Map<String, dynamic>> getNutrisi() async {
     try {
-      final response = await http.get(Uri.parse('$baseUrl/nutrisi'));
+      final auth = await getAuthToken();
+      if(auth == 'expired'){
+        return  {'message' : 'token expired'};
+      }
+      final response = await http.get(Uri.parse('$baseUrl/nutrisi'), headers: <String, String>{
+        'Authorization': auth,
+      });
       if (response.statusCode == 200) {
         final Map<String, dynamic> responseData = json.decode(response.body);
         return responseData;
@@ -370,7 +426,13 @@ class ApiService {
       } else {
         usia = usia.trim();
       }
-      final response = await http.get(Uri.parse('$baseUrl/nutrisi/usia/$usia'));
+      final auth = await getAuthToken();
+      if(auth == 'expired'){
+        return  {'message' : 'token expired'};
+      }
+      final response = await http.get(Uri.parse('$baseUrl/nutrisi/usia/$usia'), headers: <String, String>{
+        'Authorization': auth,
+      });
       if (response.statusCode == 200) {
         final Map<String, dynamic> responseData = json.decode(response.body);
         return responseData;
@@ -388,10 +450,14 @@ class ApiService {
   //get nutrisi detail
   Future<Map<String, dynamic>> getNutrisiDetail(String idDisi) async {
     try {
+      final auth = await getAuthToken();
+      if(auth == 'expired'){
+        return  {'message' : 'token expired'};
+      }
       final response = await http.get(
-        Uri.parse('$baseUrl/nutrisi/$idDisi'),
-        headers: <String, String>{
-        },
+        Uri.parse('$baseUrl/nutrisi/$idDisi'), headers: <String, String>{
+          'Authorization': auth,
+        }
       );
       if (response.statusCode == 200) {
         final Map<String, dynamic> responseData = json.decode(response.body);
@@ -408,7 +474,13 @@ class ApiService {
   //get pengasuhan
   Future<Map<String, dynamic>> getPengasuhan() async {
     try {
-      final response = await http.get(Uri.parse('$baseUrl/pengasuhan'));
+      final auth = await getAuthToken();
+      if(auth == 'expired'){
+        return  {'message' : 'token expired'};
+      }
+      final response = await http.get(Uri.parse('$baseUrl/pengasuhan'), headers: <String, String>{
+        'Authorization': auth,
+      });
       if (response.statusCode == 200) {
         final Map<String, dynamic> responseData = json.decode(response.body);
         return responseData;
@@ -432,7 +504,13 @@ class ApiService {
       } else {
         usia = usia.trim();
       }
-      final response = await http.get(Uri.parse('$baseUrl/pengasuhan/usia/$usia'));
+      final auth = await getAuthToken();
+      if(auth == 'expired'){
+        return  {'message' : 'token expired'};
+      }
+      final response = await http.get(Uri.parse('$baseUrl/pengasuhan/usia/$usia'), headers: <String, String>{
+        'Authorization': auth,
+      });
       if (response.statusCode == 200) {
         final Map<String, dynamic> responseData = json.decode(response.body);
         return responseData;
@@ -450,10 +528,15 @@ class ApiService {
   //get pengasuhan detail
   Future<Map<String, dynamic>> getPengasuhanDetail(String idDisi) async {
     try {
+      final auth = await getAuthToken();
+      if(auth == 'expired'){
+        return  {'message' : 'token expired'};
+      }
       final response = await http.get(
         Uri.parse('$baseUrl/pengasuhan/$idDisi'),
         headers: <String, String>{
-        },
+          'Authorization': auth,
+        }
       );
       if (response.statusCode == 200) {
         final Map<String, dynamic> responseData = json.decode(response.body);
@@ -468,11 +551,16 @@ class ApiService {
   }
   //buat pencatatan
   Future<Map<String, dynamic>> sendCreatePencatatan(
-      String nama_lengkap, umur,) async {
+      String nama_lengkap, umur) async {
     try {
+      final auth = await getAuthToken();
+      if(auth == 'expired'){
+        return  {'message' : 'token expired'};
+      }
       final response = await http.post(
         Uri.parse('$baseUrl/users/login'),
         headers: <String, String>{
+          'Authorization': auth,
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: jsonEncode(<String, String>{
@@ -493,11 +581,16 @@ class ApiService {
 
   //update pencatatan
   Future<Map<String, dynamic>> sendUpdatePencatatan(
-      String nama_lengkap, umur) async {
+      String idPencatatan, String nama_lengkap) async {
     try {
+      final auth = await getAuthToken();
+      if(auth == 'expired'){
+        return  {'message' : 'token expired'};
+      }
       final response = await http.put(
-        Uri.parse('$baseUrl/users/login'),
+        Uri.parse('$baseUrl/users/pencatatan/update/$idPencatatan'),
         headers: <String, String>{
+          'Authorization': auth,
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: jsonEncode(<String, String>{
@@ -519,7 +612,13 @@ class ApiService {
   //get konsultasi
   Future<Map<String, dynamic>> getKonsultasi() async {
     try {
-      final response = await http.get(Uri.parse('$baseUrl/konsultasi'));
+      final auth = await getAuthToken();
+      if(auth == 'expired'){
+        return  {'message' : 'token expired'};
+      }
+      final response = await http.get(Uri.parse('$baseUrl/konsultasi'), headers: <String, String>{
+        'Authorization': auth,
+      });
       if (response.statusCode == 200) {
         final Map<String, dynamic> responseData = json.decode(response.body);
         return responseData;
@@ -537,10 +636,15 @@ class ApiService {
   //get konsultasi detail
   Future<Map<String, dynamic>> getKonsultasiDetail(String idKonsultasi) async {
     try {
+      final auth = await getAuthToken();
+      if(auth == 'expired'){
+        return  {'message' : 'token expired'};
+      }
       final response = await http.get(
-        Uri.parse('$baseUrl/konsultasi/$idKonsultasi'),
+        Uri.parse('$baseUrl/konsultasi/$idKonsultasi'), 
         headers: <String, String>{
-        },
+          'Authorization': auth,
+        }
       );
       if (response.statusCode == 200) {
         final Map<String, dynamic> responseData = json.decode(response.body);
