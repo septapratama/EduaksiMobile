@@ -1,7 +1,5 @@
-import 'package:eduapp/component/custom_colors.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
+import 'package:eduapp/component/custom_colors.dart';
 
 class Beranda extends StatelessWidget {
   Beranda({super.key});
@@ -10,26 +8,17 @@ class Beranda extends StatelessWidget {
     "Edukasi",
     "Aksi",
     "Konsultasi",
-    "Pengaturan",
-    "GTW",
-    "YWD",
   ];
   List<Color> menuColors = [
-    Color.fromARGB(255, 245, 241, 0),
-    const Color.fromARGB(255, 245, 2, 2),
-    const Color.fromARGB(255, 230, 49, 49),
-    Color.fromARGB(255, 25, 71, 196),
-    Color.fromARGB(255, 7, 221, 96),
-    Color.fromARGB(255, 199, 4, 140),
+    Color.fromRGBO(7, 210, 139, 1),
+    Color.fromARGB(255, 90, 49, 236),
+    Color.fromARGB(255, 5, 131, 227),
   ];
 
   List<Icon> menuIcons = [
     Icon(Icons.school, color: Colors.white, size: 30),
-    Icon(Icons.business_sharp, color: Colors.white, size: 30),
-    Icon(Icons.comment, color: Colors.white, size: 30),
-    Icon(Icons.settings, color: Colors.white, size: 30),
-    Icon(Icons.ramen_dining, color: Colors.white, size: 30),
-    Icon(Icons.child_care, color: Colors.white, size: 30),
+    Icon(Icons.camera, color: Colors.white, size: 30),
+    Icon(Icons.phone_in_talk, color: Colors.white, size: 30),
   ];
 
   List<Map<String, dynamic>> articles = [
@@ -43,13 +32,28 @@ class Beranda extends StatelessWidget {
       'date': '28 Maret 2024',
       'image': 'assets/images/artikel 2.png',
     },
+    {
+      'title': 'Judul Artikel 2',
+      'date': '28 Maret 2024',
+      'image': 'assets/images/artikel 2.png',
+    },
+    {
+      'title': 'Judul Artikel 2',
+      'date': '28 Maret 2024',
+      'image': 'assets/images/artikel 2.png',
+    },
+    {
+      'title': 'Judul Artikel 2',
+      'date': '28 Maret 2024',
+      'image': 'assets/images/artikel 2.png',
+    },
     // Add more articles as needed
   ];
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: ListView(
+    return SingleChildScrollView(
+      child: Column(
         children: [
           Container(
             padding: EdgeInsets.only(top: 15, left: 15, right: 15, bottom: 10),
@@ -172,27 +176,25 @@ class Beranda extends StatelessWidget {
                 ),
                 SizedBox(height: 10),
                 // Article List
-                ListView.builder(
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemCount: articles.length,
-                  itemBuilder: (context, index) {
+                Column(
+                  children: articles.map((article) {
                     return Card(
+                      color: customColor.cardcustom,
                       child: ListTile(
                         leading: Image.asset(
-                          articles[index]['image'],
+                          article['image'],
                           width: 100,
                           height: 100,
                           fit: BoxFit.cover,
                         ),
                         title: Text(
-                          articles[index]['title'],
+                          article['title'],
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontFamily: 'Poppins_Bold',
                               fontSize: 17),
                         ),
-                        subtitle: Text(articles[index]['date'],
+                        subtitle: Text(article['date'],
                             style: TextStyle(
                                 fontFamily: 'Poppins_SemiBold', fontSize: 12)),
                         onTap: () {
@@ -200,7 +202,7 @@ class Beranda extends StatelessWidget {
                         },
                       ),
                     );
-                  },
+                  }).toList(),
                 ),
               ],
             ),

@@ -13,7 +13,7 @@ class BottomNav extends StatefulWidget {
 
 class _BottomNavState extends State<BottomNav> {
   int currentIndex = 0;
-  final List<Widget> body = [Beranda(), EdukasiMenu(), ProfilPages()];
+  final List<Widget> body = [Beranda(), ProfilPages()];
 
   @override
   Widget build(BuildContext context) {
@@ -24,20 +24,15 @@ class _BottomNavState extends State<BottomNav> {
         currentIndex: currentIndex,
         items: [
           BottomNavigationBarItem(
-              icon: Icon(Icons.home, color: customColor.gray),
+              icon: Icon(Icons.home_rounded, color: customColor.gray),
               label: 'Home',
               activeIcon:
-                  Icon(Icons.home, color: customColor.bottomnavigationColors)),
+                  Icon(Icons.home_rounded, color: customColor.primaryColors)),
           BottomNavigationBarItem(
-              icon: Icon(Icons.child_care, color: customColor.gray),
-              label: 'Konseling',
-              activeIcon: Icon(Icons.child_care,
-                  color: customColor.bottomnavigationColors)),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.person, color: customColor.gray),
+              icon: Icon(Icons.person_2_rounded, color: customColor.gray),
               label: 'Profil',
-              activeIcon: Icon(Icons.person,
-                  color: customColor.bottomnavigationColors)),
+              activeIcon: Icon(Icons.person_2_rounded,
+                  color: customColor.primaryColors)),
         ],
       ),
     );

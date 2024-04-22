@@ -142,7 +142,7 @@ class _ProfilPagesState extends State<ProfilPages> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
-                        'Daftar',
+                        'Simpan',
                         style: TextStyle(
                           fontFamily: 'Poppins_SemiBold',
                           fontWeight: FontWeight.w600,
