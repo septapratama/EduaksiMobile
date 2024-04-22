@@ -1,5 +1,6 @@
 import 'package:eduapp/component/custom_appbar.dart';
 import 'package:eduapp/component/custom_colors.dart';
+import 'package:eduapp/utils/navigationbar.dart';
 import 'package:flutter/material.dart';
 import 'package:eduapp/component/custom_appbar_withoutarrowback.dart';
 
@@ -8,22 +9,22 @@ class EdukasiMenu extends StatelessWidget {
 
   List<Map<String, dynamic>> articles = [
     {
-      'title': 'Judul Artikel 1',
+      'title': 'Emotal',
       'date': '29 Maret 2024',
       'image': 'assets/images/artikel 1.png',
     },
     {
-      'title': 'Judul Artikel 2',
+      'title': 'Diisi',
       'date': '28 Maret 2024',
       'image': 'assets/images/image 36.png',
     },
     {
-      'title': 'Judul Artikel 2',
+      'title': 'Apa',
       'date': '28 Maret 2024',
       'image': 'assets/images/image 34.png',
     },
     {
-      'title': 'Judul Artikel 2',
+      'title': 'Gitu',
       'date': '28 Maret 2024',
       'image': 'assets/images/image 35.png',
     },
@@ -35,6 +36,9 @@ class EdukasiMenu extends StatelessWidget {
     return Scaffold(
       appBar: CustomAppBar(
         title: 'Edukasi',
+        buttonOnPressed: (){
+          Navigator.push(context, MaterialPageRoute(builder: (context) => const BottomNav()));
+        },
       ),
       body: SafeArea(
         child: Column(
@@ -53,9 +57,9 @@ class EdukasiMenu extends StatelessWidget {
                       color: customColor.primaryColors,
                     ),
                   ),
-                  SizedBox(height: 10),
-                  Text(
-                    'Pemahaman untuk kebutuhan anak sedari dini',
+                  const SizedBox(height: 10),
+                  const Text(
+                    'Pemahaman untuk kebutuhan anak\nsedari dini',
                     style: TextStyle(
                       fontFamily: 'Poppins_Regular',
                       fontSize: 15,
@@ -73,11 +77,11 @@ class EdukasiMenu extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(
                         vertical: 4.0, horizontal: 20),
                     child: Card(
-                      color: Colors.grey[200],
+                        color: customColor.cardcustom,
                       child: Row(
                         children: [
                           ClipRRect(
-                            borderRadius: BorderRadius.only(
+                            borderRadius: const BorderRadius.only(
                               topLeft: Radius.circular(4.0),
                               bottomLeft: Radius.circular(4.0),
                             ),
@@ -92,7 +96,7 @@ class EdukasiMenu extends StatelessWidget {
                             child: ListTile(
                               title: Text(
                                 articles[index]['title'],
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontFamily: 'Poppins_Bold',
                                   fontSize: 17,
@@ -100,7 +104,7 @@ class EdukasiMenu extends StatelessWidget {
                               ),
                               subtitle: Text(
                                 articles[index]['date'],
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontFamily: 'Poppins_SemiBold',
                                   fontSize: 12,
                                 ),

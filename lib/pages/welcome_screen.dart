@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
 class WelcomeScreen extends StatefulWidget {
+  const WelcomeScreen({super.key});
+
   @override
   _WelcomeScreenState createState() => _WelcomeScreenState();
 }
@@ -48,7 +50,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     context, pageMove.movepage(LoginScreen()));
               },
               child: Padding(
-                padding: EdgeInsets.only(top: 20.0, right: 15.0),
+                padding: const EdgeInsets.only(top: 20.0, right: 15.0),
                 child: Align(
                   alignment: Alignment.topRight,
                   child: Text('Skip',

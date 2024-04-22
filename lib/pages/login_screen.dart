@@ -15,6 +15,8 @@ import 'package:eduapp/utils/navigationbar.dart';
 import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
+
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
@@ -44,18 +46,18 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void _login(BuildContext context) async {
     String email = emailController.text;
-    String kata_sandi = passwordController.text;
+    String kataSandi = passwordController.text;
     // Validasi form, misalnya memastikan semua field terisi dengan benar
-    if (email.isEmpty || email == null) {
+    if (email.isEmpty) {
       alert(context, "Email tidak boleh kosong !");
       return;
     }
-    if (kata_sandi.isEmpty || kata_sandi == null) {
+    if (kataSandi.isEmpty || kataSandi == null) {
       alert(context, "Kata sandi tidak boleh kosong !");
       return;
     }
     try {
-      Map<String, dynamic> response = await apiService.login(email, kata_sandi);
+      Map<String, dynamic> response = await apiService.login(email, kataSandi);
       // print(response);
       // print(response['data']);
       if (response['status'] == 'success') {
@@ -99,7 +101,7 @@ class _LoginScreenState extends State<LoginScreen> {
         alert(context, "terjadi kesalahan pada jaringan");
       }
     } catch (e) {
-      throw (e);
+      rethrow;
     }
   }
 
@@ -338,16 +340,16 @@ class _LoginScreenState extends State<LoginScreen> {
                         _loginGoogle(context);
                       },
                       style: ButtonStyle(
-                        padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                        padding: WidgetStateProperty.all<EdgeInsetsGeometry>(
                           const EdgeInsets.symmetric(vertical: 12.0),
                         ),
-                        shape: MaterialStateProperty.all<OutlinedBorder>(
+                        shape: WidgetStateProperty.all<OutlinedBorder>(
                           RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8.0),
                             side: const BorderSide(color: Colors.transparent),
                           ),
                         ),
-                        backgroundColor: MaterialStateProperty.all<Color>(
+                        backgroundColor: WidgetStateProperty.all<Color>(
                           Colors.transparent,
                         ),
                       ),
@@ -393,7 +395,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         fontSize = 16.0;
                       }
 
-                      return Container(
+                      return SizedBox(
                         width: MediaQuery.of(context).size.width *
                             0.8, // Adjust the width as needed
                         child: Row(
@@ -460,8 +462,8 @@ Widget contentBox(BuildContext context, String message) {
           shape: BoxShape.rectangle,
           color: Colors.white,
           borderRadius: BorderRadius.circular(10),
-          boxShadow: [
-            const BoxShadow(
+          boxShadow: const [
+            BoxShadow(
               color: Colors.black,
               offset: Offset(0, 10),
               blurRadius: 10,

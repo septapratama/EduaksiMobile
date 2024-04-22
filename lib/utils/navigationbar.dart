@@ -13,7 +13,7 @@ class BottomNav extends StatefulWidget {
 
 class _BottomNavState extends State<BottomNav> {
   int currentIndex = 0;
-  final List<Widget> body = [Beranda(), ProfilPages()];
+  final List<Widget> body = [Beranda(), const ProfilPages()];
 
   @override
   Widget build(BuildContext context) {

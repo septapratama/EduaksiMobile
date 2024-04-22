@@ -1,3 +1,6 @@
+import 'package:eduapp/pages/edukasi_psikologi.dart';
+import 'package:eduapp/pages/pages_EdukasiMenu.dart';
+import 'package:eduapp/pages/pages_profil.dart';
 import 'package:flutter/material.dart';
 import 'package:eduapp/component/custom_colors.dart';
 
@@ -10,15 +13,15 @@ class Beranda extends StatelessWidget {
     "Konsultasi",
   ];
   List<Color> menuColors = [
-    Color.fromRGBO(7, 210, 139, 1),
-    Color.fromARGB(255, 90, 49, 236),
-    Color.fromARGB(255, 5, 131, 227),
+    const Color.fromRGBO(7, 210, 139, 1),
+    const Color.fromARGB(255, 90, 49, 236),
+    const Color.fromARGB(255, 5, 131, 227),
   ];
 
   List<Icon> menuIcons = [
-    Icon(Icons.school, color: Colors.white, size: 30),
-    Icon(Icons.camera, color: Colors.white, size: 30),
-    Icon(Icons.phone_in_talk, color: Colors.white, size: 30),
+    const Icon(Icons.school, color: Colors.white, size: 30),
+    const Icon(Icons.camera, color: Colors.white, size: 30),
+    const Icon(Icons.phone_in_talk, color: Colors.white, size: 30),
   ];
 
   List<Map<String, dynamic>> articles = [
@@ -56,10 +59,10 @@ class Beranda extends StatelessWidget {
       child: Column(
         children: [
           Container(
-            padding: EdgeInsets.only(top: 15, left: 15, right: 15, bottom: 10),
+            padding: const EdgeInsets.only(top: 15, left: 15, right: 15, bottom: 10),
             decoration: BoxDecoration(
               color: customColor.primaryColors,
-              borderRadius: BorderRadius.only(
+              borderRadius: const BorderRadius.only(
                 bottomLeft: Radius.circular(20),
                 bottomRight: Radius.circular(20),
               ),
@@ -67,7 +70,7 @@ class Beranda extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
+                const Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Icon(
@@ -82,8 +85,8 @@ class Beranda extends StatelessWidget {
                     ),
                   ],
                 ),
-                SizedBox(height: 20),
-                Padding(
+                const SizedBox(height: 20),
+                const Padding(
                   padding: EdgeInsets.only(left: 3, bottom: 15),
                   child: Text(
                     "Hei, Erdiii",
@@ -97,7 +100,7 @@ class Beranda extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.only(top: 5, bottom: 20),
+                  margin: const EdgeInsets.only(top: 5, bottom: 20),
                   width: MediaQuery.of(context).size.width,
                   height: 55,
                   alignment: Alignment.center,
@@ -111,7 +114,7 @@ class Beranda extends StatelessWidget {
                       hintText: "Cari Artikel disini.......",
                       hintStyle:
                           TextStyle(color: Colors.black.withOpacity(0.5)),
-                      prefixIcon: Icon(Icons.search, size: 25),
+                      prefixIcon: const Icon(Icons.search, size: 25),
                     ),
                   ),
                 ),
@@ -119,47 +122,84 @@ class Beranda extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: EdgeInsets.only(top: 20, left: 15, right: 15),
+            padding: const EdgeInsets.only(top: 20, left: 15, right: 15),
             child: Column(
               children: [
                 GridView.builder(
                   itemCount: menu.length,
                   shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  physics: const NeverScrollableScrollPhysics(),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 3,
                     childAspectRatio: 1.1,
                   ),
                   itemBuilder: (context, index) {
-                    return Column(
-                      children: [
-                        Container(
-                          height: 60,
-                          width: 60,
-                          decoration: BoxDecoration(
-                            color: menuColors[index],
-                            shape: BoxShape.circle,
+                    return GestureDetector(
+                      onTap: () {
+                        // Perform navigation based on the index or menu item clicked
+                        switch (index) {
+                          case 0:
+                            // Navigate to EdukasiPage
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      EdukasiMenu()), // Replace EdukasiPage() with your actual page widget
+                            );
+                            break;
+                          case 1:
+                            // Navigate to AksiPage
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      PskikologiPages()), // Replace AksiPage() with your actual page widget
+                            );
+                            break;
+                          case 2:
+                            // Navigate to KonsultasiPage
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      EdukasiMenu()), // Replace KonsultasiPage() with your actual page widget
+                            );
+                            break;
+                          default:
+                            break;
+                        }
+                      },
+                      child: Column(
+                        children: [
+                          Container(
+                            height: 60,
+                            width: 60,
+                            decoration: BoxDecoration(
+                              color: menuColors[index],
+                              shape: BoxShape.circle,
+                            ),
+                            child: Center(child: menuIcons[index]),
                           ),
-                          child: Center(child: menuIcons[index]),
-                        ),
-                        SizedBox(height: 10),
-                        Text(
-                          menu[index],
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontFamily: 'Poppins_Regular',
-                            color: Colors.black,
+                          const SizedBox(height: 10),
+                          Text(
+                            menu[index],
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontFamily: 'Poppins_Regular',
+                              color: Colors.black,
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     );
                   },
                 ),
-                SizedBox(height: 20),
+
+                const SizedBox(height: 20),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
+                    const Text(
                       "Artikel",
                       style:
                           TextStyle(fontSize: 23, fontFamily: 'Poppins_Bold'),
@@ -174,7 +214,7 @@ class Beranda extends StatelessWidget {
                     ),
                   ],
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 // Article List
                 Column(
                   children: articles.map((article) {
@@ -189,13 +229,13 @@ class Beranda extends StatelessWidget {
                         ),
                         title: Text(
                           article['title'],
-                          style: TextStyle(
+                          style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               fontFamily: 'Poppins_Bold',
                               fontSize: 17),
                         ),
                         subtitle: Text(article['date'],
-                            style: TextStyle(
+                            style: const TextStyle(
                                 fontFamily: 'Poppins_SemiBold', fontSize: 12)),
                         onTap: () {
                           // Implementasi penanganan ketika item diklik (navigasi ke halaman detail, misalnya)

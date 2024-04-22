@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
-  final VoidCallback? leadingOnPressed; // Fungsi onPressed untuk tombol kembali
+  final VoidCallback? leadingOnPressed; // Function onPressed for back button
+  final VoidCallback? buttonOnPressed; // Function onPressed for custom button
+  final IconData? buttonIcon; // Icon for custom button
   final List<Widget>? actions;
   final Color backgroundColor;
   final Color titleColor;
@@ -11,10 +13,11 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppBar({
     Key? key,
     required this.title,
-    this.leadingOnPressed, // Argumen fungsi onPressed
+    this.leadingOnPressed, // onPressed function argument
+    this.buttonOnPressed, // onPressed function argument for custom button
+    this.buttonIcon, // Icon for custom button
     this.actions,
-    this.backgroundColor =
-        const Color.fromRGBO(30, 84, 135, 1), // Default background color
+    this.backgroundColor = const Color.fromRGBO(30, 84, 135, 1), // Default background color
     this.titleColor = Colors.white, // Default title color
     this.fontFamily = 'Poppins_Bold', // Default font family
   }) : super(key: key);
@@ -30,12 +33,21 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
       ),
       backgroundColor: backgroundColor,
-      leading: IconButton(
-        icon: Icon(Icons.arrow_back, color: Colors.white),
-        onPressed:
-            leadingOnPressed, // Menggunakan onPressed yang diberikan dari luar
-      ),
-      actions: actions,
+      iconTheme: IconThemeData(color: Colors.white), // Set the color of leading button icon
+      leading: leadingOnPressed != null
+          ? IconButton(
+              icon: Icon(Icons.arrow_back),
+              onPressed: leadingOnPressed,
+            )
+          : null,
+      actions: <Widget>[
+        if (buttonIcon != null && buttonOnPressed != null)
+          IconButton(
+            icon: Icon(buttonIcon, color: Colors.white),
+            onPressed: buttonOnPressed,
+          ),
+        if (actions != null) ...actions!,
+      ],
     );
   }
 
