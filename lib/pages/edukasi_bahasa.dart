@@ -3,8 +3,8 @@ import 'package:eduapp/component/custom_colors.dart';
 import 'package:eduapp/pages/pages_EdukasiMenu.dart';
 import 'package:flutter/material.dart';
 
-class PskikologiPages extends StatelessWidget {
-  PskikologiPages({Key? key});
+class BahasaPages extends StatelessWidget {
+  BahasaPages({Key? key});
 
   // Dummy list of articles
   final List<Map<String, String>> articles = [
@@ -23,7 +23,6 @@ class PskikologiPages extends StatelessWidget {
       'date': '28 Maret 2024',
       'image': 'assets/images/artikel 1.png',
     },
-    
   ];
 
   @override
@@ -33,7 +32,7 @@ class PskikologiPages extends StatelessWidget {
         slivers: <Widget>[
           SliverToBoxAdapter(
             child: CustomAppBar(
-              title: 'Edukasi Psikologi',
+              title: 'Edukasi Bahasa',
               buttonOnPressed: () {
                 Navigator.push(
                   context,
@@ -48,7 +47,7 @@ class PskikologiPages extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Image.asset(
-                    'assets/images/Psiko.jpg',
+                    'assets/images/bahasa.jpg',
                     fit: BoxFit.cover,
                     width: double.infinity,
                     height: 200,
@@ -57,7 +56,7 @@ class PskikologiPages extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: Text(
-                      'Psikologi',
+                      'Bahasa',
                       style: TextStyle(
                         fontSize: 20,
                         fontFamily: 'Poppins_Bold',
@@ -69,7 +68,7 @@ class PskikologiPages extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: Text(
-                      'Psikologi emosional anak dapat diketahui bagaimana anak-anak mengenali, mengelola, dan bereaksi terhadap emosi mereka sendiri serta emosi orang lain. Ini meliputi pemahaman tentang berbagai emosi seperti kegembiraan, kecemasan, kemarahan, kesedihan, dan bagaimana emosi ini mempengaruhi perilaku dan interaksi sosial anak.',
+                      'Mengajari bahasa atau kecakapan berbicara pada anak merupakan cabang psikologi perkembangan yang berkaitan dengan bagaimana anak-anak belajar, memahami, dan menggunakan bahasa. Ini melibatkan pemahaman tentang perkembangan bahasa anak, proses belajar bicara, dan faktor-faktor yang memengaruhi kemampuan berkomunikasi mereka.',
                       textAlign: TextAlign.left,
                     ),
                   ),
@@ -95,7 +94,7 @@ class PskikologiPages extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: Text(
-                      'Membantu anak mengembangkan keterampilan pengaturan emosi yang sehat, termasuk kemampuan untuk mengidentifikasi emosi, mengelola stres, memahami dan mengkomunikasikan perasaan mereka, serta membangun hubungan sosial yang positif.',
+                      'Membantu anak-anak mengembangkan kemampuan berbicara dan berkomunikasi secara efektif. Ini termasuk memahami arti kata-kata, mempelajari tata bahasa yang tepat, dan belajar berinteraksi dengan orang lain dalam konteks sosial yang berbeda.',
                       textAlign: TextAlign.left,
                     ),
                   ),
@@ -121,7 +120,7 @@ class PskikologiPages extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: Text(
-                      'Pemahaman dan pengaturan emosional anak sangat penting untuk perkembangan holistik mereka. Kemampuan untuk mengelola emosi dengan baik membantu anak dalam berbagai aspek kehidupan mereka, termasuk prestasi akademis, hubungan sosial, dan kesejahteraan mental. Anak-anak yang memiliki keterampilan pengaturan emosi yang baik cenderung lebih mampu menyelesaikan konflik, lebih terampil dalam berempati, dan lebih mudah beradaptasi dengan perubahan.',
+                      'Kecakapan dalam berbicara adalah keterampilan yang sangat penting dalam kehidupan sehari-hari. Kemampuan berkomunikasi yang baik memungkinkan anak untuk mengekspresikan pikiran, perasaan, dan kebutuhan mereka dengan jelas, yang dapat meningkatkan kualitas hubungan sosial dan akademik mereka. Selain itu, kemampuan berbicara yang baik juga mempersiapkan anak untuk sukses di sekolah dan di tempat kerja di masa depan.',
                       textAlign: TextAlign.left,
                     ),
                   ),
@@ -132,7 +131,6 @@ class PskikologiPages extends StatelessWidget {
                     indent: 16,
                     endIndent: 16,
                   ),
-
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: Column(
@@ -160,7 +158,7 @@ class PskikologiPages extends StatelessWidget {
                             SizedBox(width: 8),
                             Expanded(
                               child: Text(
-                                'Model Perilaku Positif: Orang tua dan pengasuh perlu menjadi contoh yang baik dalam mengelola emosi mereka sendiri. Anak-anak belajar banyak dari pengamatan terhadap bagaimana orang dewasa merespon situasi yang menantang.',
+                                'Stimulasi Bahasa: Berikan anak lingkungan yang kaya akan bahasa dengan membacakan buku, menyanyikan lagu, dan berbicara dengannya secara teratur.',
                                 textAlign: TextAlign.left,
                               ),
                             ),
@@ -180,7 +178,7 @@ class PskikologiPages extends StatelessWidget {
                             SizedBox(width: 8),
                             Expanded(
                               child: Text(
-                                'Mengajarkan Penyadaran Emosional: Bantu anak untuk mengidentifikasi dan memahami emosi mereka sendiri dengan memberikan nama pada emosi yang mereka rasakan. Ajari mereka untuk mengenali tanda-tanda fisik emosi seperti detak jantung yang cepat ketika marah atau perasaan getaran di perut ketika cemas.',
+                                'Modelkan Kecakapan Berbicara: Jadilah contoh yang baik dengan menggunakan bahasa yang baik dan benar di depan anak. Berbicaralah dengan tenang dan jelas, dan beri mereka contoh kalimat yang benar.',
                                 textAlign: TextAlign.left,
                               ),
                             ),
@@ -200,7 +198,7 @@ class PskikologiPages extends StatelessWidget {
                             SizedBox(width: 8),
                             Expanded(
                               child: Text(
-                                'Membangun Keterampilan Pengaturan Emosi: Ajarkan anak teknik-teknik relaksasi seperti pernapasan dalam dan latihan visualisasi untuk membantu mereka mengatasi stres dan kecemasan. Berikan strategi praktis untuk mengatasi kemarahan seperti mengambil napas dalam-dalam atau berjalan-jalan sebentar.',
+                                'Ajarkan Melalui Interaksi Sosial: Ajak anak untuk berinteraksi dengan orang lain secara aktif. Melalui percakapan dan interaksi sosial, mereka akan belajar untuk memahami cara menggunakan bahasa dengan baik.',
                                 textAlign: TextAlign.left,
                               ),
                             ),
@@ -220,7 +218,7 @@ class PskikologiPages extends StatelessWidget {
                             SizedBox(width: 8),
                             Expanded(
                               child: Text(
-                                'Komunikasi Terbuka: Jadikan rumah sebagai tempat yang aman bagi anak untuk mengungkapkan perasaan mereka. Dengan mendengarkan dengan empati dan tanpa penilaian, anak akan merasa didukung dan lebih nyaman dalam berbagi perasaan mereka.',
+                                'Berikan Umpan Balik Positif: Berikan pujian dan dorongan saat anak menggunakan bahasa dengan baik. Ini akan memperkuat perilaku yang diinginkan dan meningkatkan kepercayaan diri mereka dalam berbicara.',
                                 textAlign: TextAlign.left,
                               ),
                             ),
@@ -240,7 +238,7 @@ class PskikologiPages extends StatelessWidget {
                             SizedBox(width: 8),
                             Expanded(
                               child: Text(
-                                'Membangun Koneksi Emosional: Luangkan waktu untuk terhubung secara emosional dengan anak Anda melalui kegiatan yang Anda nikmati bersama, seperti membaca buku, bermain permainan, atau sekadar berbicara satu sama lain. Hubungan yang kuat dengan orang tua atau pengasuh membantu anak merasa aman dan didukung dalam mengelola emosinya.',
+                                'Terlibat dalam Kegiatan Berbicara yang Menarik: Ajak anak untuk berpartisipasi dalam permainan kata, teka-teki, atau cerita bersama untuk meningkatkan kemampuan berbicara mereka secara menyenangkan dan interaktif.el Perilaku Positif: Orang tua dan pengasuh perlu menjadi contoh yang baik dalam mengelola emosi mereka sendiri. Anak-anak belajar banyak dari pengamatan terhadap bagaimana orang dewasa merespon situasi yang menantang.',
                                 textAlign: TextAlign.left,
                               ),
                             ),
@@ -327,6 +325,7 @@ class PskikologiPages extends StatelessWidget {
               ),
             ),
           ),
+          // Tambahkan widget InkWell untuk "Lihat Lainnya" di sini
           SliverToBoxAdapter(
             child: InkWell(
               onTap: () {

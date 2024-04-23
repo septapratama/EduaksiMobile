@@ -3,8 +3,8 @@ import 'package:eduapp/component/custom_colors.dart';
 import 'package:eduapp/pages/pages_EdukasiMenu.dart';
 import 'package:flutter/material.dart';
 
-class PskikologiPages extends StatelessWidget {
-  PskikologiPages({Key? key});
+class ReligiPages extends StatelessWidget {
+  ReligiPages({Key? key});
 
   // Dummy list of articles
   final List<Map<String, String>> articles = [
@@ -33,7 +33,7 @@ class PskikologiPages extends StatelessWidget {
         slivers: <Widget>[
           SliverToBoxAdapter(
             child: CustomAppBar(
-              title: 'Edukasi Psikologi',
+              title: 'Edukasi Religi',
               buttonOnPressed: () {
                 Navigator.push(
                   context,
@@ -48,7 +48,7 @@ class PskikologiPages extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Image.asset(
-                    'assets/images/Psiko.jpg',
+                    'assets/images/Religi.jpg',
                     fit: BoxFit.cover,
                     width: double.infinity,
                     height: 200,
@@ -57,7 +57,7 @@ class PskikologiPages extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: Text(
-                      'Psikologi',
+                      'Religi',
                       style: TextStyle(
                         fontSize: 20,
                         fontFamily: 'Poppins_Bold',
@@ -69,7 +69,7 @@ class PskikologiPages extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: Text(
-                      'Psikologi emosional anak dapat diketahui bagaimana anak-anak mengenali, mengelola, dan bereaksi terhadap emosi mereka sendiri serta emosi orang lain. Ini meliputi pemahaman tentang berbagai emosi seperti kegembiraan, kecemasan, kemarahan, kesedihan, dan bagaimana emosi ini mempengaruhi perilaku dan interaksi sosial anak.',
+                      'Edukasi religius pada anak melibatkan pengajaran nilai-nilai, keyakinan, praktik, dan pengetahuan agama tertentu kepada anak-anak. Ini mencakup memperkenalkan mereka pada ajaran-ajaran agama, etika, dan kebiasaan spiritual yang dapat membentuk karakter dan moralitas mereka.',
                       textAlign: TextAlign.left,
                     ),
                   ),
@@ -95,7 +95,7 @@ class PskikologiPages extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: Text(
-                      'Membantu anak mengembangkan keterampilan pengaturan emosi yang sehat, termasuk kemampuan untuk mengidentifikasi emosi, mengelola stres, memahami dan mengkomunikasikan perasaan mereka, serta membangun hubungan sosial yang positif.',
+                      'Edukasi religius pada anak bertujuan untuk membentuk dasar keimanan yang kuat dan kokoh dalam agama mereka, serta membantu mereka memahami nilai-nilai moral dan etika yang penting dalam kehidupan sehari-hari. Selain itu, melalui pendekatan ini, anak-anak diajak untuk mengembangkan rasa keterhubungan spiritual dengan sesama, alam, dan Tuhan, sambil didorong untuk menunjukkan perilaku positif dan altruistik seperti kepedulian terhadap sesama, belas kasihan, dan toleransi.',
                       textAlign: TextAlign.left,
                     ),
                   ),
@@ -121,7 +121,7 @@ class PskikologiPages extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: Text(
-                      'Pemahaman dan pengaturan emosional anak sangat penting untuk perkembangan holistik mereka. Kemampuan untuk mengelola emosi dengan baik membantu anak dalam berbagai aspek kehidupan mereka, termasuk prestasi akademis, hubungan sosial, dan kesejahteraan mental. Anak-anak yang memiliki keterampilan pengaturan emosi yang baik cenderung lebih mampu menyelesaikan konflik, lebih terampil dalam berempati, dan lebih mudah beradaptasi dengan perubahan.',
+                      'Edukasi religius juga membantu anak-anak membangun identitas dan memahami nilai-nilai yang mendasari agama dan kepercayaan mereka, serta memberikan panduan moral yang kuat yang diperlukan saat mereka tumbuh dan berkembang. Selain itu, melalui agama, anak-anak sering kali mendapatkan kenyamanan emosional dan keyakinan untuk menghadapi tantangan dan kesulitan dalam hidup.',
                       textAlign: TextAlign.left,
                     ),
                   ),
@@ -160,7 +160,7 @@ class PskikologiPages extends StatelessWidget {
                             SizedBox(width: 8),
                             Expanded(
                               child: Text(
-                                'Model Perilaku Positif: Orang tua dan pengasuh perlu menjadi contoh yang baik dalam mengelola emosi mereka sendiri. Anak-anak belajar banyak dari pengamatan terhadap bagaimana orang dewasa merespon situasi yang menantang.',
+                                'Berikan contoh yang baik: Jadilah contoh yang baik dalam praktik agama Anda. Anak-anak sering meniru perilaku orang dewasa di sekitar mereka.',
                                 textAlign: TextAlign.left,
                               ),
                             ),
@@ -180,7 +180,7 @@ class PskikologiPages extends StatelessWidget {
                             SizedBox(width: 8),
                             Expanded(
                               child: Text(
-                                'Mengajarkan Penyadaran Emosional: Bantu anak untuk mengidentifikasi dan memahami emosi mereka sendiri dengan memberikan nama pada emosi yang mereka rasakan. Ajari mereka untuk mengenali tanda-tanda fisik emosi seperti detak jantung yang cepat ketika marah atau perasaan getaran di perut ketika cemas.',
+                                'Gunakan metode pembelajaran yang menarik: Gunakan cerita, permainan, atau aktivitas yang menarik untuk mengajar anak-anak tentang agama mereka.',
                                 textAlign: TextAlign.left,
                               ),
                             ),
@@ -200,7 +200,7 @@ class PskikologiPages extends StatelessWidget {
                             SizedBox(width: 8),
                             Expanded(
                               child: Text(
-                                'Membangun Keterampilan Pengaturan Emosi: Ajarkan anak teknik-teknik relaksasi seperti pernapasan dalam dan latihan visualisasi untuk membantu mereka mengatasi stres dan kecemasan. Berikan strategi praktis untuk mengatasi kemarahan seperti mengambil napas dalam-dalam atau berjalan-jalan sebentar.',
+                                'Buat lingkungan yang mendukung: Ciptakan lingkungan di rumah yang mendukung praktik agama, termasuk waktu untuk berdoa bersama dan membaca kitab suci.',
                                 textAlign: TextAlign.left,
                               ),
                             ),
@@ -220,7 +220,7 @@ class PskikologiPages extends StatelessWidget {
                             SizedBox(width: 8),
                             Expanded(
                               child: Text(
-                                'Komunikasi Terbuka: Jadikan rumah sebagai tempat yang aman bagi anak untuk mengungkapkan perasaan mereka. Dengan mendengarkan dengan empati dan tanpa penilaian, anak akan merasa didukung dan lebih nyaman dalam berbagi perasaan mereka.',
+                                'Ajak anak berdiskusi: Berikan kesempatan kepada anak-anak untuk bertanya dan berdiskusi tentang agama mereka. Dengarkan pertanyaan mereka dengan sabar dan jawab dengan jujur.',
                                 textAlign: TextAlign.left,
                               ),
                             ),
@@ -240,7 +240,27 @@ class PskikologiPages extends StatelessWidget {
                             SizedBox(width: 8),
                             Expanded(
                               child: Text(
-                                'Membangun Koneksi Emosional: Luangkan waktu untuk terhubung secara emosional dengan anak Anda melalui kegiatan yang Anda nikmati bersama, seperti membaca buku, bermain permainan, atau sekadar berbicara satu sama lain. Hubungan yang kuat dengan orang tua atau pengasuh membantu anak merasa aman dan didukung dalam mengelola emosinya.',
+                                'Berikan penguatan positif: Beri pujian dan penghargaan kepada anak-anak ketika mereka menunjukkan minat dan keterlibatan dalam belajar agama.',
+                                textAlign: TextAlign.left,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 5),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              '\u2022',
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: customColor.primaryColors,
+                              ),
+                            ),
+                            SizedBox(width: 8),
+                            Expanded(
+                              child: Text(
+                                'Jadikan belajar menyenangkan: Buatlah pengalaman belajar tentang agama menjadi menyenangkan dan menarik dengan menggunakan media visual, permainan peran, atau aktivitas kreatif lainnya.',
                                 textAlign: TextAlign.left,
                               ),
                             ),
@@ -327,7 +347,7 @@ class PskikologiPages extends StatelessWidget {
               ),
             ),
           ),
-          SliverToBoxAdapter(
+        SliverToBoxAdapter(
             child: InkWell(
               onTap: () {
                 // Navigasi ke halaman lain saat "Lihat Lainnya" diklik
