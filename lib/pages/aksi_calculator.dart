@@ -14,6 +14,25 @@ class Calculator extends StatefulWidget {
 class _CalculatorState extends State<Calculator> {
   String _selectedGender = 'Laki-laki'; // Nilai default
   String _age = ''; // Nilai usia
+  String _tinggiBadan = ''; // Nilai tinggi badan dalam cm
+  String _beratBadan = ''; // Nilai berat badan dalam kg
+  double _beratBadanIdeal = 0.0; // Variabel untuk menyimpan berat badan ideal
+
+  void calculateIdealWeight() {
+    if (_tinggiBadan.isNotEmpty) {
+      try {
+        final tinggiBadanCm = double.parse(_tinggiBadan); // Pastikan ini dalam cm
+        if (_selectedGender == 'Laki-laki') {
+          _beratBadanIdeal = tinggiBadanCm - 100; // Rumus Broca untuk laki-laki
+        } else {
+          _beratBadanIdeal = tinggiBadanCm - 104; // Rumus Broca untuk perempuan
+        }
+      } catch (e) {
+        // Handle error, misal dengan menampilkan pesan error bahwa input tidak valid
+        print("Error: ${e.toString()}");
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,8 +50,7 @@ class _CalculatorState extends State<Calculator> {
         slivers: [
           SliverToBoxAdapter(
             child: Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 35.0),
+              padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 35.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -141,10 +159,12 @@ class _CalculatorState extends State<Calculator> {
                           border: InputBorder.none,
                           isDense: true,
                           contentPadding: EdgeInsets.zero,
-                          hintText: 'Input Tinggi Badan Anda',
+                          hintText: 'Input Tinggi Badan Anda (cm)',
                         ),
                         onChanged: (value) {
-                          // Implementasi onChanged sesuai kebutuhan
+                          setState(() {
+                            _tinggiBadan = value;
+                          });
                         },
                       ),
                     ),
@@ -177,10 +197,12 @@ class _CalculatorState extends State<Calculator> {
                           border: InputBorder.none,
                           isDense: true,
                           contentPadding: EdgeInsets.zero,
-                          hintText: 'Input Berat Badan Anda',
+                          hintText: 'Input Berat Badan Anda (kg)',
                         ),
                         onChanged: (value) {
-                          // Implementasi onChanged sesuai kebutuhan
+                          setState(() {
+                            _beratBadan = value;
+                          });
                         },
                       ),
                     ),
@@ -191,7 +213,9 @@ class _CalculatorState extends State<Calculator> {
                     child: ElevatedButton(
                       style: CustomButton.overallButtonStyle(),
                       onPressed: () {
-                        // Implementasi ketika tombol ditekan
+                        setState(() {
+                          calculateIdealWeight();
+                        });
                       },
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
@@ -206,9 +230,40 @@ class _CalculatorState extends State<Calculator> {
                       ),
                     ),
                   ),
+                  Align(
+                    alignment: Alignment.center,
+                    child: Container(
+                      margin: EdgeInsets.only(top: 20),
+                      padding: EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Colors.blue[100],
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          
+                          ListTile(
+                            leading: Icon(Icons.person_outline, size: 24),
+                            title: Text('Jenis Kelamin', style: TextStyle(fontWeight: FontWeight.bold)),
+                            trailing: Text(_selectedGender),
+                          ),
+                          ListTile(
+                            leading: Icon(Icons.cake, size: 24),
+                            title: Text('Umur', style: TextStyle(fontWeight: FontWeight.bold)),
+                            trailing: Text('$_age tahun'),
+                          ),
+                          ListTile(
+                            leading: Icon(Icons.monitor_weight, size: 24),
+                            title: Text('Berat Ideal', style: TextStyle(fontWeight: FontWeight.bold)),
+                            trailing: Text('${_beratBadanIdeal.toStringAsFixed(1)} kg'),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                 ],
               ),
-              // Tambahkan komponen-komponen form lainnya di sini
             ),
           ),
         ],
