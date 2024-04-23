@@ -1,4 +1,5 @@
 import 'package:eduapp/pages/edukasi_psikologi.dart';
+import 'package:eduapp/pages/pages_AksiMenu.dart';
 import 'package:eduapp/pages/pages_EdukasiMenu.dart';
 import 'package:eduapp/pages/pages_profil.dart';
 import 'package:flutter/material.dart';
@@ -153,7 +154,7 @@ class Beranda extends StatelessWidget {
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
-                                      PskikologiPages()), // Replace AksiPage() with your actual page widget
+                                      AksiMenu()), // Replace AksiPage() with your actual page widget
                             );
                             break;
                           case 2:

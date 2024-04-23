@@ -1,5 +1,6 @@
 import 'package:eduapp/component/custom_appbar.dart';
 import 'package:eduapp/component/custom_colors.dart';
+import 'package:eduapp/pages/edukasi_bahasaArtikel.dart';
 import 'package:eduapp/pages/pages_EdukasiMenu.dart';
 import 'package:flutter/material.dart';
 
@@ -332,7 +333,7 @@ class BahasaPages extends StatelessWidget {
                 // Navigasi ke halaman lain saat "Lihat Lainnya" diklik
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => EdukasiMenu()),
+                  MaterialPageRoute(builder: (context) => BahasaArtikel()),
                 );
               },
               child: Container(
