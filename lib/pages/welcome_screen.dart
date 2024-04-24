@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
 class WelcomeScreen extends StatefulWidget {
+  const WelcomeScreen({super.key});
+
   @override
   _WelcomeScreenState createState() => _WelcomeScreenState();
 }
@@ -45,10 +47,10 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               onTap: () {
                 // Navigate to the login screen
                 Navigator.pushReplacement(
-                    context, pageMove.movepage(LoginScreen()));
+                    context, pageMove.movepage(const LoginScreen()));
               },
               child: Padding(
-                padding: EdgeInsets.only(top: 20.0, right: 15.0),
+                padding: const EdgeInsets.only(top: 20.0, right: 15.0),
                 child: Align(
                   alignment: Alignment.topRight,
                   child: Text('Skip',
@@ -113,7 +115,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                       if (_currentPage == _totalPages - 1) {
                         // Navigate to the login screen
                         Navigator.pushReplacement(
-                            context, pageMove.movepage(LoginScreen()));
+                            context, pageMove.movepage(const LoginScreen()));
                       } else {
                         _pageController.nextPage(
                           duration: const Duration(milliseconds: 500),

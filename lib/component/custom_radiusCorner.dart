@@ -6,11 +6,11 @@ class CustomRadiusTextField extends StatelessWidget {
   final BorderRadius borderRadius;
 
   const CustomRadiusTextField({
-    Key? key,
+    super.key,
     required this.controller,
     required this.labelText,
     this.borderRadius = const BorderRadius.all(Radius.circular(8.0)), required InputDecoration decoration, required TextStyle style,
-  }) : super(key: key);     
+  });     
   @override
   Widget build(BuildContext context) {
     return Container(

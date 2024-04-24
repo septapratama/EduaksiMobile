@@ -15,7 +15,7 @@ class ApiService {
     return jwtProvider.getJwt();
   }
   Future<Map<String, dynamic>> register(
-      String email, String nama_lengkap, String kata_sandi, String kata_sandi_ulang) async {
+      String email, String namaLengkap, String kataSandi, String kataSandiUlang) async {
     try {
       final response = await http.post(
         Uri.parse('$baseUrl/users/register'),
@@ -24,9 +24,9 @@ class ApiService {
         },
         body: jsonEncode(<String, String>{
           'email': email,
-          'nama_lengkap': nama_lengkap,
-          'password': kata_sandi,
-          'password_confirm': kata_sandi_ulang,
+          'nama_lengkap': namaLengkap,
+          'password': kataSandi,
+          'password_confirm': kataSandiUlang,
         }),
       );
       if (response.statusCode == 200) {
@@ -43,7 +43,7 @@ class ApiService {
 
   //Login
   Future<Map<String, dynamic>> login(
-      String email, String kata_sandi) async {
+      String email, String kataSandi) async {
     try {
       final response = await http.post(
         Uri.parse('$baseUrl/users/login'),
@@ -53,7 +53,7 @@ class ApiService {
         body: jsonEncode(<String, String>{
           // 'email': 'UserTesting1@gmail.com',
           'email': email,
-          'password': kata_sandi,
+          'password': kataSandi,
         }),
       );
       if (response.statusCode == 200) {
@@ -97,7 +97,7 @@ class ApiService {
 
   //lupa kata sandi
   Future<Map<String, dynamic>> lupaPassword(
-      String nama_lengkap, String kata_sandi, String no_hp) async {
+      String namaLengkap, String kataSandi, String noHp) async {
     try {
       final response = await http.post(
         Uri.parse('$baseUrl/register.php'),
@@ -105,9 +105,9 @@ class ApiService {
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: jsonEncode(<String, String>{
-          'nama_lengkap': nama_lengkap,
-          'kata_sandi': kata_sandi,
-          'no_hp': no_hp,
+          'nama_lengkap': namaLengkap,
+          'kata_sandi': kataSandi,
+          'no_hp': noHp,
         }),
       );
       if (response.statusCode == 200) {
@@ -124,7 +124,7 @@ class ApiService {
 
   //send otp
   Future<Map<String, dynamic>> sendOtp(
-      String nama_lengkap, String kata_sandi, String no_hp) async {
+      String namaLengkap, String kataSandi, String noHp) async {
     try {
       final response = await http.post(
         Uri.parse('$baseUrl/register.php'),
@@ -132,9 +132,9 @@ class ApiService {
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: jsonEncode(<String, String>{
-          'nama_lengkap': nama_lengkap,
-          'kata_sandi': kata_sandi,
-          'no_hp': no_hp,
+          'nama_lengkap': namaLengkap,
+          'kata_sandi': kataSandi,
+          'no_hp': noHp,
         }),
       );
       if (response.statusCode == 200) {
@@ -151,7 +151,7 @@ class ApiService {
 
   //kirim ulang kode otp
   Future<Map<String, dynamic>> resendCodeOtp(
-      String email, String kata_sandi, String no_hp) async {
+      String email, String kataSandi, String noHp) async {
     try {
       final response = await http.post(
         Uri.parse('$baseUrl/users/'),
@@ -160,8 +160,8 @@ class ApiService {
         },
         body: jsonEncode(<String, String>{
           'email': email,
-          'kata_sandi': kata_sandi,
-          'no_hp': no_hp,
+          'kata_sandi': kataSandi,
+          'no_hp': noHp,
         }),
       );
       if (response.statusCode == 200) {

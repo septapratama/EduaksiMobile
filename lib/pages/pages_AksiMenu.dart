@@ -1,32 +1,28 @@
 import 'package:eduapp/component/custom_appbar.dart';
 import 'package:eduapp/component/custom_colors.dart';
+import 'package:eduapp/pages/aksi_calculator.dart';
 import 'package:eduapp/pages/edukasi_emotal.dart';
 import 'package:eduapp/pages/edukasi_diisi.dart';
 import 'package:eduapp/pages/edukasi_nutrisi.dart';
-import 'package:eduapp/pages/edukasi_pengasuhan.dart';
 import 'package:eduapp/utils/navigationbar.dart';
 import 'package:flutter/material.dart';
 import 'package:eduapp/component/custom_appbar_withoutarrowback.dart';
 
-class EdukasiMenu extends StatelessWidget {
-  EdukasiMenu({super.key});
+class AksiMenu extends StatelessWidget {
+  AksiMenu({super.key});
 
   List<Map<String, dynamic>> articles = [
     {
-      'title': 'Edukasi Emotal',
+      'title': 'Tentukan Berat Badan Ideal Anda',
       'image': 'assets/images/artikel 1.png',
     },
     {
-      'title': 'Edukasi Diisi',
+      'title': 'Catat Tumbuh Kembang Anak',
       'image': 'assets/images/image 36.png',
     },
-    {
-      'title': 'Edukasi Nutrisi',
-      'image': 'assets/images/image 34.png',
-    },
-    {
-      'title': 'Edukasi Pengasuhan',
-      'image': 'assets/images/image 35.png',
+      {
+      'title': 'Jadwalkan Waktu Keluarga',
+      'image': 'assets/images/image 36.png',
     },
     // Add more articles as needed
   ];
@@ -35,7 +31,7 @@ class EdukasiMenu extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        title: 'Edukasi',
+        title: 'Aksi',
         buttonOnPressed: () {
           Navigator.push(context,
               MaterialPageRoute(builder: (context) => const BottomNav()));
@@ -51,7 +47,7 @@ class EdukasiMenu extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Topik Populer EduAksi',
+                    'Fitur Aksi Memudahkan Anda',
                     style: TextStyle(
                       fontFamily: 'Poppins_Bold',
                       fontSize: 24,
@@ -60,7 +56,7 @@ class EdukasiMenu extends StatelessWidget {
                   ),
                   const SizedBox(height: 10),
                   const Text(
-                    'Pemahaman untuk kebutuhan anak\nsedari dini',
+                    'Temukan Hal Menarik Disini',
                     style: TextStyle(
                       fontFamily: 'Poppins_Regular',
                       fontSize: 15,
@@ -88,7 +84,7 @@ class EdukasiMenu extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => EdukasiEmotal(),
+                                builder: (context) => const Calculator(),
                               ),
                             );
                           } else if (index == 1) {
@@ -96,7 +92,7 @@ class EdukasiMenu extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => EdukasiDiisi(),
+                                builder: (context) => Calculator(),
                               ),
                             );
                           } else if (index == 2) {
@@ -104,20 +100,10 @@ class EdukasiMenu extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => EdukasiNutrisi(),
+                                builder: (context) => Calculator(),
                               ),
                             );
-                          }
-                          else if (index == 3) {
-                            // Jika index kedua, navigasi ke BahasaPages
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>EdukasiPengasuhan(),
-                              ),
-                            );
-                          }
-                          
+                          } 
                         },
                         child: Row(
                           children: [

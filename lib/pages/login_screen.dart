@@ -15,6 +15,8 @@ import 'package:eduapp/utils/navigationbar.dart';
 import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
+
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
@@ -46,18 +48,18 @@ class _LoginScreenState extends State<LoginScreen> {
     Navigator.pushReplacement(context, pageMove.movepage(BottomNav()));
     return;
     String email = emailController.text;
-    String kata_sandi = passwordController.text;
+    String kataSandi = passwordController.text;
     // Validasi form, misalnya memastikan semua field terisi dengan benar
-    if(email.isEmpty || email == null){
+    if (email.isEmpty) {
       alert(context, "Email tidak boleh kosong !");
       return;
     }
-    if(kata_sandi.isEmpty || kata_sandi == null){
+    if (kataSandi.isEmpty) {
       alert(context, "Kata sandi tidak boleh kosong !");
       return;
     }
     try {
-      Map<String, dynamic> response = await apiService.login(email, kata_sandi);
+      Map<String, dynamic> response = await apiService.login(email, kataSandi);
       // print(response);
       // print(response['data']);
       if (response['status'] == 'success') {
@@ -70,7 +72,8 @@ class _LoginScreenState extends State<LoginScreen> {
         //         foto_profil: response['data']['foto_profil'] ?? '',
         //       ),
         //     );
-        Navigator.pushReplacement(context, pageMove.movepage(BottomNav()));
+        Navigator.pushReplacement(
+            context, pageMove.movepage(const BottomNav()));
       } else {
         alert(context, response['message']);
       }
@@ -78,9 +81,10 @@ class _LoginScreenState extends State<LoginScreen> {
       print('Error saat login: $e');
     }
   }
+
   void _loginGoogle(BuildContext context) async {
-    try{
-    final response = await googlelogin.loginGoogle();
+    try {
+      final response = await googlelogin.loginGoogle();
       if (response['status'] == 'success') {
         // Set the user data using the provider
         context.read()<UserProvider>().setUserBaru(
@@ -92,13 +96,14 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             );
 
-        Navigator.pushReplacement(context, pageMove.movepage(BottomNav()));
+        Navigator.pushReplacement(
+            context, pageMove.movepage(const BottomNav()));
       } else {
         // print('Login failed: ${response['message']}');
         alert(context, "terjadi kesalahan pada jaringan");
       }
-    }catch(e){
-      throw(e);
+    } catch (e) {
+      rethrow;
     }
   }
 
@@ -114,10 +119,16 @@ class _LoginScreenState extends State<LoginScreen> {
               children: [
                 const SizedBox(height: 20.0),
                 Center(
-                  child: Image.asset(
-                    'assets/images/education_login.png',
-                    width: 150,
-                    height: 150,
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.pushReplacement(
+                          context, pageMove.movepage(const BottomNav()));
+                    },
+                    child: Image.asset(
+                      'assets/images/education_login.png',
+                      width: 150,
+                      height: 150,
+                    ),
                   ),
                 ),
                 const SizedBox(height: 0.0),
@@ -145,7 +156,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
+                    const Text(
                       'Email',
                       style: TextStyle(
                         fontFamily: 'Poppins_SemiBold',
@@ -153,10 +164,10 @@ class _LoginScreenState extends State<LoginScreen> {
                         fontSize: 16.0,
                       ),
                     ),
-                    SizedBox(height: 5.0),
+                    const SizedBox(height: 5.0),
                     TextField(
                       controller: emailController,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         labelText: 'Email',
                         labelStyle: TextStyle(
                             color: Color.fromRGBO(30, 84, 135, 1),
@@ -185,7 +196,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         floatingLabelBehavior: FloatingLabelBehavior.never,
                       ),
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Color.fromRGBO(30, 84, 135, 1),
                         fontSize: 16.0, // Change the font size here
                         fontFamily:
@@ -331,16 +342,16 @@ class _LoginScreenState extends State<LoginScreen> {
                         _loginGoogle(context);
                       },
                       style: ButtonStyle(
-                        padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
+                        padding: WidgetStateProperty.all<EdgeInsetsGeometry>(
                           const EdgeInsets.symmetric(vertical: 12.0),
                         ),
-                        shape: MaterialStateProperty.all<OutlinedBorder>(
+                        shape: WidgetStateProperty.all<OutlinedBorder>(
                           RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8.0),
                             side: const BorderSide(color: Colors.transparent),
                           ),
                         ),
-                        backgroundColor: MaterialStateProperty.all<Color>(
+                        backgroundColor: WidgetStateProperty.all<Color>(
                           Colors.transparent,
                         ),
                       ),
@@ -386,7 +397,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         fontSize = 16.0;
                       }
 
-                      return Container(
+                      return SizedBox(
                         width: MediaQuery.of(context).size.width *
                             0.8, // Adjust the width as needed
                         child: Row(
@@ -409,7 +420,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             TextButton(
                               onPressed: () {
                                 Navigator.pushReplacement(context,
-                                    pageMove.movepage(RegisterScreen()));
+                                    pageMove.movepage(const RegisterScreen()));
                                 // Add logic to navigate to the registration page
                               },
                               child: Text(
@@ -442,18 +453,18 @@ Widget contentBox(BuildContext context, String message) {
   return Stack(
     children: <Widget>[
       Container(
-        padding: EdgeInsets.only(
+        padding: const EdgeInsets.only(
           left: 20,
           top: 45,
           right: 20,
           bottom: 20,
         ),
-        margin: EdgeInsets.only(top: 45),
+        margin: const EdgeInsets.only(top: 45),
         decoration: BoxDecoration(
           shape: BoxShape.rectangle,
           color: Colors.white,
           borderRadius: BorderRadius.circular(10),
-          boxShadow: [
+          boxShadow: const [
             BoxShadow(
               color: Colors.black,
               offset: Offset(0, 10),
@@ -464,29 +475,29 @@ Widget contentBox(BuildContext context, String message) {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            Text(
+            const Text(
               'Gagal Login!',
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(height: 15),
+            const SizedBox(height: 15),
             Text(
               message,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 18,
               ),
               textAlign: TextAlign.center,
             ),
-            SizedBox(height: 22),
+            const SizedBox(height: 22),
             Align(
               alignment: Alignment.bottomRight,
               child: TextButton(
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-                child: Text(
+                child: const Text(
                   'OKE',
                   style: TextStyle(color: Color.fromRGBO(203, 164, 102, 1)),
                 ),
@@ -495,7 +506,7 @@ Widget contentBox(BuildContext context, String message) {
           ],
         ),
       ),
-      Positioned(
+      const Positioned(
         top: 0,
         left: 20,
         right: 20,

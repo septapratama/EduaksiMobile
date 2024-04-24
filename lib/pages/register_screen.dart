@@ -8,6 +8,8 @@ import 'package:eduapp/component/custom_pagemove.dart';
 import 'package:eduapp/utils/ApiService.dart';
 
 class RegisterScreen extends StatefulWidget {
+  const RegisterScreen({super.key});
+
   @override
   _RegisterScreenState createState() => _RegisterScreenState();
 }
@@ -25,7 +27,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
 
-  bool _verificationFilled = false;
+  final bool _verificationFilled = false;
   @override
   void initState() {
     super.initState();
@@ -49,12 +51,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
   void _register() async {
     String email = emailController.text;
-    String nama_lengkap = namaController.text;
-    String kata_sandi = passwordController.text;
+    String namaLengkap = namaController.text;
+    String kataSandi = passwordController.text;
     String konfirmasi = confirmPasswordController.text;
 
     // Validasi form, misalnya memastikan semua field terisi dengan benar
-    if(email.isEmpty || email == null){
+    if(email.isEmpty){
       alert(context, "Email tidak boleh kosong !", "gagal mendaftar!",Icons.error, Colors.red);
       return;
     }
@@ -62,35 +64,35 @@ class _RegisterScreenState extends State<RegisterScreen> {
       alert(context, "Email tidak valid!", "Gagal mendaftar!", Icons.error, Colors.red);
       return;
     }
-    if(nama_lengkap.isEmpty || nama_lengkap == null){
+    if(namaLengkap.isEmpty){
       alert(context, "Nama Lengkap tidak boleh kosong !", "gagal mendaftar!",Icons.error, Colors.red);
       return;
     }
-    if(kata_sandi.isEmpty || kata_sandi == null){
+    if(kataSandi.isEmpty){
       alert(context, "Kata sandi tidak boleh kosong !", "gagal mendaftar!",Icons.error, Colors.red);
       return;
     }
-    if (kata_sandi.length < 8) {
+    if (kataSandi.length < 8) {
       alert(context, "Kata sandi harus terdiri dari minimal 8 karakter !", "Gagal mendaftar!", Icons.error, Colors.red);
       return;
     }
-    if (!RegExp(r'[A-Z]').hasMatch(kata_sandi)) {
+    if (!RegExp(r'[A-Z]').hasMatch(kataSandi)) {
       alert(context, "Kata sandi harus mengandung minimal 1 huruf kapital !", "Gagal mendaftar!", Icons.error, Colors.red);
       return;
     }
-    if (!RegExp(r'[a-z]').hasMatch(kata_sandi)) {
+    if (!RegExp(r'[a-z]').hasMatch(kataSandi)) {
       alert(context, "Kata sandi harus mengandung minimal 1 huruf kecil !", "Gagal mendaftar!", Icons.error, Colors.red);
       return;
     }
-    if (!RegExp(r'\d').hasMatch(kata_sandi)) {
+    if (!RegExp(r'\d').hasMatch(kataSandi)) {
       alert(context, "Kata sandi harus mengandung minimal 1 angka!", "Gagal mendaftar!", Icons.error, Colors.red);
       return;
     }
-    if (!RegExp(r'[!@#\$%^&*]').hasMatch(kata_sandi)) {
+    if (!RegExp(r'[!@#\$%^&*]').hasMatch(kataSandi)) {
       alert(context, "Kata sandi harus mengandung minimal 1 karakter unik !", "Gagal mendaftar!", Icons.error, Colors.red);
       return;
     }
-    if(konfirmasi.isEmpty || konfirmasi == null){
+    if(konfirmasi.isEmpty){
       alert(context, "Ulangi kata sandi tidak boleh kosong !", "gagal mendaftar!",Icons.error, Colors.red);
       return;
     }
@@ -114,17 +116,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
       alert(context, "Ulangi kata sandi harus mengandung minimal 1 karakter unik !", "Gagal mendaftar!", Icons.error, Colors.red);
       return;
     }
-    if (kata_sandi != konfirmasi) {
+    if (kataSandi != konfirmasi) {
       alert(context, "Kata sandi dan Ulangi kata sandi tidak sesuai !", "gagal mendaftar!", Icons.error,Colors.red);
       return;
     }
     try {
-      Map<String, dynamic> response = await apiService.register(email, nama_lengkap, kata_sandi, konfirmasi);
+      Map<String, dynamic> response = await apiService.register(email, namaLengkap, kataSandi, konfirmasi);
       if (response['status'] == 'success') {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => LoginScreen(),
+            builder: (context) => const LoginScreen(),
           ),
         );
         alert(context, "Silahkan Masuk","Berhasil Mendaftar!",Icons.check, Colors.green);
@@ -478,7 +480,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           fontSize = 16.0;
                         }
 
-                        return Container(
+                        return SizedBox(
                           width: MediaQuery.of(context).size.width * 0.8,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -501,7 +503,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 onPressed: () {
                                   // Add logic to navigate to the registration page
                                   Navigator.pushReplacement(context,
-                                      pageMove.movepage(LoginScreen()));
+                                      pageMove.movepage(const LoginScreen()));
                                 },
                                 child: Text(
                                   'Masuk',
@@ -532,18 +534,18 @@ Widget contentBox(BuildContext context, String message, String title, IconData i
   return Stack(
     children: <Widget>[
       Container(
-        padding: EdgeInsets.only(
+        padding: const EdgeInsets.only(
           left: 20,
           top: 45,
           right: 20,
           bottom: 20,
         ),
-        margin: EdgeInsets.only(top: 45),
+        margin: const EdgeInsets.only(top: 45),
         decoration: BoxDecoration(
           shape: BoxShape.rectangle,
           color: Colors.white,
           borderRadius: BorderRadius.circular(10),
-          boxShadow: [
+          boxShadow: const [
             BoxShadow(
               color: Colors.black,
               offset: Offset(0, 10),
@@ -556,27 +558,27 @@ Widget contentBox(BuildContext context, String message, String title, IconData i
           children: <Widget>[
             Text(
               title,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(height: 15),
+            const SizedBox(height: 15),
             Text(
               message,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 18,
               ),
               textAlign: TextAlign.center,
             ),
-            SizedBox(height: 22),
+            const SizedBox(height: 22),
             Align(
               alignment: Alignment.bottomRight,
               child: TextButton(
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-                child: Text(
+                child: const Text(
                   'OKE',
                   style: TextStyle(color: Color.fromRGBO(203, 164, 102, 1)),
                 ),
