@@ -1,11 +1,10 @@
 import 'package:eduapp/component/custom_appbar.dart';
 import 'package:eduapp/component/custom_colors.dart';
-import 'package:eduapp/pages/edukasi_kesenianArtikel.dart';
+import 'package:eduapp/pages/edukasi_emotalArtikel.dart';
 import 'package:eduapp/pages/pages_EdukasiMenu.dart';
 import 'package:flutter/material.dart';
-
-class KesenianPages extends StatelessWidget {
-  KesenianPages({Key? key});
+class EdukasiEmotal extends StatelessWidget {
+  EdukasiEmotal({Key? key}) : super(key: key);
 
   // Dummy list of articles
   final List<Map<String, String>> articles = [
@@ -24,7 +23,6 @@ class KesenianPages extends StatelessWidget {
       'date': '28 Maret 2024',
       'image': 'assets/images/artikel 1.png',
     },
-    
   ];
 
   @override
@@ -34,7 +32,7 @@ class KesenianPages extends StatelessWidget {
         slivers: <Widget>[
           SliverToBoxAdapter(
             child: CustomAppBar(
-              title: 'Edukasi Kesenian',
+              title: 'Emotal ( Emosi dan Mental )',
               buttonOnPressed: () {
                 Navigator.push(
                   context,
@@ -49,16 +47,16 @@ class KesenianPages extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Image.asset(
-                    'assets/images/Kesenian.jpg',
+                    'assets/images/bahasa.jpg',
                     fit: BoxFit.cover,
                     width: double.infinity,
                     height: 200,
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: Text(
-                      'Kesenian',
+                      'Pengendalian Emosi Dan Mental Pada Anak',
                       style: TextStyle(
                         fontSize: 20,
                         fontFamily: 'Poppins_Bold',
@@ -66,15 +64,15 @@ class KesenianPages extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(height: 5),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                  const SizedBox(height: 5),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16),
                     child: Text(
-                      'Edukasi seni pada anak melibatkan pengajaran dan eksplorasi berbagai bentuk seni, seperti seni visual, musik, tari, teater, dan sastra. Ini mencakup pengembangan kreativitas, ekspresi diri, apresiasi seni, dan keterampilan artistik yang dapat membantu anak-anak berkembang secara holistik.',
+                      'Pengendalian emosi dan kesejahteraan mental sangat penting bagi perkembangan anak karena berdampak langsung pada kesehatan mental, hubungan interpersonal, prestasi akademik, resolusi konflik, kemandirian, kecerdasan emosional, serta mencegah perilaku berisiko. Anak-anak yang mampu mengelola emosi dengan baik cenderung lebih sehat secara mental, lebih sukses dalam hubungan sosial, dan lebih fokus dalam belajar, serta memiliki kemampuan untuk mengatasi konflik dan tantangan hidup dengan lebih efektif. Orang tua dan pengasuh memiliki peran kunci dalam memberikan dukungan dan membantu anak-anak mengembangkan keterampilan pengendalian emosi sejak dini.',
                       textAlign: TextAlign.left,
                     ),
                   ),
-                  Divider(
+                  const Divider(
                     height: 38,
                     thickness: 1,
                     color: Colors.grey,
@@ -84,7 +82,7 @@ class KesenianPages extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: Text(
-                      'Tujuan',
+                      'Dampak negatif kurangnya kesadaran pengendalian emosi dan mental',
                       style: TextStyle(
                         fontSize: 20,
                         fontFamily: 'Poppins_Bold',
@@ -92,62 +90,36 @@ class KesenianPages extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(height: 5),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                  const SizedBox(height: 5),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16),
                     child: Text(
-                      'Pendidikan seni pada anak memiliki beberapa tujuan penting. Pertama, untuk mengembangkan kreativitas mereka dan memberi ruang bagi ekspresi diri melalui berbagai media seni. Kedua, untuk meningkatkan keterampilan artistik dalam berbagai aktivitas seperti menggambar, melukis, menyanyi, menari, dan berakting. Ketiga, untuk memperluas pemahaman mereka tentang budaya dan tradisi melalui eksplorasi karya seni dari berbagai budaya. Dan terakhir, untuk mendorong anak-anak dalam mengekspresikan emosi mereka melalui seni, sehingga membantu mereka dalam memahami dan mengelola perasaan dengan lebih baik.',
+                      'Kurangnya kesadaran dan pengendalian emosi serta kesejahteraan mental dapat memiliki dampak negatif yang signifikan pada kehidupan seseorang. Hal ini dapat menyebabkan masalah-masalah seperti peningkatan stres, kecemasan, dan depresi. Individu yang tidak mampu mengelola emosi mereka dengan baik cenderung mengalami kesulitan dalam hubungan interpersonal, baik di rumah, sekolah, atau tempat kerja. Selain itu, kurangnya kesadaran akan kesehatan mental dapat mengakibatkan penyalahgunaan zat, perilaku impulsif, dan gangguan perilaku lainnya. Dalam konteks sosial dan profesional, hal ini dapat menghambat kemajuan karier dan menciptakan konflik di lingkungan kerja. Oleh karena itu, kesadaran akan pentingnya pengendalian emosi dan kesejahteraan mental menjadi krusial untuk menjaga keseimbangan dan kualitas hidup yang baik.',
                       textAlign: TextAlign.left,
                     ),
                   ),
-                  Divider(
+                  const Divider(
                     height: 38,
                     thickness: 1,
                     color: Colors.grey,
                     indent: 16,
                     endIndent: 16,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: Text(
-                      'Kenapa perlu melakukan ni? ',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontFamily: 'Poppins_Bold',
-                        color: customColor.primaryColors,
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 5),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: Text(
-                      'Partisipasi dalam seni membantu anak-anak mengembangkan keterampilan kreatif, memperoleh kemampuan dalam pemecahan masalah, serta melihat dunia dengan perspektif yang unik. Studi menunjukkan bahwa keterlibatan dalam pendidikan seni juga berkontribusi pada peningkatan prestasi akademik di sekolah. Selain itu, melalui seni, anak-anak membangun kepercayaan diri dalam mengekspresikan diri dan percaya pada kemampuan mereka sendiri. Pengalaman belajar melalui seni juga memberikan kesempatan berharga bagi pertumbuhan holistik anak-anak.',
-                      textAlign: TextAlign.left,
-                    ),
-                  ),
-                  Divider(
-                    height: 38,
-                    thickness: 1,
-                    color: Colors.grey,
-                    indent: 16,
-                    endIndent: 16,
-                  ),
-
+                 
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Cara Mengatasi ',
+                          'Kenapa perlu melakukan pengendalian emosi dan mental',
                           style: TextStyle(
                             fontSize: 20,
                             fontFamily: 'Poppins_Bold',
                             color: customColor.primaryColors,
                           ),
                         ),
-                        SizedBox(height: 5),
+                        const SizedBox(height: 5),
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -158,16 +130,16 @@ class KesenianPages extends StatelessWidget {
                                 color: customColor.primaryColors,
                               ),
                             ),
-                            SizedBox(width: 8),
-                            Expanded(
+                            const SizedBox(width: 8),
+                            const Expanded(
                               child: Text(
-                                'Berikan pilihan: Biarkan anak memilih jenis seni yang mereka minati dan ingin pelajari. Memberi mereka kontrol atas pembelajaran mereka dapat meningkatkan minat dan motivasi.',
+                                'Kesehatan Mental: Mengendalikan emosi membantu mencegah masalah kesehatan mental seperti kecemasan, depresi, dan stres berlebihan.',
                                 textAlign: TextAlign.left,
                               ),
                             ),
                           ],
                         ),
-                        SizedBox(height: 5),
+                        const SizedBox(height: 5),
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -178,16 +150,16 @@ class KesenianPages extends StatelessWidget {
                                 color: customColor.primaryColors,
                               ),
                             ),
-                            SizedBox(width: 8),
-                            Expanded(
+                            const SizedBox(width: 8),
+                            const Expanded(
                               child: Text(
-                                'Beri dorongan positif: Berikan pujian dan dukungan saat anak menunjukkan minat dan prestasi dalam seni. Dorong mereka untuk terus mencoba dan berlatih.',
+                                'Hubungan Interpersonal yang Sehat: Kemampuan untuk mengelola emosi dengan baik membantu dalam membangun hubungan yang sehat dengan orang lain, termasuk keluarga, teman, dan rekan kerja.',
                                 textAlign: TextAlign.left,
                               ),
                             ),
                           ],
                         ),
-                        SizedBox(height: 5),
+                        const SizedBox(height: 5),
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -198,16 +170,16 @@ class KesenianPages extends StatelessWidget {
                                 color: customColor.primaryColors,
                               ),
                             ),
-                            SizedBox(width: 8),
-                            Expanded(
+                            const SizedBox(width: 8),
+                            const Expanded(
                               child: Text(
-                                'Libatkan mereka dalam pengalaman langsung: Ajak anak untuk berpartisipasi dalam kegiatan seni langsung, seperti mengunjungi galeri seni, pertunjukan musik, atau pameran teater.',
+                                'Kinerja yang Lebih Baik: Orang yang memiliki kesejahteraan mental yang baik cenderung lebih produktif dan fokus dalam kehidupan sehari-hari, baik dalam pekerjaan maupun aktivitas lainnya.',
                                 textAlign: TextAlign.left,
                               ),
                             ),
                           ],
                         ),
-                        SizedBox(height: 5),
+                        const SizedBox(height: 5),
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -218,16 +190,16 @@ class KesenianPages extends StatelessWidget {
                                 color: customColor.primaryColors,
                               ),
                             ),
-                            SizedBox(width: 8),
-                            Expanded(
+                            const SizedBox(width: 8),
+                            const Expanded(
                               child: Text(
-                                'Berikan alat dan sumber daya yang sesuai: Pastikan anak memiliki akses ke alat dan sumber daya yang mereka butuhkan untuk belajar seni, seperti kertas gambar, cat air, instrumen musik, atau buku seni.',
+                                'Pengambilan Keputusan yang Lebih Baik: Dengan memiliki kendali atas emosi, seseorang dapat membuat keputusan yang lebih baik secara rasional, tanpa dipengaruhi oleh emosi yang tidak stabil.',
                                 textAlign: TextAlign.left,
                               ),
                             ),
                           ],
                         ),
-                        SizedBox(height: 5),
+                        const SizedBox(height: 5),
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -238,30 +210,10 @@ class KesenianPages extends StatelessWidget {
                                 color: customColor.primaryColors,
                               ),
                             ),
-                            SizedBox(width: 8),
-                            Expanded(
+                            const SizedBox(width: 8),
+                            const Expanded(
                               child: Text(
-                                'Berikan proyek seni yang menarik: Beri mereka proyek seni yang menarik dan relevan dengan minat mereka, seperti membuat karya seni yang terinspirasi oleh tokoh favorit mereka atau menciptakan karya seni yang merefleksikan pengalaman pribadi mereka.',
-                                textAlign: TextAlign.left,
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 5),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              '\u2022',
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: customColor.primaryColors,
-                              ),
-                            ),
-                            SizedBox(width: 8),
-                            Expanded(
-                              child: Text(
-                                'Jadikan seni sebagai bagian dari kehidupan sehari-hari: Dorong anak untuk mengekspresikan diri melalui seni dalam kehidupan sehari-hari mereka, seperti membuat jurnal, menghias kamar mereka, atau membuat hadiah untuk teman atau anggota keluarga.',
+                                'Kualitas Hidup yang Lebih Tinggi: Kesejahteraan mental yang baik menyebabkan peningkatan kualitas hidup secara keseluruhan, dengan lebih banyak rasa bahagia, kepuasan, dan keseimbangan.',
                                 textAlign: TextAlign.left,
                               ),
                             ),
@@ -270,7 +222,7 @@ class KesenianPages extends StatelessWidget {
                       ],
                     ),
                   ),
-                  Divider(
+                  const Divider(
                     height: 38,
                     thickness: 1,
                     color: Colors.grey,
@@ -290,17 +242,17 @@ class KesenianPages extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
+                  const Text(
                     'Artikel Pendukung',
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   ListView.builder(
                     shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
+                    physics: const NeverScrollableScrollPhysics(),
                     itemCount: articles.length,
                     itemBuilder: (context, index) {
                       return Padding(
@@ -323,15 +275,15 @@ class KesenianPages extends StatelessWidget {
                                   children: [
                                     Text(
                                       articles[index]['title']!,
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         fontSize: 18,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
-                                    SizedBox(height: 8),
+                                    const SizedBox(height: 8),
                                     Text(
                                       'Tanggal Upload: ${articles[index]['date']}',
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         color: Colors.grey,
                                       ),
                                     ),
@@ -348,19 +300,20 @@ class KesenianPages extends StatelessWidget {
               ),
             ),
           ),
-        SliverToBoxAdapter(
+          // Tambahkan widget InkWell untuk "Lihat Lainnya" di sini
+          SliverToBoxAdapter(
             child: InkWell(
               onTap: () {
                 // Navigasi ke halaman lain saat "Lihat Lainnya" diklik
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => KesenianArtikel()),
+                  MaterialPageRoute(builder: (context) => EdukasiEmotalartikel()),
                 );
               },
               child: Container(
                 padding: const EdgeInsets.all(16),
                 color: Colors.grey[200],
-                child: Center(
+                child: const Center(
                   child: Text(
                     'Lihat Lainnya',
                     style: TextStyle(

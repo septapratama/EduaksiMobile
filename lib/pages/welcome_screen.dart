@@ -47,7 +47,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               onTap: () {
                 // Navigate to the login screen
                 Navigator.pushReplacement(
-                    context, pageMove.movepage(LoginScreen()));
+                    context, pageMove.movepage(const LoginScreen()));
               },
               child: Padding(
                 padding: const EdgeInsets.only(top: 20.0, right: 15.0),
@@ -115,7 +115,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                       if (_currentPage == _totalPages - 1) {
                         // Navigate to the login screen
                         Navigator.pushReplacement(
-                            context, pageMove.movepage(LoginScreen()));
+                            context, pageMove.movepage(const LoginScreen()));
                       } else {
                         _pageController.nextPage(
                           duration: const Duration(milliseconds: 500),

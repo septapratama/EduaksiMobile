@@ -64,11 +64,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
       alert(context, "Email tidak valid!", "Gagal mendaftar!", Icons.error, Colors.red);
       return;
     }
-    if(namaLengkap.isEmpty || namaLengkap == null){
+    if(namaLengkap.isEmpty){
       alert(context, "Nama Lengkap tidak boleh kosong !", "gagal mendaftar!",Icons.error, Colors.red);
       return;
     }
-    if(kataSandi.isEmpty || kataSandi == null){
+    if(kataSandi.isEmpty){
       alert(context, "Kata sandi tidak boleh kosong !", "gagal mendaftar!",Icons.error, Colors.red);
       return;
     }
@@ -126,7 +126,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => LoginScreen(),
+            builder: (context) => const LoginScreen(),
           ),
         );
         alert(context, "Silahkan Masuk","Berhasil Mendaftar!",Icons.check, Colors.green);
@@ -503,7 +503,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 onPressed: () {
                                   // Add logic to navigate to the registration page
                                   Navigator.pushReplacement(context,
-                                      pageMove.movepage(LoginScreen()));
+                                      pageMove.movepage(const LoginScreen()));
                                 },
                                 child: Text(
                                   'Masuk',

@@ -56,7 +56,7 @@ class _SplashScreenState extends State<SplashScreen> {
           context,
           PageRouteBuilder(
             pageBuilder: (context, animation, secondaryAnimation) =>
-                WelcomeScreen(),
+                const WelcomeScreen(),
             transitionsBuilder:
                 (context, animation, secondaryAnimation, child) {
               const begin = Offset(0.0, 1.0);

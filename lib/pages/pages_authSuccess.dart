@@ -53,7 +53,7 @@ class OTPSuccess extends StatelessWidget {
                   onPressed: () {
                     // Add your onPressed logic here
                     Navigator.pushReplacement(
-                        context, pageMove.movepage(LoginScreen()));
+                        context, pageMove.movepage(const LoginScreen()));
                   },
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 50),

@@ -1,10 +1,9 @@
 import 'package:eduapp/component/custom_appbar.dart';
 import 'package:eduapp/component/custom_colors.dart';
 import 'package:eduapp/pages/aksi_calculator.dart';
-import 'package:eduapp/pages/edukasi_bahasa.dart';
-import 'package:eduapp/pages/edukasi_kesenian.dart';
-import 'package:eduapp/pages/edukasi_psikologi.dart';
-import 'package:eduapp/pages/edukasi_religi.dart';
+import 'package:eduapp/pages/edukasi_emotal.dart';
+import 'package:eduapp/pages/edukasi_diisi.dart';
+import 'package:eduapp/pages/edukasi_nutrisi.dart';
 import 'package:eduapp/utils/navigationbar.dart';
 import 'package:flutter/material.dart';
 import 'package:eduapp/component/custom_appbar_withoutarrowback.dart';
@@ -14,11 +13,15 @@ class AksiMenu extends StatelessWidget {
 
   List<Map<String, dynamic>> articles = [
     {
-      'title': 'Tentukan Berat Badan\nIdeal Anda',
+      'title': 'Tentukan Berat Badan Ideal Anda',
       'image': 'assets/images/artikel 1.png',
     },
     {
-      'title': 'Catat Semua Kebutuhan\nDan Aktivitas Anda',
+      'title': 'Catat Tumbuh Kembang Anak',
+      'image': 'assets/images/image 36.png',
+    },
+      {
+      'title': 'Jadwalkan Waktu Keluarga',
       'image': 'assets/images/image 36.png',
     },
     // Add more articles as needed
@@ -81,7 +84,7 @@ class AksiMenu extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => Calculator(),
+                                builder: (context) => const Calculator(),
                               ),
                             );
                           } else if (index == 1) {
@@ -89,7 +92,15 @@ class AksiMenu extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => BahasaPages(),
+                                builder: (context) => Calculator(),
+                              ),
+                            );
+                          } else if (index == 2) {
+                            // Jika index kedua, navigasi ke BahasaPages
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => Calculator(),
                               ),
                             );
                           } 
@@ -139,7 +150,7 @@ class AksiMenu extends StatelessWidget {
 class DetailPage extends StatelessWidget {
   final String title;
 
-  const DetailPage({Key? key, required this.title}) : super(key: key);
+  const DetailPage({super.key, required this.title});
 
   @override
   Widget build(BuildContext context) {

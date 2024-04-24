@@ -1,11 +1,11 @@
 import 'package:eduapp/component/custom_appbar.dart';
 import 'package:eduapp/component/custom_colors.dart';
-import 'package:eduapp/pages/edukasi_bahasaArtikel.dart';
+import 'package:eduapp/pages/edukasi_nutrisiArtikel.dart';
 import 'package:eduapp/pages/pages_EdukasiMenu.dart';
 import 'package:flutter/material.dart';
 
-class BahasaPages extends StatelessWidget {
-  BahasaPages({Key? key});
+class EdukasiNutrisi extends StatelessWidget {
+  EdukasiNutrisi({super.key});
 
   // Dummy list of articles
   final List<Map<String, String>> articles = [
@@ -24,6 +24,7 @@ class BahasaPages extends StatelessWidget {
       'date': '28 Maret 2024',
       'image': 'assets/images/artikel 1.png',
     },
+    
   ];
 
   @override
@@ -33,7 +34,7 @@ class BahasaPages extends StatelessWidget {
         slivers: <Widget>[
           SliverToBoxAdapter(
             child: CustomAppBar(
-              title: 'Edukasi Bahasa',
+              title: 'Edukasi Nutrisi',
               buttonOnPressed: () {
                 Navigator.push(
                   context,
@@ -48,16 +49,16 @@ class BahasaPages extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Image.asset(
-                    'assets/images/bahasa.jpg',
+                    'assets/images/Psiko.jpg',
                     fit: BoxFit.cover,
                     width: double.infinity,
                     height: 200,
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: Text(
-                      'Bahasa',
+                      'Psikologi',
                       style: TextStyle(
                         fontSize: 20,
                         fontFamily: 'Poppins_Bold',
@@ -65,15 +66,15 @@ class BahasaPages extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(height: 5),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                  const SizedBox(height: 5),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16),
                     child: Text(
-                      'Mengajari bahasa atau kecakapan berbicara pada anak merupakan cabang psikologi perkembangan yang berkaitan dengan bagaimana anak-anak belajar, memahami, dan menggunakan bahasa. Ini melibatkan pemahaman tentang perkembangan bahasa anak, proses belajar bicara, dan faktor-faktor yang memengaruhi kemampuan berkomunikasi mereka.',
+                      'Psikologi emosional anak dapat diketahui bagaimana anak-anak mengenali, mengelola, dan bereaksi terhadap emosi mereka sendiri serta emosi orang lain. Ini meliputi pemahaman tentang berbagai emosi seperti kegembiraan, kecemasan, kemarahan, kesedihan, dan bagaimana emosi ini mempengaruhi perilaku dan interaksi sosial anak.',
                       textAlign: TextAlign.left,
                     ),
                   ),
-                  Divider(
+                  const Divider(
                     height: 38,
                     thickness: 1,
                     color: Colors.grey,
@@ -91,15 +92,15 @@ class BahasaPages extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(height: 5),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                  const SizedBox(height: 5),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16),
                     child: Text(
-                      'Membantu anak-anak mengembangkan kemampuan berbicara dan berkomunikasi secara efektif. Ini termasuk memahami arti kata-kata, mempelajari tata bahasa yang tepat, dan belajar berinteraksi dengan orang lain dalam konteks sosial yang berbeda.',
+                      'Membantu anak mengembangkan keterampilan pengaturan emosi yang sehat, termasuk kemampuan untuk mengidentifikasi emosi, mengelola stres, memahami dan mengkomunikasikan perasaan mereka, serta membangun hubungan sosial yang positif.',
                       textAlign: TextAlign.left,
                     ),
                   ),
-                  Divider(
+                  const Divider(
                     height: 38,
                     thickness: 1,
                     color: Colors.grey,
@@ -117,21 +118,22 @@ class BahasaPages extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(height: 5),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                  const SizedBox(height: 5),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16),
                     child: Text(
-                      'Kecakapan dalam berbicara adalah keterampilan yang sangat penting dalam kehidupan sehari-hari. Kemampuan berkomunikasi yang baik memungkinkan anak untuk mengekspresikan pikiran, perasaan, dan kebutuhan mereka dengan jelas, yang dapat meningkatkan kualitas hubungan sosial dan akademik mereka. Selain itu, kemampuan berbicara yang baik juga mempersiapkan anak untuk sukses di sekolah dan di tempat kerja di masa depan.',
+                      'Pemahaman dan pengaturan emosional anak sangat penting untuk perkembangan holistik mereka. Kemampuan untuk mengelola emosi dengan baik membantu anak dalam berbagai aspek kehidupan mereka, termasuk prestasi akademis, hubungan sosial, dan kesejahteraan mental. Anak-anak yang memiliki keterampilan pengaturan emosi yang baik cenderung lebih mampu menyelesaikan konflik, lebih terampil dalam berempati, dan lebih mudah beradaptasi dengan perubahan.',
                       textAlign: TextAlign.left,
                     ),
                   ),
-                  Divider(
+                  const Divider(
                     height: 38,
                     thickness: 1,
                     color: Colors.grey,
                     indent: 16,
                     endIndent: 16,
                   ),
+
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: Column(
@@ -145,7 +147,7 @@ class BahasaPages extends StatelessWidget {
                             color: customColor.primaryColors,
                           ),
                         ),
-                        SizedBox(height: 5),
+                        const SizedBox(height: 5),
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -156,16 +158,16 @@ class BahasaPages extends StatelessWidget {
                                 color: customColor.primaryColors,
                               ),
                             ),
-                            SizedBox(width: 8),
-                            Expanded(
+                            const SizedBox(width: 8),
+                            const Expanded(
                               child: Text(
-                                'Stimulasi Bahasa: Berikan anak lingkungan yang kaya akan bahasa dengan membacakan buku, menyanyikan lagu, dan berbicara dengannya secara teratur.',
+                                'Model Perilaku Positif: Orang tua dan pengasuh perlu menjadi contoh yang baik dalam mengelola emosi mereka sendiri. Anak-anak belajar banyak dari pengamatan terhadap bagaimana orang dewasa merespon situasi yang menantang.',
                                 textAlign: TextAlign.left,
                               ),
                             ),
                           ],
                         ),
-                        SizedBox(height: 5),
+                        const SizedBox(height: 5),
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -176,16 +178,16 @@ class BahasaPages extends StatelessWidget {
                                 color: customColor.primaryColors,
                               ),
                             ),
-                            SizedBox(width: 8),
-                            Expanded(
+                            const SizedBox(width: 8),
+                            const Expanded(
                               child: Text(
-                                'Modelkan Kecakapan Berbicara: Jadilah contoh yang baik dengan menggunakan bahasa yang baik dan benar di depan anak. Berbicaralah dengan tenang dan jelas, dan beri mereka contoh kalimat yang benar.',
+                                'Mengajarkan Penyadaran Emosional: Bantu anak untuk mengidentifikasi dan memahami emosi mereka sendiri dengan memberikan nama pada emosi yang mereka rasakan. Ajari mereka untuk mengenali tanda-tanda fisik emosi seperti detak jantung yang cepat ketika marah atau perasaan getaran di perut ketika cemas.',
                                 textAlign: TextAlign.left,
                               ),
                             ),
                           ],
                         ),
-                        SizedBox(height: 5),
+                        const SizedBox(height: 5),
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -196,16 +198,16 @@ class BahasaPages extends StatelessWidget {
                                 color: customColor.primaryColors,
                               ),
                             ),
-                            SizedBox(width: 8),
-                            Expanded(
+                            const SizedBox(width: 8),
+                            const Expanded(
                               child: Text(
-                                'Ajarkan Melalui Interaksi Sosial: Ajak anak untuk berinteraksi dengan orang lain secara aktif. Melalui percakapan dan interaksi sosial, mereka akan belajar untuk memahami cara menggunakan bahasa dengan baik.',
+                                'Membangun Keterampilan Pengaturan Emosi: Ajarkan anak teknik-teknik relaksasi seperti pernapasan dalam dan latihan visualisasi untuk membantu mereka mengatasi stres dan kecemasan. Berikan strategi praktis untuk mengatasi kemarahan seperti mengambil napas dalam-dalam atau berjalan-jalan sebentar.',
                                 textAlign: TextAlign.left,
                               ),
                             ),
                           ],
                         ),
-                        SizedBox(height: 5),
+                        const SizedBox(height: 5),
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -216,16 +218,16 @@ class BahasaPages extends StatelessWidget {
                                 color: customColor.primaryColors,
                               ),
                             ),
-                            SizedBox(width: 8),
-                            Expanded(
+                            const SizedBox(width: 8),
+                            const Expanded(
                               child: Text(
-                                'Berikan Umpan Balik Positif: Berikan pujian dan dorongan saat anak menggunakan bahasa dengan baik. Ini akan memperkuat perilaku yang diinginkan dan meningkatkan kepercayaan diri mereka dalam berbicara.',
+                                'Komunikasi Terbuka: Jadikan rumah sebagai tempat yang aman bagi anak untuk mengungkapkan perasaan mereka. Dengan mendengarkan dengan empati dan tanpa penilaian, anak akan merasa didukung dan lebih nyaman dalam berbagi perasaan mereka.',
                                 textAlign: TextAlign.left,
                               ),
                             ),
                           ],
                         ),
-                        SizedBox(height: 5),
+                        const SizedBox(height: 5),
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -236,10 +238,10 @@ class BahasaPages extends StatelessWidget {
                                 color: customColor.primaryColors,
                               ),
                             ),
-                            SizedBox(width: 8),
-                            Expanded(
+                            const SizedBox(width: 8),
+                            const Expanded(
                               child: Text(
-                                'Terlibat dalam Kegiatan Berbicara yang Menarik: Ajak anak untuk berpartisipasi dalam permainan kata, teka-teki, atau cerita bersama untuk meningkatkan kemampuan berbicara mereka secara menyenangkan dan interaktif.el Perilaku Positif: Orang tua dan pengasuh perlu menjadi contoh yang baik dalam mengelola emosi mereka sendiri. Anak-anak belajar banyak dari pengamatan terhadap bagaimana orang dewasa merespon situasi yang menantang.',
+                                'Membangun Koneksi Emosional: Luangkan waktu untuk terhubung secara emosional dengan anak Anda melalui kegiatan yang Anda nikmati bersama, seperti membaca buku, bermain permainan, atau sekadar berbicara satu sama lain. Hubungan yang kuat dengan orang tua atau pengasuh membantu anak merasa aman dan didukung dalam mengelola emosinya.',
                                 textAlign: TextAlign.left,
                               ),
                             ),
@@ -248,7 +250,7 @@ class BahasaPages extends StatelessWidget {
                       ],
                     ),
                   ),
-                  Divider(
+                  const Divider(
                     height: 38,
                     thickness: 1,
                     color: Colors.grey,
@@ -268,17 +270,17 @@ class BahasaPages extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
+                  const Text(
                     'Artikel Pendukung',
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   ListView.builder(
                     shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
+                    physics: const NeverScrollableScrollPhysics(),
                     itemCount: articles.length,
                     itemBuilder: (context, index) {
                       return Padding(
@@ -301,15 +303,15 @@ class BahasaPages extends StatelessWidget {
                                   children: [
                                     Text(
                                       articles[index]['title']!,
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         fontSize: 18,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
-                                    SizedBox(height: 8),
+                                    const SizedBox(height: 8),
                                     Text(
                                       'Tanggal Upload: ${articles[index]['date']}',
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         color: Colors.grey,
                                       ),
                                     ),
@@ -326,20 +328,19 @@ class BahasaPages extends StatelessWidget {
               ),
             ),
           ),
-          // Tambahkan widget InkWell untuk "Lihat Lainnya" di sini
           SliverToBoxAdapter(
             child: InkWell(
               onTap: () {
                 // Navigasi ke halaman lain saat "Lihat Lainnya" diklik
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => BahasaArtikel()),
+                  MaterialPageRoute(builder: (context) => EdukasiNutrisiartikel()),
                 );
               },
               child: Container(
                 padding: const EdgeInsets.all(16),
                 color: Colors.grey[200],
-                child: Center(
+                child: const Center(
                   child: Text(
                     'Lihat Lainnya',
                     style: TextStyle(

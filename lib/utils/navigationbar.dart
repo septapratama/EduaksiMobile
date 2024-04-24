@@ -1,6 +1,5 @@
 import 'package:eduapp/component/custom_colors.dart';
 import 'package:eduapp/pages/beranda_pages.dart';
-import 'package:eduapp/pages/pages_EdukasiMenu.dart';
 import 'package:eduapp/pages/pages_profil.dart';
 import 'package:flutter/material.dart';
 

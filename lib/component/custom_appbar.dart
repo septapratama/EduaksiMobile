@@ -11,7 +11,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String fontFamily;
 
   const CustomAppBar({
-    Key? key,
+    super.key,
     required this.title,
     this.leadingOnPressed, // onPressed function argument
     this.buttonOnPressed, // onPressed function argument for custom button
@@ -20,7 +20,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.backgroundColor = const Color.fromRGBO(30, 84, 135, 1), // Default background color
     this.titleColor = Colors.white, // Default title color
     this.fontFamily = 'Poppins_Bold', // Default font family
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -33,10 +33,10 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
       ),
       backgroundColor: backgroundColor,
-      iconTheme: IconThemeData(color: Colors.white), // Set the color of leading button icon
+      iconTheme: const IconThemeData(color: Colors.white), // Set the color of leading button icon
       leading: leadingOnPressed != null
           ? IconButton(
-              icon: Icon(Icons.arrow_back),
+              icon: const Icon(Icons.arrow_back),
               onPressed: leadingOnPressed,
             )
           : null,

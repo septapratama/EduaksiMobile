@@ -1,9 +1,9 @@
 import 'package:eduapp/component/custom_appbar.dart';
 import 'package:eduapp/component/custom_colors.dart';
-import 'package:eduapp/pages/edukasi_bahasa.dart';
-import 'package:eduapp/pages/edukasi_kesenian.dart';
-import 'package:eduapp/pages/edukasi_psikologi.dart';
-import 'package:eduapp/pages/edukasi_religi.dart';
+import 'package:eduapp/pages/edukasi_emotal.dart';
+import 'package:eduapp/pages/edukasi_diisi.dart';
+import 'package:eduapp/pages/edukasi_nutrisi.dart';
+import 'package:eduapp/pages/edukasi_pengasuhan.dart';
 import 'package:eduapp/utils/navigationbar.dart';
 import 'package:flutter/material.dart';
 import 'package:eduapp/component/custom_appbar_withoutarrowback.dart';
@@ -13,19 +13,19 @@ class EdukasiMenu extends StatelessWidget {
 
   List<Map<String, dynamic>> articles = [
     {
-      'title': 'Edukasi Psikologi',
+      'title': 'Edukasi Emotal',
       'image': 'assets/images/artikel 1.png',
     },
     {
-      'title': 'Edukasi Bahasa',
+      'title': 'Edukasi Diisi',
       'image': 'assets/images/image 36.png',
     },
     {
-      'title': 'Edukasi Religi',
+      'title': 'Edukasi Nutrisi',
       'image': 'assets/images/image 34.png',
     },
     {
-      'title': 'Edukasi Kesenian',
+      'title': 'Edukasi Pengasuhan',
       'image': 'assets/images/image 35.png',
     },
     // Add more articles as needed
@@ -88,7 +88,7 @@ class EdukasiMenu extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => PskikologiPages(),
+                                builder: (context) => EdukasiEmotal(),
                               ),
                             );
                           } else if (index == 1) {
@@ -96,7 +96,7 @@ class EdukasiMenu extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => BahasaPages(),
+                                builder: (context) => EdukasiDiisi(),
                               ),
                             );
                           } else if (index == 2) {
@@ -104,7 +104,7 @@ class EdukasiMenu extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => ReligiPages(),
+                                builder: (context) => EdukasiNutrisi(),
                               ),
                             );
                           }
@@ -113,7 +113,7 @@ class EdukasiMenu extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => KesenianPages(),
+                                builder: (context) =>EdukasiPengasuhan(),
                               ),
                             );
                           }
@@ -164,7 +164,7 @@ class EdukasiMenu extends StatelessWidget {
 class DetailPage extends StatelessWidget {
   final String title;
 
-  const DetailPage({Key? key, required this.title}) : super(key: key);
+  const DetailPage({super.key, required this.title});
 
   @override
   Widget build(BuildContext context) {

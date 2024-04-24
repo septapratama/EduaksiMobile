@@ -1,4 +1,6 @@
-import 'package:eduapp/pages/edukasi_psikologi.dart';
+import 'package:eduapp/pages/beranda_LihatArticles.dart';
+import 'package:eduapp/pages/edukasi_nutrisi.dart';
+import 'package:eduapp/pages/konsultasi.dart';
 import 'package:eduapp/pages/pages_AksiMenu.dart';
 import 'package:eduapp/pages/pages_EdukasiMenu.dart';
 import 'package:eduapp/pages/pages_profil.dart';
@@ -14,9 +16,9 @@ class Beranda extends StatelessWidget {
     "Konsultasi",
   ];
   List<Color> menuColors = [
-    const Color.fromRGBO(7, 210, 139, 1),
-    const Color.fromARGB(255, 90, 49, 236),
-    const Color.fromARGB(255, 5, 131, 227),
+    const Color.fromARGB(255, 7, 159, 229),
+    const Color.fromARGB(255, 222, 107, 6),
+    const Color.fromARGB(255, 3, 181, 86),
   ];
 
   List<Icon> menuIcons = [
@@ -60,7 +62,8 @@ class Beranda extends StatelessWidget {
       child: Column(
         children: [
           Container(
-            padding: const EdgeInsets.only(top: 15, left: 15, right: 15, bottom: 10),
+            padding:
+                const EdgeInsets.only(top: 30, left: 15, right: 15, bottom: 10),
             decoration: BoxDecoration(
               color: customColor.primaryColors,
               borderRadius: const BorderRadius.only(
@@ -87,36 +90,29 @@ class Beranda extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 20),
-                const Padding(
-                  padding: EdgeInsets.only(left: 3, bottom: 15),
-                  child: Text(
-                    "Hei, Erdiii",
-                    style: TextStyle(
-                      fontSize: 25,
-                      fontFamily: 'Poppins_Bold',
-                      letterSpacing: 1,
-                      wordSpacing: 1,
-                      color: Colors.white,
+                Center(
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 3, bottom: 15),
+                    child: Text(
+                      "SUP, HOMIESSS",
+                      style: TextStyle(
+                        fontSize: 25,
+                        fontFamily: 'Poppins_Bold',
+                        letterSpacing: 1,
+                        wordSpacing: 1,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                 ),
                 Container(
                   margin: const EdgeInsets.only(top: 5, bottom: 20),
                   width: MediaQuery.of(context).size.width,
-                  height: 55,
+                  height: 11,
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: TextFormField(
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                      hintText: "Cari Artikel disini.......",
-                      hintStyle:
-                          TextStyle(color: Colors.black.withOpacity(0.5)),
-                      prefixIcon: const Icon(Icons.search, size: 25),
-                    ),
                   ),
                 ),
               ],
@@ -163,7 +159,7 @@ class Beranda extends StatelessWidget {
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
-                                      EdukasiMenu()), // Replace KonsultasiPage() with your actual page widget
+                                      Konsultasi()), // Replace KonsultasiPage() with your actual page widget
                             );
                             break;
                           default:
@@ -173,20 +169,20 @@ class Beranda extends StatelessWidget {
                       child: Column(
                         children: [
                           Container(
-                            height: 60,
-                            width: 60,
+                            height: 65,
+                            width: 65,
                             decoration: BoxDecoration(
                               color: menuColors[index],
                               shape: BoxShape.circle,
                             ),
                             child: Center(child: menuIcons[index]),
                           ),
-                          const SizedBox(height: 10),
+                          const SizedBox(height: 14),
                           Text(
                             menu[index],
-                            style: const TextStyle(
-                              fontSize: 16,
-                              fontFamily: 'Poppins_Regular',
+                            style:  TextStyle(
+                              fontSize: 15,
+                              fontFamily: 'Poppins_SemiBold',
                               color: Colors.black,
                             ),
                           ),
@@ -195,55 +191,110 @@ class Beranda extends StatelessWidget {
                     );
                   },
                 ),
+                Divider(
+                    height: 5,
+                    thickness: 3,
+                    color: customColor.primaryColors,
+                    indent: 18,
+                    endIndent: 18,
+                  ),
 
-                const SizedBox(height: 20),
+                const SizedBox(height: 25),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const Text(
-                      "Artikel",
+                      "Artikel Terbaru",
                       style:
-                          TextStyle(fontSize: 23, fontFamily: 'Poppins_Bold'),
+                          TextStyle(fontSize: 16, fontFamily: 'Poppins_Bold'),
                     ),
-                    Text(
-                      "Lihat Semua",
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontFamily: 'Poppins_Bold',
-                        color: customColor.primaryColors,
+                    GestureDetector(
+                      onTap: () {
+                        // Navigate to the page you want when "Lihat Semua" is clicked
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => BerandaLihatarticles()),
+                        );
+                      },
+                      child:  Text(
+                        "Lihat Semua",
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontFamily: 'Poppins_Bold',
+                          color: customColor.primaryColors, // Change color as needed
+                        ),
                       ),
                     ),
                   ],
                 ),
-                const SizedBox(height: 10),
+
+                // const SizedBox(height: 10),
                 // Article List
-                Column(
-                  children: articles.map((article) {
+                ListView.builder(
+                  itemCount: articles.length,
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    var article = articles[index];
                     return Card(
-                      color: customColor.cardcustom,
-                      child: ListTile(
-                        leading: Image.asset(
-                          article['image'],
-                          width: 100,
-                          height: 100,
-                          fit: BoxFit.cover,
-                        ),
-                        title: Text(
-                          article['title'],
-                          style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontFamily: 'Poppins_Bold',
-                              fontSize: 17),
-                        ),
-                        subtitle: Text(article['date'],
-                            style: const TextStyle(
-                                fontFamily: 'Poppins_SemiBold', fontSize: 12)),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      elevation: 4,
+                      margin: const EdgeInsets.symmetric(
+                          vertical: 8, horizontal: 5),
+                      child: InkWell(
+                        borderRadius: BorderRadius.circular(10),
                         onTap: () {
                           // Implementasi penanganan ketika item diklik (navigasi ke halaman detail, misalnya)
                         },
+                        child: Row(
+                          children: [
+                            ClipRRect(
+                              borderRadius: const BorderRadius.horizontal(
+                                  left: Radius.circular(10)),
+                              child: Image.asset(
+                                article['image'],
+                                width: 135,
+                                height: 100,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.all(14),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      article['title'],
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontFamily: 'Poppins_Bold',
+                                        fontSize: 17,
+                                      ),
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    const SizedBox(height: 5),
+                                    Text(
+                                      article['date'],
+                                      style: const TextStyle(
+                                        fontFamily: 'Poppins_SemiBold',
+                                        fontSize: 12,
+                                        color: Colors.grey,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     );
-                  }).toList(),
+                  },
                 ),
               ],
             ),

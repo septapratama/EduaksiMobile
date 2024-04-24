@@ -52,7 +52,7 @@ class _LoginScreenState extends State<LoginScreen> {
       alert(context, "Email tidak boleh kosong !");
       return;
     }
-    if (kataSandi.isEmpty || kataSandi == null) {
+    if (kataSandi.isEmpty) {
       alert(context, "Kata sandi tidak boleh kosong !");
       return;
     }
@@ -418,7 +418,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             TextButton(
                               onPressed: () {
                                 Navigator.pushReplacement(context,
-                                    pageMove.movepage(RegisterScreen()));
+                                    pageMove.movepage(const RegisterScreen()));
                                 // Add logic to navigate to the registration page
                               },
                               child: Text(

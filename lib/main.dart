@@ -1,6 +1,5 @@
-import 'package:eduapp/pages/edukasi_psikologi.dart';
+import 'package:eduapp/pages/login_screen.dart';
 import 'package:flutter/material.dart';
-import 'pages/login_screen.dart';
 
 void main() {
   runApp(const MyApp());

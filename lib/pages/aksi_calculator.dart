@@ -5,7 +5,7 @@ import 'package:eduapp/pages/pages_AksiMenu.dart';
 import 'package:flutter/material.dart';
 
 class Calculator extends StatefulWidget {
-  const Calculator({Key? key}) : super(key: key);
+  const Calculator({super.key});
 
   @override
   _CalculatorState createState() => _CalculatorState();
@@ -54,14 +54,14 @@ class _CalculatorState extends State<Calculator> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
+                  const Text(
                     'Jenis Kelamin',
                     style: TextStyle(
                       fontSize: 18,
                       fontFamily: 'Poppins_Bold',
                     ),
                   ),
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
                   Container(
                     decoration: BoxDecoration(
                       border: Border.all(
@@ -73,7 +73,7 @@ class _CalculatorState extends State<Calculator> {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 20.0, vertical: 8.0),
                       child: DropdownButtonFormField<String>(
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           border: InputBorder.none, // Menghapus border bawaan
                           isDense: true, // Mengurangi ketinggian dropdown
                           contentPadding:
@@ -95,15 +95,15 @@ class _CalculatorState extends State<Calculator> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 16),
-                  Text(
+                  const SizedBox(height: 16),
+                  const Text(
                     'Usia',
                     style: TextStyle(
                       fontSize: 18,
                       fontFamily: 'Poppins_Bold',
                     ),
                   ),
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
                   Container(
                     width: double.infinity, // Menyesuaikan lebar dengan parent
                     decoration: BoxDecoration(
@@ -117,7 +117,7 @@ class _CalculatorState extends State<Calculator> {
                           horizontal: 20.0, vertical: 8.0),
                       child: TextFormField(
                         keyboardType: TextInputType.number,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           border: InputBorder.none,
                           isDense: true,
                           contentPadding: EdgeInsets.zero,
@@ -132,17 +132,17 @@ class _CalculatorState extends State<Calculator> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
 
                   // Form Tinggi Badan
-                  Text(
+                  const Text(
                     'Tinggi Badan (cm)',
                     style: TextStyle(
                       fontSize: 18,
                       fontFamily: 'Poppins_Bold',
                     ),
                   ),
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
                   Container(
                     width: double.infinity,
                     decoration: BoxDecoration(
@@ -155,7 +155,7 @@ class _CalculatorState extends State<Calculator> {
                           horizontal: 20.0, vertical: 8.0),
                       child: TextFormField(
                         keyboardType: TextInputType.number,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           border: InputBorder.none,
                           isDense: true,
                           contentPadding: EdgeInsets.zero,
@@ -170,17 +170,17 @@ class _CalculatorState extends State<Calculator> {
                     ),
                   ),
 
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
 
                   // Form Berat Badan
-                  Text(
+                  const Text(
                     'Berat Badan (kg)',
                     style: TextStyle(
                       fontSize: 18,
                       fontFamily: 'Poppins_Bold',
                     ),
                   ),
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
                   Container(
                     width: double.infinity,
                     decoration: BoxDecoration(
@@ -193,7 +193,7 @@ class _CalculatorState extends State<Calculator> {
                           horizontal: 20.0, vertical: 8.0),
                       child: TextFormField(
                         keyboardType: TextInputType.number,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           border: InputBorder.none,
                           isDense: true,
                           contentPadding: EdgeInsets.zero,
@@ -207,7 +207,7 @@ class _CalculatorState extends State<Calculator> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 35),
+                  const SizedBox(height: 35),
                   Align(
                     alignment: Alignment.centerRight,
                     child: ElevatedButton(
@@ -217,8 +217,8 @@ class _CalculatorState extends State<Calculator> {
                           calculateIdealWeight();
                         });
                       },
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
+                      child: const Padding(
+                        padding: EdgeInsets.symmetric(
                             vertical: 12.0, horizontal: 30.0),
                         child: Text(
                           'Hitung',
@@ -233,8 +233,8 @@ class _CalculatorState extends State<Calculator> {
                   Align(
                     alignment: Alignment.center,
                     child: Container(
-                      margin: EdgeInsets.only(top: 20),
-                      padding: EdgeInsets.all(16),
+                      margin: const EdgeInsets.only(top: 20),
+                      padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
                         color: Colors.blue[100],
                         borderRadius: BorderRadius.circular(10),
@@ -244,18 +244,18 @@ class _CalculatorState extends State<Calculator> {
                         children: [
                           
                           ListTile(
-                            leading: Icon(Icons.person_outline, size: 24),
-                            title: Text('Jenis Kelamin', style: TextStyle(fontWeight: FontWeight.bold)),
+                            leading: const Icon(Icons.person_outline, size: 24),
+                            title: const Text('Jenis Kelamin', style: TextStyle(fontWeight: FontWeight.bold)),
                             trailing: Text(_selectedGender),
                           ),
                           ListTile(
-                            leading: Icon(Icons.cake, size: 24),
-                            title: Text('Umur', style: TextStyle(fontWeight: FontWeight.bold)),
+                            leading: const Icon(Icons.cake, size: 24),
+                            title: const Text('Umur', style: TextStyle(fontWeight: FontWeight.bold)),
                             trailing: Text('$_age tahun'),
                           ),
                           ListTile(
-                            leading: Icon(Icons.monitor_weight, size: 24),
-                            title: Text('Berat Ideal', style: TextStyle(fontWeight: FontWeight.bold)),
+                            leading: const Icon(Icons.monitor_weight, size: 24),
+                            title: const Text('Berat Ideal', style: TextStyle(fontWeight: FontWeight.bold)),
                             trailing: Text('${_beratBadanIdeal.toStringAsFixed(1)} kg'),
                           ),
                         ],
