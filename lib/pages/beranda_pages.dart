@@ -1,15 +1,23 @@
+import 'dart:convert';
+
 import 'package:eduapp/pages/beranda_LihatArticles.dart';
 import 'package:eduapp/pages/edukasi_nutrisi.dart';
 import 'package:eduapp/pages/konsultasi.dart';
 import 'package:eduapp/pages/pages_AksiMenu.dart';
 import 'package:eduapp/pages/pages_EdukasiMenu.dart';
 import 'package:eduapp/pages/pages_profil.dart';
+import 'package:eduapp/utils/ApiService.dart';
 import 'package:flutter/material.dart';
 import 'package:eduapp/component/custom_colors.dart';
 
-class Beranda extends StatelessWidget {
+class Beranda extends StatefulWidget {
   Beranda({super.key});
 
+  @override
+  _BerandaState createState() => _BerandaState();
+}
+class _BerandaState extends State<Beranda> {
+  final ApiService apiService = ApiService();
   List menu = [
     "Edukasi",
     "Aksi",
@@ -27,35 +35,55 @@ class Beranda extends StatelessWidget {
     const Icon(Icons.phone_in_talk, color: Colors.white, size: 30),
   ];
 
-  List<Map<String, dynamic>> articles = [
-    {
-      'title': 'Judul Artikel 1',
-      'date': '29 Maret 2024',
-      'image': 'assets/images/artikel 1.png',
-    },
-    {
-      'title': 'Judul Artikel 2',
-      'date': '28 Maret 2024',
-      'image': 'assets/images/artikel 2.png',
-    },
-    {
-      'title': 'Judul Artikel 2',
-      'date': '28 Maret 2024',
-      'image': 'assets/images/artikel 2.png',
-    },
-    {
-      'title': 'Judul Artikel 2',
-      'date': '28 Maret 2024',
-      'image': 'assets/images/artikel 2.png',
-    },
-    {
-      'title': 'Judul Artikel 2',
-      'date': '28 Maret 2024',
-      'image': 'assets/images/artikel 2.png',
-    },
+  List<Map<String, dynamic>> articles = [];
+  // List<Map<String, dynamic>> articles = [
+  //   {
+  //     'judul': 'Judul Artikel 1',
+  //     'created_at': '29 Maret 2024',
+  //     'foto': 'assets/images/artikel 1.png',
+  //   },
+  //   {
+  //     'judul': 'Judul Artikel 2',
+  //     'created_at': '28 Maret 2024',
+  //     'foto': 'assets/images/artikel 2.png',
+  //   },
+  //   {
+  //     'judul': 'Judul Artikel 2',
+  //     'created_at': '28 Maret 2024',
+  //     'foto': 'assets/images/artikel 2.png',
+  //   },
+  //   {
+  //     'judul': 'Judul Artikel 2',
+  //     'created_at': '28 Maret 2024',
+  //     'foto': 'assets/images/artikel 2.png',
+  //   },
+  //   {
+  //     'judul': 'Judul Artikel 2',
+  //     'created_at': '28 Maret 2024',
+  //     'foto': 'assets/images/artikel 2.png',
+  //   },
+  // ];
     // Add more articles as needed
-  ];
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
+  Future<void> fetchData() async {
+    try {
+      Map<String, dynamic> response = await apiService.getDashboard();
+      if (response['status'] == 'success') {
+        setState(() {
+          articles = List<Map<String, dynamic>>.from(response['data']);
+        });
 
+      } else {
+        //do something
+      }
+    } catch (e) {
+      print('Error fetching dashboard data: $e');
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -254,11 +282,29 @@ class Beranda extends StatelessWidget {
                             ClipRRect(
                               borderRadius: const BorderRadius.horizontal(
                                   left: Radius.circular(10)),
-                              child: Image.asset(
-                                article['image'],
+                              // child: Image.asset(
+                              //   article['foto'],
+                              //   width: 135,
+                              //   height: 100,
+                              //   fit: BoxFit.cover,
+                              // ),
+                              child: Image.network(
+                                '${apiService.imgUrl}/artikel/${article['foto']}',
+                                // apiService.imgUrl + '/artikel/' + article['foto'],
                                 width: 135,
                                 height: 100,
                                 fit: BoxFit.cover,
+                                errorBuilder: (context, error, stackTrace) {
+                                  print('Error loading image:${error}');
+                                  return Image.asset(
+                                    'assets/images/artikel 1.png',  
+                                    width: 135,
+                                    height: 100,
+                                fit: BoxFit.cover,
+                                    // fit: BoxFit.contain,
+                                  );
+                                },
+
                               ),
                             ),
                             Expanded(
@@ -268,7 +314,7 @@ class Beranda extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      article['title'],
+                                      article['judul'],
                                       style: const TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontFamily: 'Poppins_Bold',
@@ -279,7 +325,7 @@ class Beranda extends StatelessWidget {
                                     ),
                                     const SizedBox(height: 5),
                                     Text(
-                                      article['date'],
+                                      article['created_at'],
                                       style: const TextStyle(
                                         fontFamily: 'Poppins_SemiBold',
                                         fontSize: 12,

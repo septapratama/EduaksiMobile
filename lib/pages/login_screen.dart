@@ -45,8 +45,6 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void _login(BuildContext context) async {
-    Navigator.pushReplacement(context, pageMove.movepage(BottomNav()));
-    return;
     String email = emailController.text;
     String kataSandi = passwordController.text;
     // Validasi form, misalnya memastikan semua field terisi dengan benar
@@ -60,7 +58,6 @@ class _LoginScreenState extends State<LoginScreen> {
     }
     try {
       Map<String, dynamic> response = await apiService.login(email, kataSandi);
-      // print(response);
       // print(response['data']);
       if (response['status'] == 'success') {
         // Set the user data using the provider
@@ -72,8 +69,7 @@ class _LoginScreenState extends State<LoginScreen> {
         //         foto_profil: response['data']['foto_profil'] ?? '',
         //       ),
         //     );
-        Navigator.pushReplacement(
-            context, pageMove.movepage(const BottomNav()));
+        Navigator.pushReplacement(context, pageMove.movepage(const BottomNav()));
       } else {
         alert(context, response['message']);
       }
@@ -342,16 +338,16 @@ class _LoginScreenState extends State<LoginScreen> {
                         _loginGoogle(context);
                       },
                       style: ButtonStyle(
-                        padding: WidgetStateProperty.all<EdgeInsetsGeometry>(
+                        padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
                           const EdgeInsets.symmetric(vertical: 12.0),
                         ),
-                        shape: WidgetStateProperty.all<OutlinedBorder>(
+                        shape: MaterialStateProperty.all<OutlinedBorder>(
                           RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8.0),
                             side: const BorderSide(color: Colors.transparent),
                           ),
                         ),
-                        backgroundColor: WidgetStateProperty.all<Color>(
+                        backgroundColor: MaterialStateProperty.all<Color>(
                           Colors.transparent,
                         ),
                       ),

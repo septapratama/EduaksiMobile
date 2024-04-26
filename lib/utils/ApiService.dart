@@ -4,10 +4,10 @@ import 'package:http/http.dart' as http;
 
 class ApiService {
   final JwtProvider jwtProvider = JwtProvider();
-  final String baseUrl = "http://192.168.0.101:8000/api/mobile";
+  final String baseUrl = "http://192.168.0.105:8000/api/mobile";
   // final String baseUrl = "https://eduaksi.amirzan.my.id/api/mobile";
-  final String imgUrl = "http://192.168.0.101:8000/img/";
-  final String fotoProfilUrl = "http://192.168.0.101:80/eduaksi/mobile/img/profile/users/";
+  final String imgUrl = "http://192.168.0.105:8000/img";
+  final String fotoProfilUrl = "http://192.168.0.105:8000/eduaksi/mobile/img/profile/users/";
   Future<String> getAuthToken() async {
     if(await jwtProvider.isExpired()){
       return 'expired';
@@ -232,6 +232,27 @@ class ApiService {
       }
     } catch (e) {
       throw Exception('Error saat update profile : $e');
+    }
+  }
+
+  //get artikel from dashboard
+  Future<Map<String, dynamic>> getDashboard() async {
+    try {
+      // final auth = await getAuthToken();
+      // if(auth == 'expired'){ 
+      //   return  {'message' : 'token expired'};
+      // }
+      final response = await http.post(Uri.parse('$baseUrl/dashboard'), headers: <String, String>{
+        // 'Authorization': auth,
+      });
+      if (response.statusCode == 200) {
+        return json.decode(response.body);
+      } else {
+        final Map<String, dynamic> responseData = json.decode(response.body);
+        return responseData;
+      }
+    } catch (e) {
+      throw Exception('Error saat get digital literasi : $e');
     }
   }
 
