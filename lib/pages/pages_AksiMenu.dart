@@ -1,55 +1,25 @@
 import 'package:eduapp/component/custom_appbar.dart';
 import 'package:eduapp/component/custom_colors.dart';
-<<<<<<< HEAD
-=======
+import 'package:eduapp/pages/aksi_calculator.dart';
 import 'package:eduapp/pages/edukasi_bahasa.dart';
 import 'package:eduapp/pages/edukasi_kesenian.dart';
 import 'package:eduapp/pages/edukasi_psikologi.dart';
 import 'package:eduapp/pages/edukasi_religi.dart';
 import 'package:eduapp/utils/navigationbar.dart';
->>>>>>> parent of 303f108 (update change content edukasi)
 import 'package:flutter/material.dart';
 import 'package:eduapp/component/custom_appbar_withoutarrowback.dart';
 
-class EdukasiMenu extends StatelessWidget {
-  EdukasiMenu({super.key});
+class AksiMenu extends StatelessWidget {
+  AksiMenu({super.key});
 
   List<Map<String, dynamic>> articles = [
     {
-<<<<<<< HEAD
-      'title': 'Judul Artikel 1',
-      'date': '29 Maret 2024',
+      'title': 'Tentukan Berat Badan\nIdeal Anda',
       'image': 'assets/images/artikel 1.png',
     },
     {
-      'title': 'Judul Artikel 2',
-      'date': '28 Maret 2024',
+      'title': 'Catat Semua Kebutuhan\nDan Aktivitas Anda',
       'image': 'assets/images/image 36.png',
-    },
-    {
-      'title': 'Judul Artikel 2',
-      'date': '28 Maret 2024',
-      'image': 'assets/images/image 34.png',
-    },
-    {
-      'title': 'Judul Artikel 2',
-      'date': '28 Maret 2024',
-=======
-      'title': 'Edukasi Psikologi',
-      'image': 'assets/images/artikel 1.png',
-    },
-    {
-      'title': 'Edukasi Bahasa',
-      'image': 'assets/images/image 36.png',
-    },
-    {
-      'title': 'Edukasi Religi',
-      'image': 'assets/images/image 34.png',
-    },
-    {
-      'title': 'Edukasi Kesenian',
->>>>>>> parent of 303f108 (update change content edukasi)
-      'image': 'assets/images/image 35.png',
     },
     // Add more articles as needed
   ];
@@ -58,7 +28,11 @@ class EdukasiMenu extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        title: 'Edukasi',
+        title: 'Aksi',
+        buttonOnPressed: () {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const BottomNav()));
+        },
       ),
       body: SafeArea(
         child: Column(
@@ -70,16 +44,16 @@ class EdukasiMenu extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Topik Populer EduAksi',
+                    'Fitur Aksi Memudahkan Anda',
                     style: TextStyle(
                       fontFamily: 'Poppins_Bold',
                       fontSize: 24,
                       color: customColor.primaryColors,
                     ),
                   ),
-                  SizedBox(height: 10),
-                  Text(
-                    'Pemahaman untuk kebutuhan anak sedari dini',
+                  const SizedBox(height: 10),
+                  const Text(
+                    'Temukan Hal Menarik Disini',
                     style: TextStyle(
                       fontFamily: 'Poppins_Regular',
                       fontSize: 15,
@@ -97,15 +71,6 @@ class EdukasiMenu extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(
                         vertical: 4.0, horizontal: 20),
                     child: Card(
-<<<<<<< HEAD
-                      color: Colors.grey[200],
-                      child: Row(
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(4.0),
-                              bottomLeft: Radius.circular(4.0),
-=======
                       color: customColor.cardcustom,
                       child: InkWell(
                         onTap: () {
@@ -116,7 +81,7 @@ class EdukasiMenu extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => PskikologiPages(),
+                                builder: (context) => Calculator(),
                               ),
                             );
                           } else if (index == 1) {
@@ -127,25 +92,7 @@ class EdukasiMenu extends StatelessWidget {
                                 builder: (context) => BahasaPages(),
                               ),
                             );
-                          } else if (index == 2) {
-                            // Jika index kedua, navigasi ke BahasaPages
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ReligiPages(),
-                              ),
-                            );
-                          }
-                          else if (index == 3) {
-                            // Jika index kedua, navigasi ke BahasaPages
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => KesenianPages(),
-                              ),
-                            );
-                          }
-                          
+                          } 
                         },
                         child: Row(
                           children: [
@@ -160,38 +107,21 @@ class EdukasiMenu extends StatelessWidget {
                                 height: 80,
                                 fit: BoxFit.cover,
                               ),
->>>>>>> parent of 303f108 (update change content edukasi)
                             ),
-                            child: Image.asset(
-                              articles[index]['image'],
-                              width: 120,
-                              height: 80,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                          Flexible(
-                            child: ListTile(
-                              title: Text(
-                                articles[index]['title'],
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: 'Poppins_Bold',
-                                  fontSize: 17,
+                            Flexible(
+                              child: ListTile(
+                                title: Text(
+                                  articles[index]['title'],
+                                  style: TextStyle(
+                                    color: customColor.primaryColors,
+                                    fontFamily: 'Poppins_Bold',
+                                    fontSize: 17,
+                                  ),
                                 ),
                               ),
-                              subtitle: Text(
-                                articles[index]['date'],
-                                style: TextStyle(
-                                  fontFamily: 'Poppins_SemiBold',
-                                  fontSize: 12,
-                                ),
-                              ),
-                              onTap: () {
-                                // Implementasi penanganan ketika item diklik (navigasi ke halaman detail, misalnya)
-                              },
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   );
@@ -205,8 +135,6 @@ class EdukasiMenu extends StatelessWidget {
     );
   }
 }
-<<<<<<< HEAD
-=======
 
 class DetailPage extends StatelessWidget {
   final String title;
@@ -225,4 +153,3 @@ class DetailPage extends StatelessWidget {
     );
   }
 }
->>>>>>> parent of 303f108 (update change content edukasi)

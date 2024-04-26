@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import 'package:eduapp/pages/beranda_pages.dart';
 import 'package:eduapp/pages/pages_EdukasiMenu.dart';
 import 'package:eduapp/pages/pages_auth.dart';
@@ -11,6 +12,11 @@ import 'package:flutter/material.dart';
 import 'pages/login_screen.dart';
 import 'pages/pages_lupakatasandi.dart';
 import 'utils/navigationBar.dart';
+=======
+import 'package:eduapp/pages/edukasi_psikologi.dart';
+import 'package:flutter/material.dart';
+import 'pages/login_screen.dart';
+>>>>>>> parent of 303f108 (update change content edukasi)
 
 void main() {
   runApp(const MyApp());

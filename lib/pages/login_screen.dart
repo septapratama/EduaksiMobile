@@ -52,7 +52,11 @@ class _LoginScreenState extends State<LoginScreen> {
       alert(context, "Email tidak boleh kosong !");
       return;
     }
+<<<<<<< HEAD
     if(kata_sandi.isEmpty || kata_sandi == null){
+=======
+    if (kataSandi.isEmpty || kataSandi == null) {
+>>>>>>> parent of 303f108 (update change content edukasi)
       alert(context, "Kata sandi tidak boleh kosong !");
       return;
     }
