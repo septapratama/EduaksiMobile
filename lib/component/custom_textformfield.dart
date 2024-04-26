@@ -9,14 +9,14 @@ class CustomTextFieldWidget extends StatefulWidget {
   final IconData? prefixIcon;
 
   const CustomTextFieldWidget({
-    super.key,
+    Key? key,
     required this.labelText,
     this.initialValue,
     this.keyboardType = TextInputType.text,
     required this.controller,
     this.obscureText = false,
     this.prefixIcon,
-  });
+  }) : super(key: key);
 
   @override
   _CustomTextFieldWidgetState createState() => _CustomTextFieldWidgetState();
@@ -90,20 +90,20 @@ class _CustomTextFieldWidgetState extends State<CustomTextFieldWidget> {
           labelText: widget.labelText,
           labelStyle: TextStyle(
             color: _focusNode.hasFocus
-                ? const Color.fromRGBO(30, 84, 135, 1)
+                ? Color.fromRGBO(30, 84, 135, 1)
                 : Colors.black,
           ),
-          contentPadding: const EdgeInsets.symmetric(horizontal: 20.0),
+          contentPadding: EdgeInsets.symmetric(horizontal: 20.0),
           alignLabelWithHint: true,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(20.0),
-            borderSide: const BorderSide(
+            borderSide: BorderSide(
               color: Colors.black,
             ),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(20.0),
-            borderSide: const BorderSide(color: Color.fromRGBO(30, 84, 135, 1)),
+            borderSide: BorderSide(color: Color.fromRGBO(30, 84, 135, 1)),
           ),
           floatingLabelBehavior: FloatingLabelBehavior
               .always, // Ensure the label remains visible even after clicking on the input field
@@ -155,7 +155,7 @@ class _CustomTextFieldWidgetState extends State<CustomTextFieldWidget> {
                             .edit, // Change to pencil icon when editing is disabled
                   ),
                 ),
-          suffixIconConstraints: const BoxConstraints(
+          suffixIconConstraints: BoxConstraints(
             minWidth: 40,
             minHeight: 40,
           ),

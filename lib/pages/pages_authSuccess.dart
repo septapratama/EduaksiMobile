@@ -9,22 +9,22 @@ class OTPSuccess extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomAppBar(title: 'Kode OTP'),
+      appBar: CustomAppBar(title: 'Kode OTP'),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.only(top: 50, left: 75, right: 75),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const Text(
+              Text(
                 'Register Berhasil',
                 style: TextStyle(
                   fontSize: 24,
                   fontFamily: 'Poppins_SemiBold',
                 ),
               ),
-              const SizedBox(height: 20),
-              const Text(
+              SizedBox(height: 20),
+              Text(
                 'Anda telah berhasil \n mendaftar',
                 textAlign: TextAlign.center,
                 style: TextStyle(
@@ -33,37 +33,37 @@ class OTPSuccess extends StatelessWidget {
                   color: Color.fromARGB(255, 80, 81, 85),
                 ),
               ),
-              const SizedBox(height: 20), // Add space between text and image
+              SizedBox(height: 20), // Add space between text and image
               Image.asset(
                   'assets/images/group.png'), // Add the image below the text
-              const SizedBox(height: 40), // Add space below the image
+              SizedBox(height: 40), // Add space below the image
 
               // Remaining widgets
-              const SizedBox(height: 35),
-              const Text(
+              SizedBox(height: 35),
+              Text(
                 textAlign: TextAlign.center,
                 'Kembali ke Halaman Login untuk Masuk ke Aplikasi',
                 style: TextStyle(fontSize: 16, fontFamily: 'Poppins_Regular'),
               ),
 
-              const SizedBox(height: 50),
+              SizedBox(height: 50),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 30.0),
                 child: ElevatedButton(
                   onPressed: () {
                     // Add your onPressed logic here
                     Navigator.pushReplacement(
-                        context, pageMove.movepage(const LoginScreen()));
+                        context, pageMove.movepage(LoginScreen()));
                   },
                   style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 50),
+                    padding: EdgeInsets.symmetric(vertical: 20, horizontal: 50),
                     foregroundColor: Colors.white,
                     backgroundColor: const Color.fromRGBO(30, 84, 135, 1),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8.0),
                     ),
                   ),
-                  child: const Text(
+                  child: Text(
                     'Oke',
                     style: TextStyle(
                       fontFamily: 'Poppins_SemiBold',

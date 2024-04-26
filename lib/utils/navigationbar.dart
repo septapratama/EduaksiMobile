@@ -1,5 +1,6 @@
 import 'package:eduapp/component/custom_colors.dart';
 import 'package:eduapp/pages/beranda_pages.dart';
+import 'package:eduapp/pages/pages_EdukasiMenu.dart';
 import 'package:eduapp/pages/pages_profil.dart';
 import 'package:flutter/material.dart';
 
@@ -12,7 +13,7 @@ class BottomNav extends StatefulWidget {
 
 class _BottomNavState extends State<BottomNav> {
   int currentIndex = 0;
-  final List<Widget> body = [Beranda(), const ProfilPages()];
+  final List<Widget> body = [Beranda(), EdukasiMenu(), ProfilPages()];
 
   @override
   Widget build(BuildContext context) {
@@ -23,15 +24,20 @@ class _BottomNavState extends State<BottomNav> {
         currentIndex: currentIndex,
         items: [
           BottomNavigationBarItem(
-              icon: Icon(Icons.home_rounded, color: customColor.gray),
+              icon: Icon(Icons.home, color: customColor.gray),
               label: 'Home',
               activeIcon:
-                  Icon(Icons.home_rounded, color: customColor.primaryColors)),
+                  Icon(Icons.home, color: customColor.bottomnavigationColors)),
           BottomNavigationBarItem(
-              icon: Icon(Icons.person_2_rounded, color: customColor.gray),
+              icon: Icon(Icons.child_care, color: customColor.gray),
+              label: 'Konseling',
+              activeIcon: Icon(Icons.child_care,
+                  color: customColor.bottomnavigationColors)),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.person, color: customColor.gray),
               label: 'Profil',
-              activeIcon: Icon(Icons.person_2_rounded,
-                  color: customColor.primaryColors)),
+              activeIcon: Icon(Icons.person,
+                  color: customColor.bottomnavigationColors)),
         ],
       ),
     );
