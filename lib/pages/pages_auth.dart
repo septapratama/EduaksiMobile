@@ -6,7 +6,8 @@ import 'package:pin_input_text_field/pin_input_text_field.dart';
 import 'package:eduapp/component/custom_pagemove.dart';
 
 class OTPScreen extends StatelessWidget {
-  const OTPScreen({super.key});
+  final Map<String, dynamic> otpData;
+  const OTPScreen({super.key, required this.otpData});
   @override
   Widget build(BuildContext context) {
     return Scaffold(

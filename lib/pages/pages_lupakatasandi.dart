@@ -14,7 +14,7 @@ class Lupakatasandi extends StatefulWidget {
 class _LupakatasandiState extends State<Lupakatasandi> {
   final ApiService apiService = ApiService();
   TextEditingController emailController = TextEditingController();
-  void lupaKataSandi(BuildContext context) async {
+  void _lupaKataSandi(BuildContext context) async {
     String email = emailController.text;
     // Validasi form, misalnya memastikan semua field terisi dengan benar
     if (email.isEmpty) {
@@ -23,25 +23,20 @@ class _LupakatasandiState extends State<Lupakatasandi> {
       return;
     }
     try {
-      Map<String, dynamic> response = await apiService.(email);
+      Map<String, dynamic> response = await apiService.lupaPassword(email);
       if (response['status'] == 'success') {
-        // Set the user data using the provider
-        // context.read()<UserProvider>().setUserBaru(
-        //       UserModelBaru(
-        //         email: email,
-        //         nama_lengkap: response['data']['nama_lengkap'] ?? '',
-        //         no_hp: response['data']['no_hp'] ?? '',
-        //         foto_profil: response['data']['foto_profil'] ?? '',
-        //       ),
-        //     );
-        Navigator.pushReplacement(context, pageMove.movepage(const BottomNav()));
+        Navigator.pushReplacement(context, pageMove.movepage(OTPScreen(otpData: {'email':email, 'waktu':response['data']})));
       } else {
         // alert(context, response['message']);
       }
     } catch (e) {
-      print('Error saat login: $e');
+      print('Error saat lupa kata sandi: $e');
     }
   }
+        // Navigator.push(context,MaterialPageRoute(
+        //     builder: (context) => const OTPScreen(),
+        //   ),
+        // );
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -107,8 +102,7 @@ class _LupakatasandiState extends State<Lupakatasandi> {
                   child: ElevatedButton(
                     onPressed: () {
                       // Add your onPressed logic here
-                       Navigator.pushReplacement(context,
-                                      pageMove.movepage(const OTPScreen()));
+                      _lupaKataSandi(context);
                     },
                     style: ElevatedButton.styleFrom(
                       padding: EdgeInsets.zero,

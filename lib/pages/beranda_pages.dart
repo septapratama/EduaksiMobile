@@ -297,10 +297,10 @@ class _BerandaState extends State<Beranda> {
                                 errorBuilder: (context, error, stackTrace) {
                                   print('Error loading image:${error}');
                                   return Image.asset(
-                                    'assets/images/artikel 1.png',  
+                                    'assets/images/artikel 1.png',
                                     width: 135,
                                     height: 100,
-                                fit: BoxFit.cover,
+                                    fit: BoxFit.cover,
                                     // fit: BoxFit.contain,
                                   );
                                 },

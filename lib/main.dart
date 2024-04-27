@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
       title: 'Eduaksi',
       theme: ThemeData(),
       debugShowCheckedModeBanner: false,
-      home: Lupakatasandi(), // Navigate to SplashScreen first
+      home: LoginScreen(), // Navigate to SplashScreen first
     );
   }
 }

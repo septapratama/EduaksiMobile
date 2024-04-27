@@ -57,7 +57,7 @@ class ApiService {
       if (response.statusCode == 200) {
         final Map<String, dynamic> responseData = json.decode(response.body);
         await jwtProvider.setJwt(responseData['data']);
-        return responseData['status'];
+        return responseData;
       } else {
         final Map<String, dynamic> responseData = json.decode(response.body);
         return responseData;
@@ -169,7 +169,7 @@ class ApiService {
   }
 
   //kirim reset password dari lupa password
-  Future<Map<String, dynamic>> resetPass(String email, String otp, String pass, String pass_confirm) async {
+  Future<Map<String, dynamic>> resetPass(String email, String otp, String pass, String passConfirm) async {
     try {
       final response = await http.post(
         Uri.parse('$baseUrl/verify/password'),
@@ -180,7 +180,7 @@ class ApiService {
           'email': email,
           'code':otp,
           'password':pass,
-          'password_confirm':pass_confirm,
+          'password_confirm':passConfirm,
           'description':'changePass'
         }),
       );
