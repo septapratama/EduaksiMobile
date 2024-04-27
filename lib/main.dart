@@ -1,4 +1,5 @@
-import 'package:eduapp/pages/beranda_pages.dart';
+import 'package:eduapp/pages/login_screen.dart';
+import 'package:eduapp/pages/pages_lupakatasandi.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -14,7 +15,7 @@ class MyApp extends StatelessWidget {
       title: 'Eduaksi',
       theme: ThemeData(),
       debugShowCheckedModeBanner: false,
-      home: Beranda(), // Navigate to SplashScreen first
+      home: Lupakatasandi(), // Navigate to SplashScreen first
     );
   }
 }

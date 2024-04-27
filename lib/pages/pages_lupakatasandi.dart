@@ -1,6 +1,7 @@
 import 'package:eduapp/component/custom_colors.dart';
 import 'package:eduapp/component/custom_text.dart';
 import 'package:eduapp/pages/pages_auth.dart';
+import 'package:eduapp/utils/ApiService.dart';
 import 'package:flutter/material.dart';
 import 'package:eduapp/component/custom_pagemove.dart';
 class Lupakatasandi extends StatefulWidget {
@@ -11,6 +12,36 @@ class Lupakatasandi extends StatefulWidget {
 }
 
 class _LupakatasandiState extends State<Lupakatasandi> {
+  final ApiService apiService = ApiService();
+  TextEditingController emailController = TextEditingController();
+  void lupaKataSandi(BuildContext context) async {
+    String email = emailController.text;
+    // Validasi form, misalnya memastikan semua field terisi dengan benar
+    if (email.isEmpty) {
+      // alert(context, "Email tidak boleh kosong !");
+      print("Email tidak boleh kosong !");
+      return;
+    }
+    try {
+      Map<String, dynamic> response = await apiService.(email);
+      if (response['status'] == 'success') {
+        // Set the user data using the provider
+        // context.read()<UserProvider>().setUserBaru(
+        //       UserModelBaru(
+        //         email: email,
+        //         nama_lengkap: response['data']['nama_lengkap'] ?? '',
+        //         no_hp: response['data']['no_hp'] ?? '',
+        //         foto_profil: response['data']['foto_profil'] ?? '',
+        //       ),
+        //     );
+        Navigator.pushReplacement(context, pageMove.movepage(const BottomNav()));
+      } else {
+        // alert(context, response['message']);
+      }
+    } catch (e) {
+      print('Error saat login: $e');
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(

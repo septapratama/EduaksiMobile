@@ -58,7 +58,6 @@ class _LoginScreenState extends State<LoginScreen> {
     }
     try {
       Map<String, dynamic> response = await apiService.login(email, kataSandi);
-      // print(response['data']);
       if (response['status'] == 'success') {
         // Set the user data using the provider
         // context.read()<UserProvider>().setUserBaru(
@@ -83,17 +82,15 @@ class _LoginScreenState extends State<LoginScreen> {
       final response = await googlelogin.loginGoogle();
       if (response['status'] == 'success') {
         // Set the user data using the provider
-        context.read()<UserProvider>().setUserBaru(
-              UserModelBaru(
-                nama_lengkap: response['data']['nama_lengkap'] ?? '',
-                no_hp: response['data']['email'] ?? '',
-                email: response['data']['no_hp'] ?? '',
-                foto_profil: response['data']['foto_profil'] ?? '',
-              ),
-            );
-
-        Navigator.pushReplacement(
-            context, pageMove.movepage(const BottomNav()));
+        // context.read()<UserProvider>().setUserBaru(
+        //       UserModelBaru(
+        //         nama_lengkap: response['data']['nama_lengkap'] ?? '',
+        //         no_hp: response['data']['email'] ?? '',
+        //         email: response['data']['no_hp'] ?? '',
+        //         foto_profil: response['data']['foto_profil'] ?? '',
+        //       ),
+        //     );
+        Navigator.pushReplacement(context, pageMove.movepage(const BottomNav()));
       } else {
         // print('Login failed: ${response['message']}');
         alert(context, "terjadi kesalahan pada jaringan");

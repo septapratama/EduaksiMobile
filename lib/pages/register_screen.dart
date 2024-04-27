@@ -50,6 +50,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
   void _register() async {
+    // Navigator.push(context,MaterialPageRoute(
+    //         builder: (context) => const LoginScreen(),
+    //       ),
+    //     );
+    //     return;
     String email = emailController.text;
     String namaLengkap = namaController.text;
     String kataSandi = passwordController.text;
@@ -123,9 +128,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     try {
       Map<String, dynamic> response = await apiService.register(email, namaLengkap, kataSandi, konfirmasi);
       if (response['status'] == 'success') {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
+        Navigator.push(context,MaterialPageRoute(
             builder: (context) => const LoginScreen(),
           ),
         );

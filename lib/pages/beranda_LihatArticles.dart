@@ -1,30 +1,57 @@
 import 'package:eduapp/component/custom_appbar.dart';
 import 'package:eduapp/pages/edukasi_nutrisi.dart';
+import 'package:eduapp/utils/ApiService.dart';
 import 'package:eduapp/utils/navigationbar.dart';
 import 'package:flutter/material.dart';
 
-class BerandaLihatarticles extends StatelessWidget {
+class BerandaLihatarticles extends StatefulWidget {
   BerandaLihatarticles({super.key});
+  @override
+  _BerandaLihatarticlesState createState() => _BerandaLihatarticlesState();
+}
+class _BerandaLihatarticlesState extends State<BerandaLihatarticles> {
+  final ApiService apiService = ApiService();
+  List<Map<String, dynamic>> articles = [];
   // Dummy list of articles
-  final List<Map<String, String>> articles = [
-    {
-      'title': 'Model Perilaku Positif',
-      'date': '29 Maret 2024',
-      'image': 'assets/images/artikel 1.png',
-    },
-    {
-      'title': 'Mengajarkan Penyadaran Emosional',
-      'date': '28 Maret 2024',
-      'image': 'assets/images/artikel 2.png',
-    },
-    {
-      'title': 'Membangun Keterampilan Pengaturan Emosi',
-      'date': '28 Maret 2024',
-      'image': 'assets/images/artikel 1.png',
-    },
+  // final List<Map<String, String>> articles = [
+  //   {
+  //     'judul': 'Model Perilaku Positif',
+  //     'created_at': '29 Maret 2024',
+  //     'foto': 'assets/images/artikel 1.png',
+  //   },
+  //   {
+  //     'judul': 'Mengajarkan Penyadaran Emosional',
+  //     'created_at': '28 Maret 2024',
+  //     'foto': 'assets/images/artikel 2.png',
+  //   },
+  //   {
+  //     'judul': 'Membangun Keterampilan Pengaturan Emosi',
+  //     'created_at': '28 Maret 2024',
+  //     'foto': 'assets/images/artikel 1.png',
+  //   },
     
-  ];
-  
+  // ];
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
+  Future<void> fetchData() async {
+    try {
+      Map<String, dynamic> response = await apiService.getArtikel();
+      if (response['status'] == 'success') {
+        setState(() { 
+          articles = List<Map<String, dynamic>>.from(response['data']);
+        });
+
+      } else {
+        //do something
+      }
+    } catch (e) {
+      print('Error fetching artikel data: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,6 +81,7 @@ class BerandaLihatarticles extends StatelessWidget {
                     physics: const NeverScrollableScrollPhysics(),
                     itemCount: articles.length,
                     itemBuilder: (context, index) {
+                      var article = articles[index];
                       return Padding(
                         padding: const EdgeInsets.only(bottom: 10),
                         child: Card(
@@ -61,11 +89,20 @@ class BerandaLihatarticles extends StatelessWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Image.asset(
-                                articles[index]['image']!,
-                                width: double.infinity,
-                                height: 150,
+                              Image.network(
+                                '${apiService.imgUrl}/artikel/${article['foto']}',
+                                width: 135,
+                                height: 100,
                                 fit: BoxFit.cover,
+                                errorBuilder: (context, error, stackTrace) {
+                                  print('Error loading image:${error}');
+                                  return Image.asset(
+                                    'assets/images/artikel 1.png',  
+                                    width: 135,
+                                    height: 100,
+                                    fit: BoxFit.cover,
+                                  );
+                                },
                               ),
                               Padding(
                                 padding: const EdgeInsets.all(12),
@@ -73,7 +110,7 @@ class BerandaLihatarticles extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      articles[index]['title']!,
+                                      article['judul']!,
                                       style: const TextStyle(
                                         fontSize: 18,
                                         fontWeight: FontWeight.bold,
@@ -81,7 +118,7 @@ class BerandaLihatarticles extends StatelessWidget {
                                     ),
                                     const SizedBox(height: 8),
                                     Text(
-                                      'Tanggal Upload: ${articles[index]['date']}',
+                                      'Tanggal Upload: ${article['created_at']}',
                                       style: const TextStyle(
                                         color: Colors.grey,
                                       ),

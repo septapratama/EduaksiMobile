@@ -35,7 +35,7 @@ class OTPScreen extends StatelessWidget {
               ),
               const SizedBox(height: 40),
               PinInputTextField(
-                pinLength: 4,
+                pinLength: 6,
                 decoration: BoxLooseDecoration(
                   textStyle: const TextStyle(fontSize: 20, color: Colors.black),
                   strokeColorBuilder: PinListenColorBuilder(
