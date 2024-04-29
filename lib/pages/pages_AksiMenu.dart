@@ -1,6 +1,7 @@
 import 'package:eduapp/component/custom_appbar.dart';
 import 'package:eduapp/component/custom_colors.dart';
 import 'package:eduapp/pages/aksi_calculator.dart';
+import 'package:eduapp/pages/aksi_calendar.dart';
 import 'package:eduapp/pages/edukasi_emotal.dart';
 import 'package:eduapp/pages/edukasi_diisi.dart';
 import 'package:eduapp/pages/edukasi_nutrisi.dart';
@@ -92,18 +93,10 @@ class AksiMenu extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => Calculator(),
+                                builder: (context) => AksiCalendarPage(),
                               ),
                             );
-                          } else if (index == 2) {
-                            // Jika index kedua, navigasi ke BahasaPages
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => Calculator(),
-                              ),
-                            );
-                          } 
+                          }
                         },
                         child: Row(
                           children: [
