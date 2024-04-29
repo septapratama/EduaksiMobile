@@ -1,10 +1,17 @@
 import 'package:eduapp/component/custom_appbar.dart';
 import 'package:eduapp/component/custom_colors.dart';
 import 'package:eduapp/pages/aksi_calculator.dart';
+<<<<<<< HEAD
 import 'package:eduapp/pages/aksi_calendar.dart';
 import 'package:eduapp/pages/edukasi_emotal.dart';
 import 'package:eduapp/pages/edukasi_diisi.dart';
 import 'package:eduapp/pages/edukasi_nutrisi.dart';
+=======
+import 'package:eduapp/pages/edukasi_bahasa.dart';
+import 'package:eduapp/pages/edukasi_kesenian.dart';
+import 'package:eduapp/pages/edukasi_psikologi.dart';
+import 'package:eduapp/pages/edukasi_religi.dart';
+>>>>>>> c7caaebfb4c79b6385315f79f8eb9ff16ab22b7c
 import 'package:eduapp/utils/navigationbar.dart';
 import 'package:flutter/material.dart';
 import 'package:eduapp/component/custom_appbar_withoutarrowback.dart';
@@ -14,15 +21,11 @@ class AksiMenu extends StatelessWidget {
 
   List<Map<String, dynamic>> articles = [
     {
-      'title': 'Tentukan Berat Badan Ideal Anda',
+      'title': 'Tentukan Berat Badan\nIdeal Anda',
       'image': 'assets/images/artikel 1.png',
     },
     {
-      'title': 'Catat Tumbuh Kembang Anak',
-      'image': 'assets/images/image 36.png',
-    },
-      {
-      'title': 'Jadwalkan Waktu Keluarga',
+      'title': 'Catat Semua Kebutuhan\nDan Aktivitas Anda',
       'image': 'assets/images/image 36.png',
     },
     // Add more articles as needed
@@ -85,7 +88,7 @@ class AksiMenu extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => const Calculator(),
+                                builder: (context) => Calculator(),
                               ),
                             );
                           } else if (index == 1) {
@@ -93,10 +96,17 @@ class AksiMenu extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
+<<<<<<< HEAD
                                 builder: (context) => AksiCalendarPage(),
                               ),
                             );
                           }
+=======
+                                builder: (context) => BahasaPages(),
+                              ),
+                            );
+                          } 
+>>>>>>> c7caaebfb4c79b6385315f79f8eb9ff16ab22b7c
                         },
                         child: Row(
                           children: [
@@ -143,7 +153,7 @@ class AksiMenu extends StatelessWidget {
 class DetailPage extends StatelessWidget {
   final String title;
 
-  const DetailPage({super.key, required this.title});
+  const DetailPage({Key? key, required this.title}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

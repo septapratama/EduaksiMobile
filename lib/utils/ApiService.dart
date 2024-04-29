@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:convert';
 import 'package:eduapp/utils/JwtProvider.dart';
 import 'package:http/http.dart' as http;
@@ -14,7 +15,12 @@ class ApiService {
     }
     return jwtProvider.getJwt();
   }
+<<<<<<< HEAD
   Future<Map<String, dynamic>> register(String email, String namaLengkap, String kataSandi, String kataSandiUlang) async {
+=======
+  Future<Map<String, dynamic>> register(
+      String email, String nama_lengkap, String kata_sandi, String kata_sandi_ulang) async {
+>>>>>>> c7caaebfb4c79b6385315f79f8eb9ff16ab22b7c
     try {
       final response = await http.post(
         Uri.parse('$baseUrl/users/register'),
@@ -23,9 +29,9 @@ class ApiService {
         },
         body: jsonEncode(<String, String>{
           'email': email,
-          'nama_lengkap': namaLengkap,
-          'password': kataSandi,
-          'password_confirm': kataSandiUlang,
+          'nama_lengkap': nama_lengkap,
+          'password': kata_sandi,
+          'password_confirm': kata_sandi_ulang,
         }),
       );
       if (response.statusCode == 200) {
@@ -41,7 +47,12 @@ class ApiService {
   }
 
   //Login
+<<<<<<< HEAD
   Future<Map<String, dynamic>> login(String email, String kataSandi) async {
+=======
+  Future<Map<String, dynamic>> login(
+      String email, String kata_sandi) async {
+>>>>>>> c7caaebfb4c79b6385315f79f8eb9ff16ab22b7c
     try {
       final response = await http.post(
         Uri.parse('$baseUrl/users/login'),
@@ -49,9 +60,15 @@ class ApiService {
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: jsonEncode(<String, String>{
+<<<<<<< HEAD
           'email': 'UserTesting2@gmail.com',
           // 'email': email,
           'password': kataSandi,
+=======
+          // 'email': 'UserTesting1@gmail.com',
+          'email': email,
+          'password': kata_sandi,
+>>>>>>> c7caaebfb4c79b6385315f79f8eb9ff16ab22b7c
         }),
       );
       if (response.statusCode == 200) {
@@ -93,7 +110,12 @@ class ApiService {
   }
 
   //lupa kata sandi
+<<<<<<< HEAD
   Future<Map<String, dynamic>> lupaPassword(String email) async {
+=======
+  Future<Map<String, dynamic>> lupaPassword(
+      String nama_lengkap, String kata_sandi, String no_hp) async {
+>>>>>>> c7caaebfb4c79b6385315f79f8eb9ff16ab22b7c
     try {
       final response = await http.post(
         Uri.parse('$baseUrl/verify/create/password'),
@@ -101,7 +123,13 @@ class ApiService {
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: jsonEncode(<String, String>{
+<<<<<<< HEAD
           'email': email,
+=======
+          'nama_lengkap': nama_lengkap,
+          'kata_sandi': kata_sandi,
+          'no_hp': no_hp,
+>>>>>>> c7caaebfb4c79b6385315f79f8eb9ff16ab22b7c
         }),
       );
       if (response.statusCode == 200) {
@@ -117,7 +145,12 @@ class ApiService {
   }
 
   //send otp
+<<<<<<< HEAD
   Future<Map<String, dynamic>> sendOtp(String email, String otp) async {
+=======
+  Future<Map<String, dynamic>> sendOtp(
+      String nama_lengkap, String kata_sandi, String no_hp) async {
+>>>>>>> c7caaebfb4c79b6385315f79f8eb9ff16ab22b7c
     try {
       final response = await http.post(
         Uri.parse('$baseUrl/verify/otp/password'),
@@ -125,8 +158,14 @@ class ApiService {
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: jsonEncode(<String, String>{
+<<<<<<< HEAD
           'email': email,
           'otp':otp,
+=======
+          'nama_lengkap': nama_lengkap,
+          'kata_sandi': kata_sandi,
+          'no_hp': no_hp,
+>>>>>>> c7caaebfb4c79b6385315f79f8eb9ff16ab22b7c
         }),
       );
       if (response.statusCode == 200) {
@@ -143,7 +182,7 @@ class ApiService {
 
   //kirim ulang kode otp
   Future<Map<String, dynamic>> resendCodeOtp(
-      String email, String kataSandi, String noHp) async {
+      String email, String kata_sandi, String no_hp) async {
     try {
       final response = await http.post(
         Uri.parse('$baseUrl/users/'),
@@ -152,8 +191,8 @@ class ApiService {
         },
         body: jsonEncode(<String, String>{
           'email': email,
-          'kata_sandi': kataSandi,
-          'no_hp': noHp,
+          'kata_sandi': kata_sandi,
+          'no_hp': no_hp,
         }),
       );
       if (response.statusCode == 200) {

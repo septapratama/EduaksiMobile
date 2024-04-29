@@ -128,8 +128,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
     try {
       Map<String, dynamic> response = await apiService.register(email, namaLengkap, kataSandi, konfirmasi);
       if (response['status'] == 'success') {
+<<<<<<< HEAD
         Navigator.push(context,MaterialPageRoute(
             builder: (context) => const LoginScreen(),
+=======
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => LoginScreen(),
+>>>>>>> c7caaebfb4c79b6385315f79f8eb9ff16ab22b7c
           ),
         );
         alert(context, "Silahkan Masuk","Berhasil Mendaftar!",Icons.check, Colors.green);
@@ -506,7 +513,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 onPressed: () {
                                   // Add logic to navigate to the registration page
                                   Navigator.pushReplacement(context,
-                                      pageMove.movepage(const LoginScreen()));
+                                      pageMove.movepage(LoginScreen()));
                                 },
                                 child: Text(
                                   'Masuk',

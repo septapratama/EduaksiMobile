@@ -6,7 +6,7 @@ import 'dart:io';
 import 'package:eduapp/utils/ApiService.dart';
 
 class ProfilPages extends StatefulWidget {
-  const ProfilPages({super.key});
+  const ProfilPages({Key? key}) : super(key: key);
 
   @override
   _ProfilPagesState createState() => _ProfilPagesState();
@@ -115,13 +115,13 @@ class _ProfilPagesState extends State<ProfilPages> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const appbarwithoutarrow(
+      appBar: appbarwithoutarrow(
         title: 'Profil Pengguna',
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const SizedBox(
+          SizedBox(
             height: 20, // Jarak antara AppBar dan Container foto profil
           ),
           GestureDetector(
@@ -142,7 +142,7 @@ class _ProfilPagesState extends State<ProfilPages> {
                   Container(
                     width: 138.0, // Lebar foto profil
                     height: 141.0, // Tinggi foto profil
-                    decoration: const BoxDecoration(
+                    decoration: BoxDecoration(
                       shape: BoxShape.circle, // Bentuk lingkaran
                       color: Colors.blue, // Warna latar belakang
                     ),
@@ -150,7 +150,7 @@ class _ProfilPagesState extends State<ProfilPages> {
                   Container(
                     width: 138.0, // Lebar foto profil
                     height: 141.0, // Tinggi foto profil
-                    decoration: const BoxDecoration(
+                    decoration: BoxDecoration(
                       shape: BoxShape.circle, // Bentuk lingkaran
                       color: Colors.transparent, // Hapus warna latar belakang
                     ),
@@ -167,7 +167,7 @@ class _ProfilPagesState extends State<ProfilPages> {
                                 ),
                               )
                             : Container(), // Kosongkan kontainer jika tidak ada foto yang dipilih
-                        const Positioned(
+                        Positioned(
                           bottom: 0,
                           right: 0,
                           child: Icon(
@@ -184,28 +184,28 @@ class _ProfilPagesState extends State<ProfilPages> {
               ),
             ),
           ),
-          const SizedBox(height: 40),
+          SizedBox(height: 40),
           CustomTextFieldWidget(
               labelText: 'Nama Pengguna',
               controller: namaController,
               initialValue: 'Nama Pengguna',
               keyboardType: TextInputType.text,
               prefixIcon: Icons.person),
-          const SizedBox(height: 20),
+          SizedBox(height: 20),
           CustomTextFieldWidget(
               labelText: 'Email',
               controller: emailController,
               initialValue: 'Email',
               keyboardType: TextInputType.text,
               prefixIcon: Icons.mail),
-          const SizedBox(height: 20),
+          SizedBox(height: 20),
           CustomTextFieldWidget(
               labelText: 'No Telepon',
               controller: noTelponController,
               initialValue: 'No Telepon',
               keyboardType: TextInputType.text,
               prefixIcon: Icons.phone),
-          const SizedBox(height: 20),
+          SizedBox(height: 20),
           CustomTextFieldWidget(
             labelText: 'Kata Sandi',
             controller: passwordController,
@@ -214,9 +214,9 @@ class _ProfilPagesState extends State<ProfilPages> {
             prefixIcon: Icons.fingerprint,
             obscureText: true, // Mengatur agar input teks tersembunyi
           ),
-          const SizedBox(height: 24),
+          SizedBox(height: 24),
           Padding(
-            padding: const EdgeInsets.only(
+            padding: EdgeInsets.only(
                 right: 40.0), // Sesuaikan padding dengan kebutuhan Anda
             child: Align(
               alignment: Alignment.centerRight,
@@ -233,14 +233,14 @@ class _ProfilPagesState extends State<ProfilPages> {
                         20.0), // Atur border radius sesuai kebutuhan Anda
                   ),
                 ),
-                child: const Padding(
-                  padding: EdgeInsets.symmetric(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
                       vertical: 12.0, horizontal: 30.0),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
-                        'Simpan',
+                        'Daftar',
                         style: TextStyle(
                           fontFamily: 'Poppins_SemiBold',
                           fontWeight: FontWeight.w600,

@@ -11,7 +11,7 @@ class OTPScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomAppBar(title: 'Kode OTP'),
+      appBar: CustomAppBar(title: 'Kode OTP'),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.only(top: 50, left: 75, right: 75),
@@ -19,28 +19,28 @@ class OTPScreen extends StatelessWidget {
             crossAxisAlignment:
                 CrossAxisAlignment.center, // Align content to the start (left)
             children: [
-              const Text(
+              Text(
                 'Kode OTP',
                 style: TextStyle(
                   fontSize: 24,
                   fontFamily: 'Poppins_SemiBold',
                 ),
               ),
-              const SizedBox(height: 20),
-              const Text(
+              SizedBox(height: 20),
+              Text(
                 'Masukan Kode OTP Anda!',
                 style: TextStyle(
                     fontSize: 15,
                     fontFamily: 'Poppins_Regular',
                     color: Color.fromARGB(255, 80, 81, 85)),
               ),
-              const SizedBox(height: 40),
+              SizedBox(height: 40),
               PinInputTextField(
                 pinLength: 6,
                 decoration: BoxLooseDecoration(
-                  textStyle: const TextStyle(fontSize: 20, color: Colors.black),
+                  textStyle: TextStyle(fontSize: 20, color: Colors.black),
                   strokeColorBuilder: PinListenColorBuilder(
-                    const Color(0xFFCCCCCC), // Default border color
+                    Color(0xFFCCCCCC), // Default border color
                     Colors.black, // Border color when typing
                   ),
                 ),
@@ -57,8 +57,8 @@ class OTPScreen extends StatelessWidget {
                 },
               ),
               // Add space between the OTP input and text button
-              const SizedBox(height: 35),
-              const Text(
+              SizedBox(height: 35),
+              Text(
                 'Anda belum menerima kode OTP? ',
                 style: TextStyle(fontSize: 16, fontFamily: 'Poppins_Regular'),
               ),
@@ -75,17 +75,17 @@ class OTPScreen extends StatelessWidget {
                       fontFamily: 'Poppins_SemiBold'),
                 ),
               ),
-              const SizedBox(height: 50),
+              SizedBox(height: 50),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 30.0),
                 child: ElevatedButton(
                   onPressed: () {
                     // Add your onPressed logic here
                     Navigator.pushReplacement(
-                        context, pageMove.movepage(const LoginScreen()));
+                        context, pageMove.movepage(LoginScreen()));
                   },
                   style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(
+                    padding: EdgeInsets.symmetric(
                         vertical: 20,
                         horizontal: 50), // Adjust padding as needed
                     foregroundColor: Colors.white,
@@ -94,7 +94,7 @@ class OTPScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(8.0),
                     ),
                   ),
-                  child: const Text(
+                  child: Text(
                     'Oke',
                     style: TextStyle(
                       fontFamily: 'Poppins_SemiBold',

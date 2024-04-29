@@ -2,25 +2,22 @@ import 'package:flutter/material.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
-  final VoidCallback? leadingOnPressed; // Function onPressed for back button
-  final VoidCallback? buttonOnPressed; // Function onPressed for custom button
-  final IconData? buttonIcon; // Icon for custom button
+  final VoidCallback? leadingOnPressed; // Fungsi onPressed untuk tombol kembali
   final List<Widget>? actions;
   final Color backgroundColor;
   final Color titleColor;
   final String fontFamily;
 
   const CustomAppBar({
-    super.key,
+    Key? key,
     required this.title,
-    this.leadingOnPressed, // onPressed function argument
-    this.buttonOnPressed, // onPressed function argument for custom button
-    this.buttonIcon, // Icon for custom button
+    this.leadingOnPressed, // Argumen fungsi onPressed
     this.actions,
-    this.backgroundColor = const Color.fromRGBO(30, 84, 135, 1), // Default background color
+    this.backgroundColor =
+        const Color.fromRGBO(30, 84, 135, 1), // Default background color
     this.titleColor = Colors.white, // Default title color
     this.fontFamily = 'Poppins_Bold', // Default font family
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -33,10 +30,18 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
       ),
       backgroundColor: backgroundColor,
-      iconTheme: const IconThemeData(color: Colors.white), // Set the color of leading button icon
+<<<<<<< HEAD
+      leading: IconButton(
+        icon: Icon(Icons.arrow_back, color: Colors.white),
+        onPressed:
+            leadingOnPressed, // Menggunakan onPressed yang diberikan dari luar
+      ),
+      actions: actions,
+=======
+      iconTheme: IconThemeData(color: Colors.white), // Set the color of leading button icon
       leading: leadingOnPressed != null
           ? IconButton(
-              icon: const Icon(Icons.arrow_back),
+              icon: Icon(Icons.arrow_back),
               onPressed: leadingOnPressed,
             )
           : null,
@@ -48,6 +53,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           ),
         if (actions != null) ...actions!,
       ],
+>>>>>>> parent of 303f108 (update change content edukasi)
     );
   }
 

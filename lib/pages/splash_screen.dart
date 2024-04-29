@@ -4,8 +4,6 @@ import 'welcome_screen.dart'; // Import your welcome screen file
 import 'dart:async';
 
 class SplashScreen extends StatefulWidget {
-  const SplashScreen({super.key});
-
   @override
   _SplashScreenState createState() => _SplashScreenState();
 }
@@ -56,7 +54,7 @@ class _SplashScreenState extends State<SplashScreen> {
           context,
           PageRouteBuilder(
             pageBuilder: (context, animation, secondaryAnimation) =>
-                const WelcomeScreen(),
+                WelcomeScreen(),
             transitionsBuilder:
                 (context, animation, secondaryAnimation, child) {
               const begin = Offset(0.0, 1.0);
@@ -110,7 +108,7 @@ class _SplashScreenState extends State<SplashScreen> {
       body: Stack(
         children: [
           AnimatedPositioned(
-            duration: const Duration(seconds: 2), // Duration for the image transition
+            duration: Duration(seconds: 2), // Duration for the image transition
             curve: Curves.easeInOut, // Curve for smooth transition
             top: _mainImageTop, // Use the updated top position
             left: 0,
@@ -120,7 +118,7 @@ class _SplashScreenState extends State<SplashScreen> {
               duration: const Duration(
                   seconds: 2), // Set the duration of the fade-in animation
               child: Padding(
-                padding: const EdgeInsets.only(top: 200.0), // Adjust the space
+                padding: EdgeInsets.only(top: 200.0), // Adjust the space
                 child: ClipRRect(
                   borderRadius:
                       BorderRadius.circular(20.0), // Set border radius
@@ -134,7 +132,7 @@ class _SplashScreenState extends State<SplashScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const SizedBox(height: 300), // Add space between images
+                SizedBox(height: 300), // Add space between images
                 if (_showNewImage)
                   AnimatedOpacity(
                     opacity:

@@ -1,10 +1,9 @@
 import 'package:eduapp/component/custom_appbar.dart';
-import 'package:eduapp/pages/edukasi_emotal.dart';
-import 'package:eduapp/pages/edukasi_nutrisi.dart';
+import 'package:eduapp/pages/edukasi_psikologi.dart';
 import 'package:flutter/material.dart';
 
-class EdukasiEmotalartikel extends StatelessWidget {
-  EdukasiEmotalartikel({super.key});
+class ReligiArtikel extends StatelessWidget {
+  ReligiArtikel({super.key});
   // Dummy list of articles
   final List<Map<String, String>> articles = [
     {
@@ -32,11 +31,11 @@ class EdukasiEmotalartikel extends StatelessWidget {
         slivers: <Widget>[
           SliverToBoxAdapter(
             child: CustomAppBar(
-              title: 'Artikel Edukasi Emotal',
+              title: 'Artikel Edukasi Psikologi',
               buttonOnPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => EdukasiEmotal()),
+                  MaterialPageRoute(builder: (context) => PskikologiPages()),
                 );
               },
             ),
@@ -51,7 +50,7 @@ class EdukasiEmotalartikel extends StatelessWidget {
                 children: [ 
                   ListView.builder(
                     shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
+                    physics: NeverScrollableScrollPhysics(),
                     itemCount: articles.length,
                     itemBuilder: (context, index) {
                       return Padding(
@@ -74,15 +73,15 @@ class EdukasiEmotalartikel extends StatelessWidget {
                                   children: [
                                     Text(
                                       articles[index]['title']!,
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                         fontSize: 18,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
-                                    const SizedBox(height: 8),
+                                    SizedBox(height: 8),
                                     Text(
                                       'Tanggal Upload: ${articles[index]['date']}',
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                         color: Colors.grey,
                                       ),
                                     ),

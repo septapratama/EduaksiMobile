@@ -5,7 +5,7 @@ import 'package:eduapp/utils/ApiService.dart';
 import 'package:flutter/material.dart';
 import 'package:eduapp/component/custom_pagemove.dart';
 class Lupakatasandi extends StatefulWidget {
-  const Lupakatasandi({super.key});
+  const Lupakatasandi({Key? key}) : super(key: key);
 
   @override
   State<Lupakatasandi> createState() => _LupakatasandiState();
@@ -102,7 +102,12 @@ class _LupakatasandiState extends State<Lupakatasandi> {
                   child: ElevatedButton(
                     onPressed: () {
                       // Add your onPressed logic here
+<<<<<<< HEAD
                       _lupaKataSandi(context);
+=======
+                       Navigator.pushReplacement(context,
+                                      pageMove.movepage(OTPScreen()));
+>>>>>>> c7caaebfb4c79b6385315f79f8eb9ff16ab22b7c
                     },
                     style: ElevatedButton.styleFrom(
                       padding: EdgeInsets.zero,
@@ -145,7 +150,7 @@ class _LupakatasandiState extends State<Lupakatasandi> {
                         fontSize = 16.0;
                       }
 
-                      return SizedBox(
+                      return Container(
                         width: MediaQuery.of(context).size.width * 0.8,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
