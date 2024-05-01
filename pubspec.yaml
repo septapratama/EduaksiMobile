@@ -45,6 +45,7 @@ dependencies:
   sms_otp_auto_verify: ^2.1.0
   flutter_session_jwt: ^0.0.6
   pin_input_text_field: ^4.5.1
+  table_calendar: ^3.1.1
 dev_dependencies:
   flutter_test:
     sdk: flutter

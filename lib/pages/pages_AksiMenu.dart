@@ -1,6 +1,7 @@
 import 'package:eduapp/component/custom_appbar.dart';
 import 'package:eduapp/component/custom_colors.dart';
 import 'package:eduapp/pages/aksi_calculator.dart';
+import 'package:eduapp/pages/aksi_calendar.dart';
 import 'package:eduapp/pages/edukasi_emotal.dart';
 import 'package:eduapp/pages/edukasi_diisi.dart';
 import 'package:eduapp/pages/edukasi_nutrisi.dart';
@@ -18,10 +19,6 @@ class AksiMenu extends StatelessWidget {
     },
     {
       'title': 'Catat Tumbuh Kembang Anak',
-      'image': 'assets/images/image 36.png',
-    },
-      {
-      'title': 'Jadwalkan Waktu Keluarga',
       'image': 'assets/images/image 36.png',
     },
     // Add more articles as needed
@@ -92,15 +89,7 @@ class AksiMenu extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => Calculator(),
-                              ),
-                            );
-                          } else if (index == 2) {
-                            // Jika index kedua, navigasi ke BahasaPages
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => Calculator(),
+                                builder: (context) => AksiCalendarPage(),
                               ),
                             );
                           } 
