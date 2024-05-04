@@ -1,0 +1,113 @@
+import 'package:eduapp/component/custom_appbar.dart';
+import 'package:eduapp/component/custom_colors.dart';
+import 'package:eduapp/pages/login_screen.dart';
+import 'package:flutter/material.dart';
+import 'package:pin_input_text_field/pin_input_text_field.dart';
+import 'package:eduapp/component/custom_pagemove.dart';
+
+class OTPScreen extends StatelessWidget {
+  final Map<String, dynamic> otpData;
+  const OTPScreen({super.key, required this.otpData});
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: const CustomAppBar(title: 'Kode OTP'),
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.only(top: 50, left: 75, right: 75),
+          child: Column(
+            crossAxisAlignment:
+                CrossAxisAlignment.center, // Align content to the start (left)
+            children: [
+              const Text(
+                'Kode OTP',
+                style: TextStyle(
+                  fontSize: 24,
+                  fontFamily: 'Poppins_SemiBold',
+                ),
+              ),
+              const SizedBox(height: 20),
+              const Text(
+                'Masukan Kode OTP Anda!',
+                style: TextStyle(
+                    fontSize: 15,
+                    fontFamily: 'Poppins_Regular',
+                    color: Color.fromARGB(255, 80, 81, 85)),
+              ),
+              const SizedBox(height: 40),
+              PinInputTextField(
+                pinLength: 6,
+                decoration: BoxLooseDecoration(
+                  textStyle: const TextStyle(fontSize: 20, color: Colors.black),
+                  strokeColorBuilder: PinListenColorBuilder(
+                    const Color(0xFFCCCCCC), // Default border color
+                    Colors.black, // Border color when typing
+                  ),
+                ),
+                autoFocus: true,
+                textInputAction: TextInputAction.done,
+                onSubmit: (pin) {
+                  // You can handle PIN submission here
+                  print("OTP submitted: $pin");
+                  // Example: Navigate to the next screen after OTP submission
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(builder: (context) => NextScreen()),
+                  // );
+                },
+              ),
+              // Add space between the OTP input and text button
+              const SizedBox(height: 35),
+              const Text(
+                'Anda belum menerima kode OTP? ',
+                style: TextStyle(fontSize: 16, fontFamily: 'Poppins_Regular'),
+              ),
+              TextButton(
+                onPressed: () {
+                  // Handle resend OTP action here
+                  print('Resend OTP');
+                },
+                child: Text(
+                  'Kirim ulang',
+                  style: TextStyle(
+                      fontSize: 14,
+                      color: customColor.primaryColors,
+                      fontFamily: 'Poppins_SemiBold'),
+                ),
+              ),
+              const SizedBox(height: 50),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 30.0),
+                child: ElevatedButton(
+                  onPressed: () {
+                    // Add your onPressed logic here
+                    Navigator.pushReplacement(
+                        context, pageMove.movepage(const LoginScreen()));
+                  },
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 20,
+                        horizontal: 50), // Adjust padding as needed
+                    foregroundColor: Colors.white,
+                    backgroundColor: const Color.fromRGBO(30, 84, 135, 1),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                  ),
+                  child: const Text(
+                    'Oke',
+                    style: TextStyle(
+                      fontFamily: 'Poppins_SemiBold',
+                      fontWeight: FontWeight.w600,
+                      fontSize: 18,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
