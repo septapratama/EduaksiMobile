@@ -4,10 +4,20 @@ import 'package:http/http.dart' as http;
 
 class ApiService {
   final JwtProvider jwtProvider = JwtProvider();
-  final String baseUrl = "http://192.168.110.33:8000/api/mobile";
-  // final String baseUrl = "https://eduaksi.amirzan.my.id/api/mobile";
-  final String imgUrl = "http://192.168.110.33:8000/img";
-  final String fotoProfilUrl = "http://192.168.110.33:8000/eduaksi/mobile/img/profile/users/";
+  final String _baseDomain = "192.168.0.105:8000";
+  late String _baseUrl;
+  late Uri baseWS;
+  // final String _baseUrl = "https://eduaksi.amirzan.my.id";
+  late String baseMobile;
+  late String imgUrl;
+  late String fotoProfilUrl;
+  ApiService() {
+    _baseUrl = 'http://$_baseDomain';
+    baseWS = Uri.parse('ws://$_baseDomain');
+    baseMobile = '$_baseUrl/api/mobile';
+    imgUrl = '$_baseUrl/img';
+    fotoProfilUrl = '$_baseUrl/img/user';
+  }
   Future<String> getAuthToken() async {
     if(await jwtProvider.isExpired()){
       return 'expired';
@@ -17,7 +27,7 @@ class ApiService {
   Future<Map<String, dynamic>> register(String email, String namaLengkap, String kataSandi, String kataSandiUlang) async {
     try {
       final response = await http.post(
-        Uri.parse('$baseUrl/users/register'),
+        Uri.parse('$baseMobile/users/register'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -44,7 +54,7 @@ class ApiService {
   Future<Map<String, dynamic>> login(String email, String kataSandi) async {
     try {
       final response = await http.post(
-        Uri.parse('$baseUrl/users/login'),
+        Uri.parse('$baseMobile/users/login'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -71,7 +81,7 @@ class ApiService {
   Future<Map<String, dynamic>> loginGoogle(String email) async {
     try {
       final response = await http.post(
-        Uri.parse('$baseUrl/users/login/google'),
+        Uri.parse('$baseMobile/users/login/google'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -96,7 +106,7 @@ class ApiService {
   Future<Map<String, dynamic>> lupaPassword(String email) async {
     try {
       final response = await http.post(
-        Uri.parse('$baseUrl/verify/create/password'),
+        Uri.parse('$baseMobile/verify/create/password'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -120,7 +130,7 @@ class ApiService {
   Future<Map<String, dynamic>> sendOtp(String email, String otp) async {
     try {
       final response = await http.post(
-        Uri.parse('$baseUrl/verify/otp/password'),
+        Uri.parse('$baseMobile/verify/otp/password'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -146,7 +156,7 @@ class ApiService {
       String email, String kataSandi, String noHp) async {
     try {
       final response = await http.post(
-        Uri.parse('$baseUrl/users/'),
+        Uri.parse('$baseMobile/users/'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -172,7 +182,7 @@ class ApiService {
   Future<Map<String, dynamic>> resetPass(String email, String otp, String pass, String passConfirm) async {
     try {
       final response = await http.post(
-        Uri.parse('$baseUrl/verify/password'),
+        Uri.parse('$baseMobile/verify/password'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -201,7 +211,7 @@ class ApiService {
       String email, int number) async {
     try {
       final response = await http.post(
-        Uri.parse('$baseUrl/users/logout'),
+        Uri.parse('$baseMobile/users/logout'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -231,7 +241,7 @@ class ApiService {
         return  {'message' : 'token expired'};
       }
       final response = await http.post(
-        Uri.parse('$baseUrl/users/update'),
+        Uri.parse('$baseMobile/users/update'),
         headers: <String, String>{
           'Authorization': auth,
           'Content-Type': 'application/json; charset=UTF-8',
@@ -265,7 +275,7 @@ class ApiService {
       if(auth == 'expired'){ 
         return  {'message' : 'token expired'};
       }
-      final response = await http.post(Uri.parse('$baseUrl/dashboard'), headers: <String, String>{
+      final response = await http.post(Uri.parse('$baseMobile/dashboard'), headers: <String, String>{
         'Authorization': auth,
         'Content-Type': 'application/json; charset=UTF-8',
       });
@@ -287,7 +297,7 @@ class ApiService {
       // if(auth == 'expired'){ 
       //   return  {'message' : 'token expired'};
       // }
-      final response = await http.post(Uri.parse('$baseUrl/artikel'), headers: <String, String>{
+      final response = await http.post(Uri.parse('$baseMobile/artikel'), headers: <String, String>{
         // 'Authorization': auth,
         'Content-Type': 'application/json; charset=UTF-8',
       });
@@ -309,7 +319,7 @@ class ApiService {
       // if(auth == 'expired'){ 
       //   return  {'message' : 'token expired'};
       // }
-      final response = await http.post(Uri.parse('$baseUrl/artikel/$link'), headers: <String, String>{
+      final response = await http.post(Uri.parse('$baseMobile/artikel/$link'), headers: <String, String>{
         // 'Authorization': auth,
         'Content-Type': 'application/json; charset=UTF-8',
       });
@@ -331,7 +341,7 @@ class ApiService {
       if(auth == 'expired'){
         return  {'message' : 'token expired'};
       }
-      final response = await http.get(Uri.parse('$baseUrl/disi'), headers: <String, String>{
+      final response = await http.get(Uri.parse('$baseMobile/disi'), headers: <String, String>{
         'Authorization': auth,
         'Content-Type': 'application/json; charset=UTF-8',
       });
@@ -362,7 +372,7 @@ class ApiService {
       if(auth == 'expired'){
         return  {'message' : 'token expired'};
       }
-      final response = await http.get(Uri.parse('$baseUrl/disi/usia/$usia'), headers: <String, String>{
+      final response = await http.get(Uri.parse('$baseMobile/disi/usia/$usia'), headers: <String, String>{
         'Authorization': auth,
         'Content-Type': 'application/json; charset=UTF-8',
       });
@@ -387,7 +397,7 @@ class ApiService {
       if(auth == 'expired'){
         return  {'message' : 'token expired'};
       }
-      final response = await http.get(Uri.parse('$baseUrl/disi/$idDisi'), headers: <String, String>{
+      final response = await http.get(Uri.parse('$baseMobile/disi/$idDisi'), headers: <String, String>{
         'Authorization': auth,
         'Content-Type': 'application/json; charset=UTF-8',
       });
@@ -410,7 +420,7 @@ class ApiService {
       if(auth == 'expired'){
         return  {'message' : 'token expired'};
       }
-      final response = await http.get(Uri.parse('$baseUrl/emotal'), headers: <String, String>{
+      final response = await http.get(Uri.parse('$baseMobile/emotal'), headers: <String, String>{
         'Authorization': auth,
         'Content-Type': 'application/json; charset=UTF-8',
       });
@@ -441,7 +451,7 @@ class ApiService {
       if(auth == 'expired'){
         return  {'message' : 'token expired'};
       }
-      final response = await http.get(Uri.parse('$baseUrl/emotal/usia/$usia'), headers: <String, String>{
+      final response = await http.get(Uri.parse('$baseMobile/emotal/usia/$usia'), headers: <String, String>{
         'Authorization': auth,
         'Content-Type': 'application/json; charset=UTF-8',
       });
@@ -466,7 +476,7 @@ class ApiService {
       if(auth == 'expired'){
         return  {'message' : 'token expired'};
       }
-      final response = await http.get(Uri.parse('$baseUrl/emotal/$idDisi'), headers: <String, String>{
+      final response = await http.get(Uri.parse('$baseMobile/emotal/$idDisi'), headers: <String, String>{
         'Authorization': auth,
         'Content-Type': 'application/json; charset=UTF-8',
       });
@@ -489,7 +499,7 @@ class ApiService {
       if(auth == 'expired'){
         return  {'message' : 'token expired'};
       }
-      final response = await http.get(Uri.parse('$baseUrl/nutrisi'), headers: <String, String>{
+      final response = await http.get(Uri.parse('$baseMobile/nutrisi'), headers: <String, String>{
         'Authorization': auth,
         'Content-Type': 'application/json; charset=UTF-8',
       });
@@ -520,7 +530,7 @@ class ApiService {
       if(auth == 'expired'){
         return  {'message' : 'token expired'};
       }
-      final response = await http.get(Uri.parse('$baseUrl/nutrisi/usia/$usia'), headers: <String, String>{
+      final response = await http.get(Uri.parse('$baseMobile/nutrisi/usia/$usia'), headers: <String, String>{
         'Authorization': auth,
         'Content-Type': 'application/json; charset=UTF-8',
       });
@@ -545,7 +555,7 @@ class ApiService {
       if(auth == 'expired'){
         return  {'message' : 'token expired'};
       }
-      final response = await http.get(Uri.parse('$baseUrl/nutrisi/$idDisi'), headers: <String, String>{
+      final response = await http.get(Uri.parse('$baseMobile/nutrisi/$idDisi'), headers: <String, String>{
         'Authorization': auth,
         'Content-Type': 'application/json; charset=UTF-8',
       });
@@ -568,7 +578,7 @@ class ApiService {
       if(auth == 'expired'){
         return  {'message' : 'token expired'};
       }
-      final response = await http.get(Uri.parse('$baseUrl/pengasuhan'), headers: <String, String>{
+      final response = await http.get(Uri.parse('$baseMobile/pengasuhan'), headers: <String, String>{
         'Authorization': auth,
         'Content-Type': 'application/json; charset=UTF-8',
       });
@@ -599,7 +609,7 @@ class ApiService {
       if(auth == 'expired'){
         return  {'message' : 'token expired'};
       }
-      final response = await http.get(Uri.parse('$baseUrl/pengasuhan/usia/$usia'), headers: <String, String>{
+      final response = await http.get(Uri.parse('$baseMobile/pengasuhan/usia/$usia'), headers: <String, String>{
         'Authorization': auth,
         'Content-Type': 'application/json; charset=UTF-8',
       });
@@ -624,7 +634,7 @@ class ApiService {
       if(auth == 'expired'){
         return  {'message' : 'token expired'};
       }
-      final response = await http.get(Uri.parse('$baseUrl/pengasuhan/$idDisi'), headers: <String, String>{
+      final response = await http.get(Uri.parse('$baseMobile/pengasuhan/$idDisi'), headers: <String, String>{
         'Authorization': auth,
         'Content-Type': 'application/json; charset=UTF-8',
       });
@@ -648,7 +658,7 @@ class ApiService {
         return  {'message' : 'token expired'};
       }
       final response = await http.post(
-        Uri.parse('$baseUrl/users/login'),
+        Uri.parse('$baseMobile/users/login'),
         headers: <String, String>{
           'Authorization': auth,
           'Content-Type': 'application/json; charset=UTF-8',
@@ -678,7 +688,7 @@ class ApiService {
         return  {'message' : 'token expired'};
       }
       final response = await http.put(
-        Uri.parse('$baseUrl/users/pencatatan/update/$idPencatatan'),
+        Uri.parse('$baseMobile/users/pencatatan/update/$idPencatatan'),
         headers: <String, String>{
           'Authorization': auth,
           'Content-Type': 'application/json; charset=UTF-8',
@@ -706,7 +716,7 @@ class ApiService {
       if(auth == 'expired'){
         return  {'message' : 'token expired'};
       }
-      final response = await http.get(Uri.parse('$baseUrl/konsultasi'), headers: <String, String>{
+      final response = await http.get(Uri.parse('$baseMobile/konsultasi'), headers: <String, String>{
         'Authorization': auth,
         'Content-Type': 'application/json; charset=UTF-8',
       });
@@ -731,7 +741,7 @@ class ApiService {
       if(auth == 'expired'){
         return  {'message' : 'token expired'};
       }
-      final response = await http.get(Uri.parse('$baseUrl/konsultasi/$idKonsultasi'), headers: <String, String>{
+      final response = await http.get(Uri.parse('$baseMobile/konsultasi/$idKonsultasi'), headers: <String, String>{
           'Authorization': auth,
           'Content-Type': 'application/json; charset=UTF-8',
       });

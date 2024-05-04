@@ -1,6 +1,7 @@
 import 'package:eduapp/controller/controller_register.dart';
 import 'package:eduapp/utils/ApiService.dart';
 import 'package:eduapp/utils/Google_login.dart';
+import 'package:eduapp/utils/FirebaseServices.dart';
 import 'package:eduapp/utils/navigationbar.dart';
 import 'package:eduapp/utils/user_model_baru.dart';
 import 'package:eduapp/utils/user_provider.dart';
@@ -27,6 +28,11 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController passwordController = TextEditingController();
   final ApiService apiService = ApiService();
   final GoogleLogin googlelogin = GoogleLogin();
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   void alert(BuildContext context, String message) {
     showDialog(
