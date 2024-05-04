@@ -1,4 +1,5 @@
 import 'package:eduapp/component/custom_appbar.dart';
+<<<<<<< HEAD:lib/pages/beranda_LihatArticles.dart
 import 'package:eduapp/pages/edukasi_nutrisi.dart';
 import 'package:eduapp/utils/ApiService.dart';
 import 'package:eduapp/utils/navigationbar.dart';
@@ -12,6 +13,13 @@ class BerandaLihatarticles extends StatefulWidget {
 class _BerandaLihatarticlesState extends State<BerandaLihatarticles> {
   final ApiService apiService = ApiService();
   List<Map<String, dynamic>> articles = [];
+=======
+import 'package:eduapp/pages/edukasi_psikologi.dart';
+import 'package:flutter/material.dart';
+
+class BahasaArtikel extends StatelessWidget {
+  BahasaArtikel({super.key});
+>>>>>>> c7caaebfb4c79b6385315f79f8eb9ff16ab22b7c:lib/pages/edukasi_bahasaArtikel.dart
   // Dummy list of articles
   // final List<Map<String, String>> articles = [
   //   {
@@ -59,11 +67,11 @@ class _BerandaLihatarticlesState extends State<BerandaLihatarticles> {
         slivers: <Widget>[
           SliverToBoxAdapter(
             child: CustomAppBar(
-              title: 'Semua Artikel',
+              title: 'Artikel Edukasi Psikologi',
               buttonOnPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => BottomNav()),
+                  MaterialPageRoute(builder: (context) => PskikologiPages()),
                 );
               },
             ),
@@ -78,7 +86,7 @@ class _BerandaLihatarticlesState extends State<BerandaLihatarticles> {
                 children: [ 
                   ListView.builder(
                     shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
+                    physics: NeverScrollableScrollPhysics(),
                     itemCount: articles.length,
                     itemBuilder: (context, index) {
                       var article = articles[index];
@@ -110,16 +118,26 @@ class _BerandaLihatarticlesState extends State<BerandaLihatarticles> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
+<<<<<<< HEAD:lib/pages/beranda_LihatArticles.dart
                                       article['judul']!,
                                       style: const TextStyle(
+=======
+                                      articles[index]['title']!,
+                                      style: TextStyle(
+>>>>>>> c7caaebfb4c79b6385315f79f8eb9ff16ab22b7c:lib/pages/edukasi_bahasaArtikel.dart
                                         fontSize: 18,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
-                                    const SizedBox(height: 8),
+                                    SizedBox(height: 8),
                                     Text(
+<<<<<<< HEAD:lib/pages/beranda_LihatArticles.dart
                                       'Tanggal Upload: ${article['created_at']}',
                                       style: const TextStyle(
+=======
+                                      'Tanggal Upload: ${articles[index]['date']}',
+                                      style: TextStyle(
+>>>>>>> c7caaebfb4c79b6385315f79f8eb9ff16ab22b7c:lib/pages/edukasi_bahasaArtikel.dart
                                         color: Colors.grey,
                                       ),
                                     ),

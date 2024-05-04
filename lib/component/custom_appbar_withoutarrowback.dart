@@ -7,12 +7,12 @@ class appbarwithoutarrow extends StatelessWidget implements PreferredSizeWidget 
   final bool centerTitle;
 
   const appbarwithoutarrow({
-    super.key,
+    Key? key,
     required this.title,
     this.backgroundColor = const Color.fromRGBO(30, 84, 135, 1),
     this.titleColor = Colors.white,
     this.centerTitle = true,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -30,5 +30,5 @@ class appbarwithoutarrow extends StatelessWidget implements PreferredSizeWidget 
   }
 
   @override
-  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+  Size get preferredSize => Size.fromHeight(kToolbarHeight);
 }

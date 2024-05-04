@@ -1,11 +1,11 @@
 import 'package:eduapp/component/custom_appbar.dart';
 import 'package:eduapp/component/custom_colors.dart';
-import 'package:eduapp/pages/edukasi_pengasuhanArtikel.dart';
+import 'package:eduapp/pages/edukasi_psikologiArtikel%20copy.dart';
 import 'package:eduapp/pages/pages_EdukasiMenu.dart';
 import 'package:flutter/material.dart';
 
-class EdukasiPengasuhan extends StatelessWidget {
-  EdukasiPengasuhan({super.key});
+class ReligiPages extends StatelessWidget {
+  ReligiPages({Key? key});
 
   // Dummy list of articles
   final List<Map<String, String>> articles = [
@@ -34,7 +34,7 @@ class EdukasiPengasuhan extends StatelessWidget {
         slivers: <Widget>[
           SliverToBoxAdapter(
             child: CustomAppBar(
-              title: 'Edukasi Pengasuhan',
+              title: 'Edukasi Religi',
               buttonOnPressed: () {
                 Navigator.push(
                   context,
@@ -54,7 +54,7 @@ class EdukasiPengasuhan extends StatelessWidget {
                     width: double.infinity,
                     height: 200,
                   ),
-                  const SizedBox(height: 16),
+                  SizedBox(height: 16),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: Text(
@@ -66,15 +66,15 @@ class EdukasiPengasuhan extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 5),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16),
+                  SizedBox(height: 5),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: Text(
                       'Edukasi religius pada anak melibatkan pengajaran nilai-nilai, keyakinan, praktik, dan pengetahuan agama tertentu kepada anak-anak. Ini mencakup memperkenalkan mereka pada ajaran-ajaran agama, etika, dan kebiasaan spiritual yang dapat membentuk karakter dan moralitas mereka.',
                       textAlign: TextAlign.left,
                     ),
                   ),
-                  const Divider(
+                  Divider(
                     height: 38,
                     thickness: 1,
                     color: Colors.grey,
@@ -92,15 +92,15 @@ class EdukasiPengasuhan extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 5),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16),
+                  SizedBox(height: 5),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: Text(
                       'Edukasi religius pada anak bertujuan untuk membentuk dasar keimanan yang kuat dan kokoh dalam agama mereka, serta membantu mereka memahami nilai-nilai moral dan etika yang penting dalam kehidupan sehari-hari. Selain itu, melalui pendekatan ini, anak-anak diajak untuk mengembangkan rasa keterhubungan spiritual dengan sesama, alam, dan Tuhan, sambil didorong untuk menunjukkan perilaku positif dan altruistik seperti kepedulian terhadap sesama, belas kasihan, dan toleransi.',
                       textAlign: TextAlign.left,
                     ),
                   ),
-                  const Divider(
+                  Divider(
                     height: 38,
                     thickness: 1,
                     color: Colors.grey,
@@ -118,15 +118,15 @@ class EdukasiPengasuhan extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 5),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16),
+                  SizedBox(height: 5),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: Text(
                       'Edukasi religius juga membantu anak-anak membangun identitas dan memahami nilai-nilai yang mendasari agama dan kepercayaan mereka, serta memberikan panduan moral yang kuat yang diperlukan saat mereka tumbuh dan berkembang. Selain itu, melalui agama, anak-anak sering kali mendapatkan kenyamanan emosional dan keyakinan untuk menghadapi tantangan dan kesulitan dalam hidup.',
                       textAlign: TextAlign.left,
                     ),
                   ),
-                  const Divider(
+                  Divider(
                     height: 38,
                     thickness: 1,
                     color: Colors.grey,
@@ -147,7 +147,7 @@ class EdukasiPengasuhan extends StatelessWidget {
                             color: customColor.primaryColors,
                           ),
                         ),
-                        const SizedBox(height: 5),
+                        SizedBox(height: 5),
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -158,8 +158,8 @@ class EdukasiPengasuhan extends StatelessWidget {
                                 color: customColor.primaryColors,
                               ),
                             ),
-                            const SizedBox(width: 8),
-                            const Expanded(
+                            SizedBox(width: 8),
+                            Expanded(
                               child: Text(
                                 'Berikan contoh yang baik: Jadilah contoh yang baik dalam praktik agama Anda. Anak-anak sering meniru perilaku orang dewasa di sekitar mereka.',
                                 textAlign: TextAlign.left,
@@ -167,7 +167,7 @@ class EdukasiPengasuhan extends StatelessWidget {
                             ),
                           ],
                         ),
-                        const SizedBox(height: 5),
+                        SizedBox(height: 5),
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -178,8 +178,8 @@ class EdukasiPengasuhan extends StatelessWidget {
                                 color: customColor.primaryColors,
                               ),
                             ),
-                            const SizedBox(width: 8),
-                            const Expanded(
+                            SizedBox(width: 8),
+                            Expanded(
                               child: Text(
                                 'Gunakan metode pembelajaran yang menarik: Gunakan cerita, permainan, atau aktivitas yang menarik untuk mengajar anak-anak tentang agama mereka.',
                                 textAlign: TextAlign.left,
@@ -187,7 +187,7 @@ class EdukasiPengasuhan extends StatelessWidget {
                             ),
                           ],
                         ),
-                        const SizedBox(height: 5),
+                        SizedBox(height: 5),
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -198,8 +198,8 @@ class EdukasiPengasuhan extends StatelessWidget {
                                 color: customColor.primaryColors,
                               ),
                             ),
-                            const SizedBox(width: 8),
-                            const Expanded(
+                            SizedBox(width: 8),
+                            Expanded(
                               child: Text(
                                 'Buat lingkungan yang mendukung: Ciptakan lingkungan di rumah yang mendukung praktik agama, termasuk waktu untuk berdoa bersama dan membaca kitab suci.',
                                 textAlign: TextAlign.left,
@@ -207,7 +207,7 @@ class EdukasiPengasuhan extends StatelessWidget {
                             ),
                           ],
                         ),
-                        const SizedBox(height: 5),
+                        SizedBox(height: 5),
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -218,8 +218,8 @@ class EdukasiPengasuhan extends StatelessWidget {
                                 color: customColor.primaryColors,
                               ),
                             ),
-                            const SizedBox(width: 8),
-                            const Expanded(
+                            SizedBox(width: 8),
+                            Expanded(
                               child: Text(
                                 'Ajak anak berdiskusi: Berikan kesempatan kepada anak-anak untuk bertanya dan berdiskusi tentang agama mereka. Dengarkan pertanyaan mereka dengan sabar dan jawab dengan jujur.',
                                 textAlign: TextAlign.left,
@@ -227,7 +227,7 @@ class EdukasiPengasuhan extends StatelessWidget {
                             ),
                           ],
                         ),
-                        const SizedBox(height: 5),
+                        SizedBox(height: 5),
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -238,8 +238,8 @@ class EdukasiPengasuhan extends StatelessWidget {
                                 color: customColor.primaryColors,
                               ),
                             ),
-                            const SizedBox(width: 8),
-                            const Expanded(
+                            SizedBox(width: 8),
+                            Expanded(
                               child: Text(
                                 'Berikan penguatan positif: Beri pujian dan penghargaan kepada anak-anak ketika mereka menunjukkan minat dan keterlibatan dalam belajar agama.',
                                 textAlign: TextAlign.left,
@@ -247,7 +247,7 @@ class EdukasiPengasuhan extends StatelessWidget {
                             ),
                           ],
                         ),
-                        const SizedBox(height: 5),
+                        SizedBox(height: 5),
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -258,8 +258,8 @@ class EdukasiPengasuhan extends StatelessWidget {
                                 color: customColor.primaryColors,
                               ),
                             ),
-                            const SizedBox(width: 8),
-                            const Expanded(
+                            SizedBox(width: 8),
+                            Expanded(
                               child: Text(
                                 'Jadikan belajar menyenangkan: Buatlah pengalaman belajar tentang agama menjadi menyenangkan dan menarik dengan menggunakan media visual, permainan peran, atau aktivitas kreatif lainnya.',
                                 textAlign: TextAlign.left,
@@ -270,7 +270,7 @@ class EdukasiPengasuhan extends StatelessWidget {
                       ],
                     ),
                   ),
-                  const Divider(
+                  Divider(
                     height: 38,
                     thickness: 1,
                     color: Colors.grey,
@@ -290,17 +290,17 @@ class EdukasiPengasuhan extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
+                  Text(
                     'Artikel Pendukung',
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  const SizedBox(height: 10),
+                  SizedBox(height: 10),
                   ListView.builder(
                     shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
+                    physics: NeverScrollableScrollPhysics(),
                     itemCount: articles.length,
                     itemBuilder: (context, index) {
                       return Padding(
@@ -323,15 +323,15 @@ class EdukasiPengasuhan extends StatelessWidget {
                                   children: [
                                     Text(
                                       articles[index]['title']!,
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                         fontSize: 18,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
-                                    const SizedBox(height: 8),
+                                    SizedBox(height: 8),
                                     Text(
                                       'Tanggal Upload: ${articles[index]['date']}',
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                         color: Colors.grey,
                                       ),
                                     ),
@@ -354,13 +354,13 @@ class EdukasiPengasuhan extends StatelessWidget {
                 // Navigasi ke halaman lain saat "Lihat Lainnya" diklik
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => EdukasiPengasuhanartikel()),
+                  MaterialPageRoute(builder: (context) => ReligiArtikel()),
                 );
               },
               child: Container(
                 padding: const EdgeInsets.all(16),
                 color: Colors.grey[200],
-                child: const Center(
+                child: Center(
                   child: Text(
                     'Lihat Lainnya',
                     style: TextStyle(
