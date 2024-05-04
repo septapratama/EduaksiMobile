@@ -56,22 +56,14 @@ class _LoginScreenState extends State<LoginScreen> {
       alert(context, "Email tidak boleh kosong !");
       return;
     }
-<<<<<<< HEAD
-    if(kata_sandi.isEmpty || kata_sandi == null){
-=======
     if (kataSandi.isEmpty || kataSandi == null) {
->>>>>>> parent of 303f108 (update change content edukasi)
       alert(context, "Kata sandi tidak boleh kosong !");
       return;
     }
     try {
-<<<<<<< HEAD
-      Map<String, dynamic> response = await apiService.login(email, kataSandi);
-=======
       Map<String, dynamic> response = await apiService.login(email, kata_sandi);
       // print(response);
       // print(response['data']);
->>>>>>> c7caaebfb4c79b6385315f79f8eb9ff16ab22b7c
       if (response['status'] == 'success') {
         // Set the user data using the provider
         // context.read()<UserProvider>().setUserBaru(
@@ -82,11 +74,7 @@ class _LoginScreenState extends State<LoginScreen> {
         //         foto_profil: response['data']['foto_profil'] ?? '',
         //       ),
         //     );
-<<<<<<< HEAD
-        Navigator.pushReplacement(context, pageMove.movepage(const BottomNav()));
-=======
         Navigator.pushReplacement(context, pageMove.movepage(BottomNav()));
->>>>>>> c7caaebfb4c79b6385315f79f8eb9ff16ab22b7c
       } else {
         alert(context, response['message']);
       }
@@ -99,17 +87,6 @@ class _LoginScreenState extends State<LoginScreen> {
     final response = await googlelogin.loginGoogle();
       if (response['status'] == 'success') {
         // Set the user data using the provider
-<<<<<<< HEAD
-        // context.read()<UserProvider>().setUserBaru(
-        //       UserModelBaru(
-        //         nama_lengkap: response['data']['nama_lengkap'] ?? '',
-        //         no_hp: response['data']['email'] ?? '',
-        //         email: response['data']['no_hp'] ?? '',
-        //         foto_profil: response['data']['foto_profil'] ?? '',
-        //       ),
-        //     );
-        Navigator.pushReplacement(context, pageMove.movepage(const BottomNav()));
-=======
         context.read()<UserProvider>().setUserBaru(
               UserModelBaru(
                 nama_lengkap: response['data']['nama_lengkap'] ?? '',
@@ -120,7 +97,6 @@ class _LoginScreenState extends State<LoginScreen> {
             );
 
         Navigator.pushReplacement(context, pageMove.movepage(BottomNav()));
->>>>>>> c7caaebfb4c79b6385315f79f8eb9ff16ab22b7c
       } else {
         // print('Login failed: ${response['message']}');
         alert(context, "terjadi kesalahan pada jaringan");

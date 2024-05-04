@@ -30,14 +30,6 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
       ),
       backgroundColor: backgroundColor,
-<<<<<<< HEAD
-      leading: IconButton(
-        icon: Icon(Icons.arrow_back, color: Colors.white),
-        onPressed:
-            leadingOnPressed, // Menggunakan onPressed yang diberikan dari luar
-      ),
-      actions: actions,
-=======
       iconTheme: IconThemeData(color: Colors.white), // Set the color of leading button icon
       leading: leadingOnPressed != null
           ? IconButton(
@@ -53,7 +45,6 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           ),
         if (actions != null) ...actions!,
       ],
->>>>>>> parent of 303f108 (update change content edukasi)
     );
   }
 

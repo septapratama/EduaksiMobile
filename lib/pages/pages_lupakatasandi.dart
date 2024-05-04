@@ -102,12 +102,8 @@ class _LupakatasandiState extends State<Lupakatasandi> {
                   child: ElevatedButton(
                     onPressed: () {
                       // Add your onPressed logic here
-<<<<<<< HEAD
-                      _lupaKataSandi(context);
-=======
                        Navigator.pushReplacement(context,
                                       pageMove.movepage(OTPScreen()));
->>>>>>> c7caaebfb4c79b6385315f79f8eb9ff16ab22b7c
                     },
                     style: ElevatedButton.styleFrom(
                       padding: EdgeInsets.zero,

@@ -46,12 +46,9 @@ dependencies:
   flutter_session_jwt: ^0.0.6
   pin_input_text_field: ^4.5.1
   table_calendar: ^3.1.1
-<<<<<<< HEAD
   flutter_web_socket: ^1.0.5
   firebase_core: ^2.30.1
   firebase_messaging: ^14.9.1
-=======
->>>>>>> 0a8dc6eab83380cf8b78d3645725b8f7dda48b14
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -1,13 +1,10 @@
 import 'package:eduapp/component/custom_appbar.dart';
 import 'package:eduapp/component/custom_colors.dart';
-<<<<<<< HEAD
-=======
 import 'package:eduapp/pages/edukasi_bahasa.dart';
 import 'package:eduapp/pages/edukasi_kesenian.dart';
 import 'package:eduapp/pages/edukasi_psikologi.dart';
 import 'package:eduapp/pages/edukasi_religi.dart';
 import 'package:eduapp/utils/navigationbar.dart';
->>>>>>> parent of 303f108 (update change content edukasi)
 import 'package:flutter/material.dart';
 import 'package:eduapp/component/custom_appbar_withoutarrowback.dart';
 
@@ -16,25 +13,6 @@ class EdukasiMenu extends StatelessWidget {
 
   List<Map<String, dynamic>> articles = [
     {
-<<<<<<< HEAD
-      'title': 'Judul Artikel 1',
-      'date': '29 Maret 2024',
-      'image': 'assets/images/artikel 1.png',
-    },
-    {
-      'title': 'Judul Artikel 2',
-      'date': '28 Maret 2024',
-      'image': 'assets/images/image 36.png',
-    },
-    {
-      'title': 'Judul Artikel 2',
-      'date': '28 Maret 2024',
-      'image': 'assets/images/image 34.png',
-    },
-    {
-      'title': 'Judul Artikel 2',
-      'date': '28 Maret 2024',
-=======
       'title': 'Edukasi Psikologi',
       'image': 'assets/images/artikel 1.png',
     },
@@ -48,7 +26,6 @@ class EdukasiMenu extends StatelessWidget {
     },
     {
       'title': 'Edukasi Kesenian',
->>>>>>> parent of 303f108 (update change content edukasi)
       'image': 'assets/images/image 35.png',
     },
     // Add more articles as needed
@@ -97,15 +74,6 @@ class EdukasiMenu extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(
                         vertical: 4.0, horizontal: 20),
                     child: Card(
-<<<<<<< HEAD
-                      color: Colors.grey[200],
-                      child: Row(
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(4.0),
-                              bottomLeft: Radius.circular(4.0),
-=======
                       color: customColor.cardcustom,
                       child: InkWell(
                         onTap: () {
@@ -160,7 +128,6 @@ class EdukasiMenu extends StatelessWidget {
                                 height: 80,
                                 fit: BoxFit.cover,
                               ),
->>>>>>> parent of 303f108 (update change content edukasi)
                             ),
                             child: Image.asset(
                               articles[index]['image'],
@@ -205,8 +172,6 @@ class EdukasiMenu extends StatelessWidget {
     );
   }
 }
-<<<<<<< HEAD
-=======
 
 class DetailPage extends StatelessWidget {
   final String title;
@@ -225,4 +190,3 @@ class DetailPage extends StatelessWidget {
     );
   }
 }
->>>>>>> parent of 303f108 (update change content edukasi)
