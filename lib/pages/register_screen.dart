@@ -1,6 +1,7 @@
 // register_screen.dart
 import 'package:eduapp/component/custom_appbar.dart';
 import 'package:eduapp/pages/login_screen.dart';
+import 'package:eduapp/pages/pages_auth.dart';
 import 'package:eduapp/pages/pages_lupakatasandi.dart';
 import 'package:flutter/material.dart';
 import 'package:eduapp/controller/controller_register.dart';
@@ -9,6 +10,8 @@ import 'package:eduapp/utils/ApiService.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
+  // final Map<String, dynamic> otpData;
+  // RegisterScreen({super.key, required this.otpData});
 
   @override
   _RegisterScreenState createState() => _RegisterScreenState();
@@ -81,44 +84,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
       alert(context, "Kata sandi harus terdiri dari minimal 8 karakter !", "Gagal mendaftar!", Icons.error, Colors.red);
       return;
     }
-    if (!RegExp(r'[A-Z]').hasMatch(kataSandi)) {
-      alert(context, "Kata sandi harus mengandung minimal 1 huruf kapital !", "Gagal mendaftar!", Icons.error, Colors.red);
-      return;
-    }
-    if (!RegExp(r'[a-z]').hasMatch(kataSandi)) {
-      alert(context, "Kata sandi harus mengandung minimal 1 huruf kecil !", "Gagal mendaftar!", Icons.error, Colors.red);
-      return;
-    }
     if (!RegExp(r'\d').hasMatch(kataSandi)) {
       alert(context, "Kata sandi harus mengandung minimal 1 angka!", "Gagal mendaftar!", Icons.error, Colors.red);
       return;
     }
-    if (!RegExp(r'[!@#\$%^&*]').hasMatch(kataSandi)) {
-      alert(context, "Kata sandi harus mengandung minimal 1 karakter unik !", "Gagal mendaftar!", Icons.error, Colors.red);
-      return;
-    }
     if(konfirmasi.isEmpty){
       alert(context, "Ulangi kata sandi tidak boleh kosong !", "gagal mendaftar!",Icons.error, Colors.red);
-      return;
-    }
-    if (konfirmasi.length < 8) {
-      alert(context, "Ulangi kata sandi harus terdiri dari minimal 8 karakter !", "Gagal mendaftar!", Icons.error, Colors.red);
-      return;
-    }
-    if (!RegExp(r'[A-Z]').hasMatch(konfirmasi)) {
-      alert(context, "Ulangi kata sandi harus mengandung minimal 1 huruf kapital !", "Gagal mendaftar!", Icons.error, Colors.red);
-      return;
-    }
-    if (!RegExp(r'[a-z]').hasMatch(konfirmasi)) {
-      alert(context, "Ulangi kata sandi harus mengandung minimal 1 huruf kecil !", "Gagal mendaftar!", Icons.error, Colors.red);
-      return;
-    }
-    if (!RegExp(r'\d').hasMatch(konfirmasi)) {
-      alert(context, "Ulangi kata sandi harus mengandung minimal 1 angka !", "Gagal mendaftar!", Icons.error, Colors.red);
-      return;
-    }
-    if (!RegExp(r'[!@#\$%^&*]').hasMatch(konfirmasi)) {
-      alert(context, "Ulangi kata sandi harus mengandung minimal 1 karakter unik !", "Gagal mendaftar!", Icons.error, Colors.red);
       return;
     }
     if (kataSandi != konfirmasi) {
@@ -128,10 +99,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
     try {
       Map<String, dynamic> response = await apiService.register(email, namaLengkap, kataSandi, konfirmasi);
       if (response['status'] == 'success') {
-        Navigator.push(context,MaterialPageRoute(
-            builder: (context) => const LoginScreen(),
-          ),
-        );
+        Navigator.pushReplacement(context, pageMove.movepage(OTPScreen(otpData: {'email':email, 'waktu':response['data'], 'cond':'email'})));
+        // Navigator.push(context,MaterialPageRoute(
+        //     builder: (context) => const LoginScreen(),
+        //   ),
+        // );
         alert(context, "Silahkan Masuk","Berhasil Mendaftar!",Icons.check, Colors.green);
       } else {
         alert(context, "${response['message']}", "gagal mendaftar!", Icons.error,Colors.red);
@@ -474,7 +446,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       builder: (context, constraints) {
                         double fontSize = 15.0;
                         double screenWidth = MediaQuery.of(context).size.width;
-
                         if (screenWidth < 400) {
                           fontSize = 12.0;
                         } else if (screenWidth < 600) {
@@ -482,7 +453,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         } else {
                           fontSize = 16.0;
                         }
-
                         return SizedBox(
                           width: MediaQuery.of(context).size.width * 0.8,
                           child: Row(

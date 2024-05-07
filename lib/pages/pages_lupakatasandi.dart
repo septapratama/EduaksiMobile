@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:eduapp/component/custom_pagemove.dart';
 class Lupakatasandi extends StatefulWidget {
   const Lupakatasandi({super.key});
+  // final Map<String, dynamic> otpData;
+  // Lupakatasandi({super.key, required this.otpData});
 
   @override
   State<Lupakatasandi> createState() => _LupakatasandiState();
@@ -25,18 +27,20 @@ class _LupakatasandiState extends State<Lupakatasandi> {
     try {
       Map<String, dynamic> response = await apiService.lupaPassword(email);
       if (response['status'] == 'success') {
-        Navigator.pushReplacement(context, pageMove.movepage(OTPScreen(otpData: {'email':email, 'waktu':response['data']})));
+        print(response['message']); //show success 
+        Navigator.pushReplacement(context, pageMove.movepage(OTPScreen(otpData: {'email':email, 'waktu':response['data'], 'cond':'password'})));
       } else {
+        // Navigator.push(context,MaterialPageRoute(
+        //     builder: (context) => const OTPScreen(),
+        //   ),
+        // );
+        print(response['message']);
         // alert(context, response['message']);
       }
     } catch (e) {
       print('Error saat lupa kata sandi: $e');
     }
   }
-        // Navigator.push(context,MaterialPageRoute(
-        //     builder: (context) => const OTPScreen(),
-        //   ),
-        // );
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -67,7 +71,8 @@ class _LupakatasandiState extends State<Lupakatasandi> {
                   ),
                 ),
                 const SizedBox(height: 25),
-                const TextField(
+                TextField(
+                  controller: emailController,
                   decoration: InputDecoration(
                     labelText: 'Masukan Email Aktif Anda!',
                     labelStyle: TextStyle(
@@ -118,7 +123,7 @@ class _LupakatasandiState extends State<Lupakatasandi> {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Text(
-                            'Oke',
+                            'Kirim Lupa Password',
                             style: TextStyle(
                               fontFamily: 'Poppins_SemiBold',
                               fontWeight: FontWeight.w600,

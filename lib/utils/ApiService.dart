@@ -4,10 +4,10 @@ import 'package:http/http.dart' as http;
 
 class ApiService {
   final JwtProvider jwtProvider = JwtProvider();
-  final String baseUrl = "http://192.168.110.33:8000/api/mobile";
+  final String baseUrl = "http://192.168.1.4:8000/api/mobile";
   // final String baseUrl = "https://eduaksi.amirzan.my.id/api/mobile";
-  final String imgUrl = "http://192.168.110.33:8000/img";
-  final String fotoProfilUrl = "http://192.168.110.33:8000/eduaksi/mobile/img/profile/users/";
+  final String imgUrl = "http://192.168.1.4:8000/img";
+  final String fotoProfilUrl = "http://192.168.1.4:8000/eduaksi/mobile/img/profile/users/";
   Future<String> getAuthToken() async {
     if(await jwtProvider.isExpired()){
       return 'expired';
@@ -117,17 +117,36 @@ class ApiService {
   }
 
   //send otp
-  Future<Map<String, dynamic>> sendOtp(String email, String otp) async {
+  Future<Map<String, dynamic>> sendOtp(String email, String link, {String otp = '', bool cond = false}) async {
     try {
+      String bodyData;
+      //check if re send or send otp
+      if(cond){
+        //re send otp
+        bodyData = jsonEncode(<String, String>{
+          'email': email,
+          'otp':otp,
+        });
+      }else{
+        //just send otp
+        if(otp == ''){
+          return {'status':'error', 'message':'otp harus diisi'};
+        }
+        bodyData = jsonEncode(<String, String>{
+          'email': email,
+          'otp':otp,
+        });
+      }
       final response = await http.post(
-        Uri.parse('$baseUrl/verify/otp/password'),
+        Uri.parse(baseUrl + link),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
-        body: jsonEncode(<String, String>{
-          'email': email,
-          'otp':otp,
-        }),
+        body: bodyData,
+        // body: jsonEncode(<String, String>{
+        //   'email': email,
+        //   'otp':otp,
+        // }),
       );
       if (response.statusCode == 200) {
         final Map<String, dynamic> responseData = json.decode(response.body);
@@ -141,32 +160,31 @@ class ApiService {
     }
   }
 
-  //kirim ulang kode otp
-  Future<Map<String, dynamic>> resendCodeOtp(
-      String email, String kataSandi, String noHp) async {
-    try {
-      final response = await http.post(
-        Uri.parse('$baseUrl/users/'),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode(<String, String>{
-          'email': email,
-          'kata_sandi': kataSandi,
-          'no_hp': noHp,
-        }),
-      );
-      if (response.statusCode == 200) {
-        final Map<String, dynamic> responseData = json.decode(response.body);
-        return responseData;
-      } else {
-        final Map<String, dynamic> responseData = json.decode(response.body);
-        return responseData;
-      }
-    } catch (e) {
-      throw Exception('Error saat kirim ulang otp : $e');
-    }
-  }
+  // //kirim ulang kode otp
+  // Future<Map<String, dynamic>> resendCodeOtp(
+  //     String email, String kataSandi, String link) async {
+  //   try {
+  //     final response = await http.post(
+  //       Uri.parse(baseUrl + link),
+  //       headers: <String, String>{
+  //         'Content-Type': 'application/json; charset=UTF-8',
+  //       },
+  //       body: jsonEncode(<String, String>{
+  //         'email': email,
+  //         'desc': 'update'
+  //       }),
+  //     );
+  //     if (response.statusCode == 200) {
+  //       final Map<String, dynamic> responseData = json.decode(response.body);
+  //       return responseData;
+  //     } else {
+  //       final Map<String, dynamic> responseData = json.decode(response.body);
+  //       return responseData;
+  //     }
+  //   } catch (e) {
+  //     throw Exception('Error saat kirim ulang otp : $e');
+  //   }
+  // }
 
   //kirim reset password dari lupa password
   Future<Map<String, dynamic>> resetPass(String email, String otp, String pass, String passConfirm) async {

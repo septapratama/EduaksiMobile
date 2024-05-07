@@ -1,6 +1,7 @@
 import 'package:eduapp/component/custom_appbar_withoutarrowback.dart';
 import 'package:eduapp/component/custom_textformfield.dart';
 import 'package:eduapp/controller/controller_profil.dart';
+import 'package:eduapp/utils/JwtProvider.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:eduapp/utils/ApiService.dart';
@@ -14,10 +15,24 @@ class ProfilPages extends StatefulWidget {
 
 class _ProfilPagesState extends State<ProfilPages> {
   File? _imageFile;
+  JwtProvider jwtProvider = JwtProvider();
   TextEditingController emailController = TextEditingController();
   TextEditingController namaController = TextEditingController();
   TextEditingController noTelponController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
+  Future<void> fetchData() async {
+    Map<String, dynamic> profileData = await jwtProvider.getData();
+    setState(() {
+      emailController.text = profileData['email'];
+      namaController.text = profileData['nama'];
+      noTelponController.text = profileData['telp'];
+    });
+  }
   void alert(BuildContext context, String message, String title, IconData icon, Color color) {
     showDialog(
       context: context,
@@ -67,30 +82,6 @@ class _ProfilPagesState extends State<ProfilPages> {
     if (!no_telpon.startsWith("08")) {
         alert(context, "No telpon harus dimulai dengan '08'!", "Gagal mendaftar!", Icons.error, Colors.red);
         return;
-    }
-    if(kata_sandi.isEmpty || kata_sandi == null){
-      alert(context, "Kata sandi tidak boleh kosong !", "gagal mendaftar!",Icons.error, Colors.red);
-      return;
-    }
-    if (kata_sandi.length < 8) {
-      alert(context, "Kata sandi harus terdiri dari minimal 8 karakter !", "Gagal mendaftar!", Icons.error, Colors.red);
-      return;
-    }
-    if (!RegExp(r'[A-Z]').hasMatch(kata_sandi)) {
-      alert(context, "Kata sandi harus mengandung minimal 1 huruf kapital !", "Gagal mendaftar!", Icons.error, Colors.red);
-      return;
-    }
-    if (!RegExp(r'[a-z]').hasMatch(kata_sandi)) {
-      alert(context, "Kata sandi harus mengandung minimal 1 huruf kecil !", "Gagal mendaftar!", Icons.error, Colors.red);
-      return;
-    }
-    if (!RegExp(r'\d').hasMatch(kata_sandi)) {
-      alert(context, "Kata sandi harus mengandung minimal 1 angka!", "Gagal mendaftar!", Icons.error, Colors.red);
-      return;
-    }
-    if (!RegExp(r'[!@#\$%^&*]').hasMatch(kata_sandi)) {
-      alert(context, "Kata sandi harus mengandung minimal 1 karakter unik !", "Gagal mendaftar!", Icons.error, Colors.red);
-      return;
     }
     try {
       Map<String, dynamic> response = await apiService.updateProfile(email, nama_lengkap, no_telpon, kata_sandi);
@@ -209,7 +200,7 @@ class _ProfilPagesState extends State<ProfilPages> {
           CustomTextFieldWidget(
             labelText: 'Kata Sandi',
             controller: passwordController,
-            initialValue: 'Kata Sandi',
+            initialValue: 'Kata Sandi Lama',
             keyboardType: TextInputType.text,
             prefixIcon: Icons.fingerprint,
             obscureText: true, // Mengatur agar input teks tersembunyi

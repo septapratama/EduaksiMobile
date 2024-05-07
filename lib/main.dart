@@ -1,4 +1,5 @@
 import 'package:eduapp/firebase_options.dart';
+import 'package:eduapp/pages/login_screen.dart';
 import 'package:eduapp/pages/splash_screen.dart';
 import 'package:eduapp/utils/FirebaseServices.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -22,7 +23,7 @@ class MyApp extends StatelessWidget {
       title: 'Eduaksi',
       theme: ThemeData(),
       debugShowCheckedModeBanner: false,
-      home: SplashScreen(), // Navigate to SplashScreen first
+      home: LoginScreen(), // Navigate to SplashScreen first
     );
   }
 }
