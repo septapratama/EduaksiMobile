@@ -53,11 +53,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
   void _register() async {
-    // Navigator.push(context,MaterialPageRoute(
-    //         builder: (context) => const LoginScreen(),
-    //       ),
-    //     );
-    //     return;
     String email = emailController.text;
     String namaLengkap = namaController.text;
     String kataSandi = passwordController.text;
@@ -99,12 +94,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     try {
       Map<String, dynamic> response = await apiService.register(email, namaLengkap, kataSandi, konfirmasi);
       if (response['status'] == 'success') {
-        Navigator.pushReplacement(context, pageMove.movepage(OTPScreen(otpData: {'email':email, 'waktu':response['data'], 'cond':'email'})));
-        // Navigator.push(context,MaterialPageRoute(
-        //     builder: (context) => const LoginScreen(),
-        //   ),
-        // );
-        alert(context, "Silahkan Masuk","Berhasil Mendaftar!",Icons.check, Colors.green);
+        Navigator.pushReplacement(context, pageMove.movepage(OTPScreen(otpData: {'email':email, 'waktu': DateTime.parse(response['data']['waktu']), 'cond':'email'})));
       } else {
         alert(context, "${response['message']}", "gagal mendaftar!", Icons.error,Colors.red);
       }

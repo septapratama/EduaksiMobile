@@ -25,16 +25,11 @@ class _LupakatasandiState extends State<Lupakatasandi> {
       return;
     }
     try {
-      Map<String, dynamic> response = await apiService.lupaPassword(email);
+      Map<String, dynamic> response = await apiService.sendOtp(email, '/verify/create/password');
       if (response['status'] == 'success') {
-        print(response['message']); //show success 
-        Navigator.pushReplacement(context, pageMove.movepage(OTPScreen(otpData: {'email':email, 'waktu':response['data'], 'cond':'password'})));
+          Navigator.pushReplacement(context, pageMove.movepage(OTPScreen(otpData: {'email':email, 'waktu': DateTime.parse(response['data']['waktu']), 'cond':'password'})));
       } else {
-        // Navigator.push(context,MaterialPageRoute(
-        //     builder: (context) => const OTPScreen(),
-        //   ),
-        // );
-        print(response['message']);
+        print(response['message']); //show success
         // alert(context, response['message']);
       }
     } catch (e) {
@@ -135,60 +130,59 @@ class _LupakatasandiState extends State<Lupakatasandi> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 20.0),
-                Center(
-                  child: LayoutBuilder(
-                    builder: (context, constraints) {
-                      double fontSize = 15.0;
-                      double screenWidth = MediaQuery.of(context).size.width;
+                // const SizedBox(height: 20.0),
+                // Center(
+                //   child: LayoutBuilder(
+                //     builder: (context, constraints) {
+                //       double fontSize = 15.0;
+                //       double screenWidth = MediaQuery.of(context).size.width;
 
-                      if (screenWidth < 400) {
-                        fontSize = 12.0;
-                      } else if (screenWidth < 600) {
-                        fontSize = 13.0;
-                      } else {
-                        fontSize = 16.0;
-                      }
-
-                      return SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.8,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Flexible(
-                              child: Text(
-                                'belum menerima kode OTP?',
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                  fontSize: fontSize,
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: 'Poppins_SemiBold',
-                                  color: const Color.fromRGBO(0, 0, 0, 0.445),
-                                ),
-                              ),
-                            ),
-                            TextButton(
-                              onPressed: () {
-                                // Add logic to navigate to the registration page
-                              },
-                              child: Text(
-                                'Kirim ulang',
-                                style: TextStyle(
-                                  fontSize: fontSize,
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: 'Poppins_SemiBold',
-                                  color: const Color.fromRGBO(30, 84, 135, 1),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                  ),
-                ),
+                //       if (screenWidth < 400) {
+                //         fontSize = 12.0;
+                //       } else if (screenWidth < 600) {
+                //         fontSize = 13.0;
+                //       } else {
+                //         fontSize = 16.0;
+                //       }
+                //       return SizedBox(
+                //         width: MediaQuery.of(context).size.width * 0.8,
+                //         child: Row(
+                //           mainAxisAlignment: MainAxisAlignment.center,
+                //           crossAxisAlignment: CrossAxisAlignment.center,
+                //           children: [
+                //             Flexible(
+                //               child: Text(
+                //                 'belum menerima kode OTP?',
+                //                 maxLines: 1,
+                //                 overflow: TextOverflow.ellipsis,
+                //                 style: TextStyle(
+                //                   fontSize: fontSize,
+                //                   fontWeight: FontWeight.bold,
+                //                   fontFamily: 'Poppins_SemiBold',
+                //                   color: const Color.fromRGBO(0, 0, 0, 0.445),
+                //                 ),
+                //               ),
+                //             ),
+                //             TextButton(
+                //               onPressed: () {
+                //                 // Add logic to navigate to the registration page
+                //               },
+                //               child: Text(
+                //                 'Kirim ulang',
+                //                 style: TextStyle(
+                //                   fontSize: fontSize,
+                //                   fontWeight: FontWeight.bold,
+                //                   fontFamily: 'Poppins_SemiBold',
+                //                   color: const Color.fromRGBO(30, 84, 135, 1),
+                //                 ),
+                //               ),
+                //             ),
+                //           ],
+                //         ),
+                //       );
+                //     },
+                //   ),
+                // ),
               ],
             ),
           ),

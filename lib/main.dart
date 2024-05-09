@@ -1,8 +1,8 @@
-import 'package:eduapp/firebase_options.dart';
+// import 'package:firebase_core/firebase_core.dart';
+// import 'package:eduapp/utils/FirebaseServices.dart';
+// import 'package:eduapp/firebase_options.dart';
 import 'package:eduapp/pages/login_screen.dart';
 import 'package:eduapp/pages/splash_screen.dart';
-import 'package:eduapp/utils/FirebaseServices.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 void main() async {
@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
       title: 'Eduaksi',
       theme: ThemeData(),
       debugShowCheckedModeBanner: false,
-      home: LoginScreen(), // Navigate to SplashScreen first
+      home: const LoginScreen(), // Navigate to SplashScreen first
     );
   }
 }
