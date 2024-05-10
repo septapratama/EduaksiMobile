@@ -1,9 +1,12 @@
+import 'dart:convert';
+import 'dart:io';
+import 'package:path/path.dart' as p;
+import 'package:path_provider/path_provider.dart';
 import 'package:eduapp/component/custom_appbar_withoutarrowback.dart';
 import 'package:eduapp/component/custom_textformfield.dart';
 import 'package:eduapp/controller/controller_profil.dart';
 import 'package:eduapp/utils/JwtProvider.dart';
 import 'package:flutter/material.dart';
-import 'dart:io';
 import 'package:eduapp/utils/ApiService.dart';
 
 class ProfilPages extends StatefulWidget {
@@ -14,42 +17,50 @@ class ProfilPages extends StatefulWidget {
 }
 
 class _ProfilPagesState extends State<ProfilPages> {
-  File? _imageFile;
-  JwtProvider jwtProvider = JwtProvider();
+  final JwtProvider jwtProvider = JwtProvider();
+  final ApiService apiService = ApiService();
   TextEditingController emailController = TextEditingController();
   TextEditingController namaController = TextEditingController();
   TextEditingController noTelponController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  File? _imageFile;
+  late String _filePath;
   @override
   void initState() {
     super.initState();
     fetchData();
+    // setupProfilePhoto();
   }
   Future<void> fetchData() async {
     Map<String, dynamic> profileData = await jwtProvider.getData();
     setState(() {
       emailController.text = profileData['email'];
-      namaController.text = profileData['nama'];
-      noTelponController.text = profileData['telp'];
+      namaController.text = profileData['nama_lengkap'];
+      noTelponController.text = profileData['no_telpon']; 
     });
   }
-  void alert(BuildContext context, String message, String title, IconData icon, Color color) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return Dialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10.0),
-          ),
-          elevation: 0,
-          backgroundColor: Colors.transparent,
-          child: contentBox(context, message, title, icon, color),
-        );
-      },
+  Future<void> setupProfilePhoto() async {
+    await apiService.checkFotoProfile();
+    Directory directory = await getApplicationDocumentsDirectory();
+    List<FileSystemEntity> files = directory.listSync();
+    FileSystemEntity? file = files.firstWhere(
+      (entity) => entity is File,
+      orElse: () => File(''),
     );
+    if (file != null && file is File) {
+      _filePath = file.path;
+    } else {
+      _filePath = 'assets/images/default_profile.jpg';
+    }
+    setState(() {});
+    //if doesnt working try this
+    // _filePath = '${directory.path}/user/profile/foto.png}';
+    // if (!File(_filePath).existsSync()) {
+    //   _filePath = 'assets/images/default_profile.jpg';
+    // }
+    // setState(() {});
   }
   void _updateProfile(BuildContext context) async {
-    final ApiService apiService = ApiService();
     String email = emailController.text;
     String nama_lengkap = namaController.text;
     String no_telpon = noTelponController.text;
@@ -84,24 +95,42 @@ class _ProfilPagesState extends State<ProfilPages> {
         return;
     }
     try {
-      Map<String, dynamic> response = await apiService.updateProfile(email, nama_lengkap, no_telpon, kata_sandi);
+      Map<String, dynamic> response;
+      if(_imageFile != null){
+        response = await apiService.updateProfile(email, nama_lengkap, no_telpon, kata_sandi, _imageFile);
+      }else{
+        response = await apiService.updateProfile(email, nama_lengkap, no_telpon, kata_sandi, null);
+      }
       if (response['status'] == 'success') {
-        // update the user data using the provider
-        // context.read()<UserProvider>().setUserBaru(
-        //       UserModelBaru(
-        //         email: email,
-        //         nama_lengkap: response['data']['nama_lengkap'] ?? '',
-        //         no_hp: response['data']['no_hp'] ?? '',
-        //         foto_profil: response['data']['foto_profil'] ?? '',
-        //       ),
-        //     );
-        alert(context, "Profile Berhasil diperbarui","Berhasil Perbarui!",Icons.check, Colors.green);
+        print(response['message']);
+        //save img
+        Directory directory = await getApplicationDocumentsDirectory();
+        String filePath = '${directory.path}/user/profile/foto.${p.extension(_imageFile!.path)}';
+        await _imageFile!.copy(filePath);
+        print('Image file saved locally at: $filePath');
+        // alert(context, "Profile Berhasil diperbarui","Berhasil Perbarui!",Icons.check, Colors.green);
       } else {
-        alert(context, response['message'], "Gagal Perbarui!", Icons.error, Colors.red);
+        print(response['message']);
+        // alert(context, response['message'], "Gagal Perbarui!", Icons.error, Colors.red);
       }
     } catch (e) {
       print('Error saat login: $e');
     }
+  }
+  void alert(BuildContext context, String message, String title, IconData icon, Color color) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          elevation: 0,
+          backgroundColor: Colors.transparent,
+          child: contentBox(context, message, title, icon, color),
+        );
+      },
+    );
   }
   @override
   Widget build(BuildContext context) {
@@ -157,7 +186,23 @@ class _ProfilPagesState extends State<ProfilPages> {
                                   fit: BoxFit.cover,
                                 ),
                               )
-                            : Container(), // Kosongkan kontainer jika tidak ada foto yang dipilih
+                            : _filePath != null // Check if _filePath is not null
+                            ? ClipOval(
+                                child: _filePath.startsWith('assets/') // Check if _filePath is an asset
+                                    ? Image.asset(
+                                        _filePath,
+                                        width: 138,
+                                        height: 141,
+                                        fit: BoxFit.cover,
+                                      )
+                                    : Image.file(
+                                        File(_filePath), // Display the saved photo
+                                        width: 138,
+                                        height: 141,
+                                        fit: BoxFit.cover,
+                                      ),
+                              )
+                            : Container(),  // Kosongkan kontainer jika tidak ada foto yang dipilih
                         const Positioned(
                           bottom: 0,
                           right: 0,
@@ -253,18 +298,18 @@ Widget contentBox(BuildContext context, String message, String title, IconData i
   return Stack(
     children: <Widget>[
       Container(
-        padding: EdgeInsets.only(
+        padding: const EdgeInsets.only(
           left: 20,
           top: 45,
           right: 20,
           bottom: 20,
         ),
-        margin: EdgeInsets.only(top: 45),
+        margin: const EdgeInsets.only(top: 45),
         decoration: BoxDecoration(
           shape: BoxShape.rectangle,
           color: Colors.white,
           borderRadius: BorderRadius.circular(10),
-          boxShadow: [
+          boxShadow: const [
             BoxShadow(
               color: Colors.black,
               offset: Offset(0, 10),
@@ -277,27 +322,27 @@ Widget contentBox(BuildContext context, String message, String title, IconData i
           children: <Widget>[
             Text(
               title,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(height: 15),
+            const SizedBox(height: 15),
             Text(
               message,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 18,
               ),
               textAlign: TextAlign.center,
             ),
-            SizedBox(height: 22),
+            const SizedBox(height: 22),
             Align(
               alignment: Alignment.bottomRight,
               child: TextButton(
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-                child: Text(
+                child: const Text(
                   'OKE',
                   style: TextStyle(color: Color.fromRGBO(203, 164, 102, 1)),
                 ),

@@ -49,12 +49,12 @@ class _LoginScreenState extends State<LoginScreen> {
     String kataSandi = passwordController.text;
     // Validasi form, misalnya memastikan semua field terisi dengan benar
     if (email.isEmpty) {
-      alert(context, "Email tidak boleh kosong !");
-      return;
+      // alert(context, "Email tidak boleh kosong !");
+      // return;
     }
     if (kataSandi.isEmpty) {
-      alert(context, "Kata sandi tidak boleh kosong !");
-      return;
+      // alert(context, "Kata sandi tidak boleh kosong !");
+      // return;
     }
     try {
       Map<String, dynamic> response = await apiService.login(email, kataSandi);

@@ -1,13 +1,17 @@
 import 'dart:convert';
+import 'dart:io';
+import 'dart:typed_data';
+import 'package:path/path.dart' as p;
+import 'package:path_provider/path_provider.dart';
 import 'package:eduapp/utils/JwtProvider.dart';
 import 'package:http/http.dart' as http;
 
 class ApiService {
   final JwtProvider jwtProvider = JwtProvider();
-  final String baseUrl = "http://192.168.110.33:8000/api/mobile";
+  final String baseUrl = "http://192.168.0.105:8000/api/mobile";
   // final String baseUrl = "https://eduaksi.amirzan.my.id/api/mobile";
-  final String imgUrl = "http://192.168.110.33:8000/img";
-  final String fotoProfilUrl = "http://192.168.110.33:8000/eduaksi/mobile/img/profile/users/";
+  final String imgUrl = "http://192.168.0.105:8000/img";
+  final String fotoProfilUrl = "http://192.168.0.105:8000/eduaksi/mobile/img/profile/users/";
   Future<String> getAuthToken() async {
     if(await jwtProvider.isExpired()){
       return 'expired';
@@ -193,38 +197,73 @@ class ApiService {
         return responseData;
       }
     } catch (e) {
-      throw Exception('Error saat login: $e');
+      throw Exception('Error saat logout: $e');
+    }
+  }
+
+  //download profile
+  Future<void> checkFotoProfile() async {
+    try {
+      final ext = {'image/jpeg':'jpg', 'image/png':'png'};
+      final auth = await getAuthToken();
+      if(auth == 'expired'){
+        // return  {'message' : 'token expired'};
+      }
+      final response = await http.post(
+        Uri.parse('$baseUrl/users/profile/foto'),
+        headers: <String, String>{
+          'Authorization': auth,
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+      );
+      if (response.statusCode == 200) {
+        String contentType = response.headers['content-type']!;
+        if (contentType != null && contentType.contains('application/json')) {
+          dynamic responseData = json.decode(response.body);
+          print(responseData['message']);
+        } else if (contentType != null && contentType.contains('image')) {
+          Directory directory = await getApplicationDocumentsDirectory();
+          String filePath = '${directory.path}/user/profile/foto.${ext[contentType] ?? 'jpg'}';
+          File tempFile = File('$filePath.temp');
+          await tempFile.writeAsBytes(response.bodyBytes);
+          await tempFile.rename(filePath);
+          print('Image file saved locally at: $filePath');
+        } else {
+          print('Unknown response type');
+        }
+      } else {
+        final Map<String, dynamic> responseData = json.decode(response.body);
+        print(responseData['message']);
+      }
+    } catch (e) {
+      throw Exception('Error saat download profile : $e');
     }
   }
 
   //update profile
-  Future<Map<String, dynamic>> updateProfile(String email, String nama_lengkap, String no_hp, String kata_sandi) async {
+  Future<Map<String, dynamic>> updateProfile(String email, String nama_lengkap, String no_hp, String kata_sandi, File? file) async {
     try {
       final auth = await getAuthToken();
       if(auth == 'expired'){
         return  {'message' : 'token expired'};
       }
-      final response = await http.post(
-        Uri.parse('$baseUrl/users/update'),
-        headers: <String, String>{
-          'Authorization': auth,
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode(<String, String>{
-          'email': email,
-          'nama_lengkap': nama_lengkap,
-          'no_hp': no_hp,
-          'kata_sandi': kata_sandi,
-          // 'password': pass,
-          // 'password_confirm': pass_confirm,
-        }),
-      );
+      final request = http.MultipartRequest('PUT', Uri.parse('$baseUrl/users/profile'));
+      request.headers['Authorization'] = auth;
+      request.fields['email'] = email;
+      request.fields['nama_lengkap'] = nama_lengkap;
+      request.fields['no_telpon'] = no_hp;
+      if(file != null){
+        request.files.add(await http.MultipartFile.fromPath('image', file.path));
+      }
+      final response = await request.send();
       if (response.statusCode == 200) {
-        final Map<String, dynamic> responseData = json.decode(response.body);
-        await jwtProvider.setJwt(responseData['data']);
-        return responseData['status'];
+        final responseData = json.decode(await response.stream.transform(utf8.decoder).join());
+        print(responseData['message']);
+        // await jwtProvider.setJwt(responseData['data']);
+        return responseData['message'];
       } else {
-        final Map<String, dynamic> responseData = json.decode(response.body);
+        final responseData = json.decode(await response.stream.transform(utf8.decoder).join());
+        print(responseData['message']);
         return responseData;
       }
     } catch (e) {
@@ -257,12 +296,12 @@ class ApiService {
   //get artikel for artikel page
   Future<Map<String, dynamic>> getArtikel() async {
     try {
-      // final auth = await getAuthToken();
-      // if(auth == 'expired'){ 
-      //   return  {'message' : 'token expired'};
-      // }
+      final auth = await getAuthToken();
+      if(auth == 'expired'){ 
+        return  {'message' : 'token expired'};
+      }
       final response = await http.post(Uri.parse('$baseUrl/artikel'), headers: <String, String>{
-        // 'Authorization': auth,
+        'Authorization': auth,
         'Content-Type': 'application/json; charset=UTF-8',
       });
       if (response.statusCode == 200) {
@@ -279,12 +318,12 @@ class ApiService {
   //get detail artikel for detail artikel page
   Future<Map<String, dynamic>> getDetailArtikel(String link) async {
     try {
-      // final auth = await getAuthToken();
-      // if(auth == 'expired'){ 
-      //   return  {'message' : 'token expired'};
-      // }
+      final auth = await getAuthToken();
+      if(auth == 'expired'){ 
+        return  {'message' : 'token expired'};
+      }
       final response = await http.post(Uri.parse('$baseUrl/artikel/$link'), headers: <String, String>{
-        // 'Authorization': auth,
+        'Authorization': auth,
         'Content-Type': 'application/json; charset=UTF-8',
       });
       if (response.statusCode == 200) {
