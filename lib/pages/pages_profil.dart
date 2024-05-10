@@ -24,7 +24,7 @@ class _ProfilPagesState extends State<ProfilPages> {
   TextEditingController noTelponController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   File? _imageFile;
-  late String _filePath;
+  late String _filePath = 'assets/images/default_profile.jpg';
   @override
   void initState() {
     super.initState();
@@ -116,6 +116,15 @@ class _ProfilPagesState extends State<ProfilPages> {
     } catch (e) {
       print('Error saat login: $e');
     }
+  }
+  void _logout(BuildContext context) async {
+    Map<String, dynamic> response = await apiService.logout();
+      if (response['status'] == 'success') {
+        print(response['message']);
+      } else {
+        print(response['message']);
+        // alert(context, response['message']);
+      }
   }
   void alert(BuildContext context, String message, String title, IconData icon, Color color) {
     showDialog(

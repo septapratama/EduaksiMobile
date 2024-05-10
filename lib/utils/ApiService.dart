@@ -175,25 +175,29 @@ class ApiService {
   }
 
   //logout
-  Future<Map<String, dynamic>> logout(
-      String email, int number) async {
+  Future<Map<String, dynamic>> logout() async {
     try {
+      final auth = await getAuthToken();
+      if(auth == 'expired'){
+        return  {'message' : 'token expired'};
+      }
+      print(auth);
       final response = await http.post(
         Uri.parse('$baseUrl/users/logout'),
         headers: <String, String>{
+          'Authorization': auth,
           'Content-Type': 'application/json; charset=UTF-8',
         },
-        body: jsonEncode(<String, String>{
-          'email': email,
-          'number': number.toString(),
-        }),
       );
       if (response.statusCode == 200) {
         final Map<String, dynamic> responseData = json.decode(response.body);
         jwtProvider.logout();
+        print(jwtProvider.getJwt());
         return responseData;
       } else {
         final Map<String, dynamic> responseData = json.decode(response.body);
+        print('erorr');
+        print(responseData['message']);
         return responseData;
       }
     } catch (e) {

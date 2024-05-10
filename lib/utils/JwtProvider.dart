@@ -20,7 +20,8 @@ class JwtProvider{
     }
     return await FlutterSessionJwt.isTokenExpired();
   }
-  void logout() {
+  void logout() async {
     isLogout = true;
+    // await FlutterSessionJwt.removeToken(); 
   }
 }
