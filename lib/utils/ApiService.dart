@@ -685,22 +685,24 @@ class ApiService {
       throw Exception('Error saat get detail pengasuhan : $e');
     }
   }
-  //buat pencatatan
-  Future<Map<String, dynamic>> sendCreatePencatatan(
-      String nama_lengkap, umur) async {
+
+  //buat acara
+  Future<Map<String, dynamic>> buatAcara(String nama_lengkap, String deskripsi, String tanggal) async {
     try {
       final auth = await getAuthToken();
       if(auth == 'expired'){
         return  {'message' : 'token expired'};
       }
       final response = await http.post(
-        Uri.parse('$baseUrl/users/login'),
+        Uri.parse('$baseUrl/kalender'),
         headers: <String, String>{
           'Authorization': auth,
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: jsonEncode(<String, String>{
           'nama_lengkap': nama_lengkap,
+          'deskripsi': deskripsi,
+          'tanggal': tanggal,
         }),
       );
       if (response.statusCode == 200) {
@@ -709,20 +711,19 @@ class ApiService {
         return json.decode(response.body);
       }
     } catch (e) {
-      throw Exception('Error saat kirim tambah pencatatan : $e');
+      throw Exception('Error saat kirim tambah acara : $e');
     }
   }
 
-  //update pencatatan
-  Future<Map<String, dynamic>> sendUpdatePencatatan(
-      String idPencatatan, String nama_lengkap) async {
+  //update acara
+  Future<Map<String, dynamic>> editAcara(String idPencatatan, String nama_lengkap) async {
     try {
       final auth = await getAuthToken();
       if(auth == 'expired'){
         return  {'message' : 'token expired'};
       }
       final response = await http.put(
-        Uri.parse('$baseUrl/users/pencatatan/update/$idPencatatan'),
+        Uri.parse('$baseUrl/acara/update/$idPencatatan'),
         headers: <String, String>{
           'Authorization': auth,
           'Content-Type': 'application/json; charset=UTF-8',
@@ -737,7 +738,34 @@ class ApiService {
         return json.decode(response.body);
       }
     } catch (e) {
-      throw Exception('Error saat kirim update pencatatan : $e');
+      throw Exception('Error saat kirim update acara : $e');
+    }
+  }
+
+  //delete acara
+  Future<Map<String, dynamic>> hapusAcara(String idPencatatan, String nama_lengkap) async {
+    try {
+      final auth = await getAuthToken();
+      if(auth == 'expired'){
+        return  {'message' : 'token expired'};
+      }
+      final response = await http.put(
+        Uri.parse('$baseUrl/users/acara/update/$idPencatatan'),
+        headers: <String, String>{
+          'Authorization': auth,
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{
+          'nama_lengkap': nama_lengkap,
+        }),
+      );
+      if (response.statusCode == 200) {
+        return json.decode(response.body);
+      } else {
+        return json.decode(response.body);
+      }
+    } catch (e) {
+      throw Exception('Error saat kirim update acara : $e');
     }
   }
 

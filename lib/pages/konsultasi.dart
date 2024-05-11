@@ -126,7 +126,7 @@ class _KonsultasiState extends State<Konsultasi> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Text(doctor['nama']!, style: const TextStyle(fontFamily: 'Poppins_Bold', color: Colors.white)),
-                            Text('dokter' +doctor['kategori']!, style: const TextStyle(fontFamily: 'Poppins_Bold', color: Colors.white))
+                            Text('Dokter ' +doctor['kategori']!, style: const TextStyle(fontFamily: 'Poppins_Bold', color: Colors.white))
                           ],
                         ),
                       ),
