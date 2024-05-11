@@ -1,30 +1,59 @@
 import 'package:eduapp/component/custom_appbar.dart';
 import 'package:eduapp/component/custom_colors.dart';
+import 'package:eduapp/utils/ApiService.dart';
 import 'package:eduapp/utils/navigationbar.dart';
 import 'package:flutter/material.dart';
 
-class Konsultasi extends StatelessWidget {
-   Konsultasi({super.key});
+class Konsultasi extends StatefulWidget {
+  Konsultasi({super.key});
 
+  @override
+  _KonsultasiState createState() => _KonsultasiState();
+}
+class _KonsultasiState extends State<Konsultasi> {
+  final ApiService apiService = ApiService();
+  final String docstorNotFound = 'assets/images/logo_eyes.png';
+  List<Map<String, dynamic>> dataDokter = [];
   // Data dummy untuk dokter
-  final List<Map<String, String>> doctors = [
-    {
-      'name': 'Septia Rahma Dwi P, S.Psi',
-      'specialty': 'Psikolog Anak',
-      'image': 'assets/images/logo_eyes.png'
-    },
-    {
-      'name': 'Septia Rahma Dwi P, S.Psi',
-      'specialty': 'Psikolog Anak',
-      'image': 'assets/images/logo_eyes.png'
-    },
-     {
-      'name': 'Septia Rahma Dwi P, S.Psi',
-      'specialty': 'Psikolog Anak',
-      'image': 'assets/images/logo_eyes.png'
-    },
-    // Tambahkan lebih banyak dokter di sini
-  ];
+  // final List<Map<String, String>> dataDokter = [
+  //   {
+  //     'nama': 'Septia Rahma Dwi P, S.Psi',
+  //     'kategori': 'Psikolog Anak',
+  //     'foto': 'assets/images/logo_eyes.png'
+  //   },
+  //   {
+  //     'nama': 'Septia Rahma Dwi P, S.Psi',
+  //     'kategori': 'Psikolog Anak',
+  //     'foto': 'assets/images/logo_eyes.png'
+  //   },
+  //    {
+  //     'nama': 'Septia Rahma Dwi P, S.Psi',
+  //     'kategori': 'Psikolog Anak',
+  //     'foto': 'assets/images/logo_eyes.png'
+  //   },
+  //   // Tambahkan lebih banyak dokter di sini
+  // ];
+
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
+  Future<void> fetchData() async {
+    try {
+      Map<String, dynamic> response = await apiService.getKonsultasi();
+      if (response['status'] == 'success') {
+        setState(() {
+          dataDokter = List<Map<String, dynamic>>.from(response['data']);
+        });
+
+      } else {
+        //do something
+      }
+    } catch (e) {
+      print('Error fetching konsultasi data: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,18 +66,18 @@ class Konsultasi extends StatelessWidget {
               buttonOnPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => BottomNav()),
+                  MaterialPageRoute(builder: (context) => const BottomNav()),
                 );
               },
             ),
           ),
           SliverToBoxAdapter(
             child: Container(
-              padding: EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(8.0),
               child: TextField(
                 decoration: InputDecoration(
                   hintText: 'Temukan Ahli Spesialismu........',
-                  prefixIcon: Icon(Icons.search),
+                  prefixIcon: const Icon(Icons.search),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(20.0),
                     borderSide: BorderSide.none,
@@ -62,10 +91,10 @@ class Konsultasi extends StatelessWidget {
           SliverList(
             delegate: SliverChildBuilderDelegate(
               (context, index) {
-                var doctor = doctors[index];
+                var doctor = dataDokter[index];
                 return Container(
-                  margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-                  padding: EdgeInsets.all(16.0),
+                  margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                  padding: const EdgeInsets.all(16.0),
                   decoration: BoxDecoration(
                     color: customColor.primaryColors,
                     borderRadius: BorderRadius.circular(14),
@@ -73,16 +102,31 @@ class Konsultasi extends StatelessWidget {
                   child: Row(
                     children: <Widget>[
                       CircleAvatar(
-                        backgroundImage: AssetImage(doctor['image']!),
                         radius: 30,
+                        child: Image.network(
+                          '${apiService.imgUrl}/konsultasi/${doctor['gambar']}',
+                          // width: 135,
+                          // height: 100,
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) {
+                            print('Error loading image:${error}');
+                            return Image.asset(
+                              docstorNotFound,
+                              width: 135,
+                              height: 100,
+                              fit: BoxFit.cover,
+                              // fit: BoxFit.contain,
+                            );
+                          },
+                        ),
                       ),
-                      SizedBox(width: 16),
+                      const SizedBox(width: 16),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Text(doctor['name']!, style: TextStyle(fontFamily: 'Poppins_Bold', color: Colors.white)),
-                            Text(doctor['specialty']!, style: TextStyle(fontFamily: 'Poppins_Bold', color: Colors.white))
+                            Text(doctor['nama']!, style: const TextStyle(fontFamily: 'Poppins_Bold', color: Colors.white)),
+                            Text('dokter' +doctor['kategori']!, style: const TextStyle(fontFamily: 'Poppins_Bold', color: Colors.white))
                           ],
                         ),
                       ),
@@ -90,7 +134,7 @@ class Konsultasi extends StatelessWidget {
                   ),
                 );
               },
-              childCount: doctors.length,
+              childCount: dataDokter.length,
             ),
           ),
         ],

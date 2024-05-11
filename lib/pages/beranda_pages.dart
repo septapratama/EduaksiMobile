@@ -18,6 +18,7 @@ class Beranda extends StatefulWidget {
 }
 class _BerandaState extends State<Beranda> {
   final ApiService apiService = ApiService();
+  final String artikelNotFound = 'assets/images/artikel 1.png';
   List menu = [
     "Edukasi",
     "Aksi",
@@ -39,28 +40,28 @@ class _BerandaState extends State<Beranda> {
   // List<Map<String, dynamic>> articles = [
   //   {
   //     'judul': 'Judul Artikel 1',
-  //     'created_at': '29 Maret 2024',
-  //     'foto': 'assets/images/artikel 1.png',
+  //     'tanggal': '29 Maret 2024',
+  //     'gambar': 'assets/images/artikel 1.png',
   //   },
   //   {
   //     'judul': 'Judul Artikel 2',
-  //     'created_at': '28 Maret 2024',
-  //     'foto': 'assets/images/artikel 2.png',
+  //     'tanggal': '28 Maret 2024',
+  //     'gambar': 'assets/images/artikel 2.png',
   //   },
   //   {
   //     'judul': 'Judul Artikel 2',
-  //     'created_at': '28 Maret 2024',
-  //     'foto': 'assets/images/artikel 2.png',
+  //     'tanggal': '28 Maret 2024',
+  //     'gambar': 'assets/images/artikel 2.png',
   //   },
   //   {
   //     'judul': 'Judul Artikel 2',
-  //     'created_at': '28 Maret 2024',
-  //     'foto': 'assets/images/artikel 2.png',
+  //     'tanggal': '28 Maret 2024',
+  //     'gambar': 'assets/images/artikel 2.png',
   //   },
   //   {
   //     'judul': 'Judul Artikel 2',
-  //     'created_at': '28 Maret 2024',
-  //     'foto': 'assets/images/artikel 2.png',
+  //     'tanggal': '28 Maret 2024',
+  //     'gambar': 'assets/images/artikel 2.png',
   //   },
   // ];
     // Add more articles as needed
@@ -282,22 +283,15 @@ class _BerandaState extends State<Beranda> {
                             ClipRRect(
                               borderRadius: const BorderRadius.horizontal(
                                   left: Radius.circular(10)),
-                              // child: Image.asset(
-                              //   article['foto'],
-                              //   width: 135,
-                              //   height: 100,
-                              //   fit: BoxFit.cover,
-                              // ),
                               child: Image.network(
-                                '${apiService.imgUrl}/artikel/${article['foto']}',
-                                // apiService.imgUrl + '/artikel/' + article['foto'],
+                                '${apiService.imgUrl}/artikel/${article['gambar']}',
                                 width: 135,
                                 height: 100,
                                 fit: BoxFit.cover,
                                 errorBuilder: (context, error, stackTrace) {
                                   print('Error loading image:${error}');
                                   return Image.asset(
-                                    'assets/images/artikel 1.png',
+                                    artikelNotFound,
                                     width: 135,
                                     height: 100,
                                     fit: BoxFit.cover,
@@ -325,7 +319,7 @@ class _BerandaState extends State<Beranda> {
                                     ),
                                     const SizedBox(height: 5),
                                     Text(
-                                      article['created_at'],
+                                      article['tanggal'],
                                       style: const TextStyle(
                                         fontFamily: 'Poppins_SemiBold',
                                         fontSize: 12,

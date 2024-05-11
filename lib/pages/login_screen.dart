@@ -81,15 +81,7 @@ class _LoginScreenState extends State<LoginScreen> {
     try {
       final response = await googlelogin.loginGoogle();
       if (response['status'] == 'success') {
-        // Set the user data using the provider
-        // context.read()<UserProvider>().setUserBaru(
-        //       UserModelBaru(
-        //         nama_lengkap: response['data']['nama_lengkap'] ?? '',
-        //         no_hp: response['data']['email'] ?? '',
-        //         email: response['data']['no_hp'] ?? '',
-        //         foto_profil: response['data']['foto_profil'] ?? '',
-        //       ),
-        //     );
+        return;
         Navigator.pushReplacement(context, pageMove.movepage(const BottomNav()));
       } else {
         // print('Login failed: ${response['message']}');

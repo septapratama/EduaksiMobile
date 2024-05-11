@@ -33,11 +33,9 @@ class ApiService {
         }),
       );
       if (response.statusCode == 200) {
-        final Map<String, dynamic> responseData = json.decode(response.body);
-        return responseData;
+        return json.decode(response.body);
       } else {
-        final Map<String, dynamic> responseData = json.decode(response.body);
-        return responseData;
+        return json.decode(response.body);
       }
     } catch (e) {
       throw Exception('Error during registration: $e');
@@ -63,8 +61,7 @@ class ApiService {
         await jwtProvider.setJwt(responseData['data']);
         return responseData;
       } else {
-        final Map<String, dynamic> responseData = json.decode(response.body);
-        return responseData;
+        return json.decode(response.body);
       }
     } catch (e) {
       throw Exception('Error saat login: $e');
@@ -86,10 +83,9 @@ class ApiService {
       if (response.statusCode == 200) {
         final Map<String, dynamic> responseData = json.decode(response.body);
         await jwtProvider.setJwt(responseData['data']);
-        return responseData['status'];
-      } else {
-        final Map<String, dynamic> responseData = json.decode(response.body);
         return responseData;
+      } else {
+        return json.decode(response.body);
       }
     } catch (e) {
       throw Exception('Error saat login: $e');
@@ -109,11 +105,9 @@ class ApiService {
         }),
       );
       if (response.statusCode == 200) {
-        final Map<String, dynamic> responseData = json.decode(response.body);
-        return responseData;
+        return json.decode(response.body);
       } else {
-        final Map<String, dynamic> responseData = json.decode(response.body);
-        return responseData;
+        return json.decode(response.body);
       }
     } catch (e) {
       throw Exception('Error saat lupa password : $e');
@@ -123,7 +117,6 @@ class ApiService {
   //verify otp
   Future<Map<String, dynamic>> verifyOtp(String email, String link, String otp) async {
     try {
-      // print('link send otp '+ link);
       final response = await http.post(
         Uri.parse(baseUrl + link),
         headers: <String, String>{
@@ -135,12 +128,9 @@ class ApiService {
         }),
       );
       if (response.statusCode == 200) {
-        final Map<String, dynamic> responseData = json.decode(response.body);
-        // print(responseData['message']);
-        return responseData;
+        return json.decode(response.body);
       } else {
-        final Map<String, dynamic> responseData = json.decode(response.body);
-        return responseData;
+        return json.decode(response.body);
       }
     } catch (e) {
       throw Exception('Error saat kirim otp : $e');
@@ -163,11 +153,9 @@ class ApiService {
         }),
       );
       if (response.statusCode == 200) {
-        final Map<String, dynamic> responseData = json.decode(response.body);
-        return responseData;
+        return json.decode(response.body);
       } else {
-        final Map<String, dynamic> responseData = json.decode(response.body);
-        return responseData;
+        return json.decode(response.body);
       }
     } catch (e) {
       throw Exception('Error saat reset password : $e');
@@ -289,8 +277,7 @@ class ApiService {
       if (response.statusCode == 200) {
         return json.decode(response.body);
       } else {
-        final Map<String, dynamic> responseData = json.decode(response.body);
-        return responseData;
+        return json.decode(response.body);
       }
     } catch (e) {
       throw Exception('Error saat get dashboard : $e');
@@ -311,8 +298,7 @@ class ApiService {
       if (response.statusCode == 200) {
         return json.decode(response.body);
       } else {
-        final Map<String, dynamic> responseData = json.decode(response.body);
-        return responseData;
+        return json.decode(response.body);
       }
     } catch (e) {
       throw Exception('Error saat get artikel : $e');
@@ -333,8 +319,7 @@ class ApiService {
       if (response.statusCode == 200) {
         return json.decode(response.body);
       } else {
-        final Map<String, dynamic> responseData = json.decode(response.body);
-        return responseData;
+        return json.decode(response.body);
       }
     } catch (e) {
       throw Exception('Error saat get detail artikel : $e');
@@ -353,16 +338,33 @@ class ApiService {
         'Content-Type': 'application/json; charset=UTF-8',
       });
       if (response.statusCode == 200) {
-        final Map<String, dynamic> responseData = json.decode(response.body);
-        return responseData;
-        // List<dynamic> responseData = jsonResponse['data'];
-        // List<Map<String, dynamic>> parsedData = responseData.cast<Map<String, dynamic>>();
+        return json.decode(response.body);
       } else {
-        final Map<String, dynamic> responseData = json.decode(response.body);
-        return responseData;
+        return json.decode(response.body);
       }
     } catch (e) {
       throw Exception('Error saat get digital literasi : $e');
+    }
+  }
+
+  //get digital literasi artikel
+  Future<Map<String, dynamic>> getDisiArtikel() async {
+    try {
+      final auth = await getAuthToken();
+      if(auth == 'expired'){
+        return  {'message' : 'token expired'};
+      }
+      final response = await http.get(Uri.parse('$baseUrl/disi/artikel'), headers: <String, String>{
+        'Authorization': auth,
+        'Content-Type': 'application/json; charset=UTF-8',
+      });
+      if (response.statusCode == 200) {
+        return json.decode(response.body);
+      } else {
+        return json.decode(response.body);
+      }
+    } catch (e) {
+      throw Exception('Error saat get artikel digital literasi : $e');
     }
   }
 
@@ -384,13 +386,9 @@ class ApiService {
         'Content-Type': 'application/json; charset=UTF-8',
       });
       if (response.statusCode == 200) {
-        final Map<String, dynamic> responseData = json.decode(response.body);
-        return responseData;
-        // List<dynamic> responseData = jsonResponse['data'];
-        // List<Map<String, dynamic>> parsedData = responseData.cast<Map<String, dynamic>>();
+        return json.decode(response.body);
       } else {
-        final Map<String, dynamic> responseData = json.decode(response.body);
-        return responseData;
+        return json.decode(response.body);
       }
     } catch (e) {
       throw Exception('Error saat get digital literasi dari usia : $e');
@@ -409,11 +407,9 @@ class ApiService {
         'Content-Type': 'application/json; charset=UTF-8',
       });
       if (response.statusCode == 200) {
-        final Map<String, dynamic> responseData = json.decode(response.body);
-        return responseData;
+        return json.decode(response.body);
       } else {
-        final Map<String, dynamic> responseData = json.decode(response.body);
-        return responseData;
+        return json.decode(response.body);
       }
     } catch (e) {
       throw Exception('Error saat get detail digital literasi : $e');
@@ -432,16 +428,33 @@ class ApiService {
         'Content-Type': 'application/json; charset=UTF-8',
       });
       if (response.statusCode == 200) {
-        final Map<String, dynamic> responseData = json.decode(response.body);
-        return responseData;
-        // List<dynamic> responseData = jsonResponse['data'];
-        // List<Map<String, dynamic>> parsedData = responseData.cast<Map<String, dynamic>>();
+        return json.decode(response.body);
       } else {
-        final Map<String, dynamic> responseData = json.decode(response.body);
-        return responseData;
+        return json.decode(response.body);
       }
     } catch (e) {
       throw Exception('Error saat get emosi mental : $e');
+    }
+  }
+
+  //get emosi mental artikel
+  Future<Map<String, dynamic>> getEmotalArtikel() async {
+    try {
+      final auth = await getAuthToken();
+      if(auth == 'expired'){
+        return  {'message' : 'token expired'};
+      }
+      final response = await http.get(Uri.parse('$baseUrl/emotal/artikel'), headers: <String, String>{
+        'Authorization': auth,
+        'Content-Type': 'application/json; charset=UTF-8',
+      });
+      if (response.statusCode == 200) {
+        return json.decode(response.body);
+      } else {
+        return json.decode(response.body);
+      }
+    } catch (e) {
+      throw Exception('Error saat get artikel emosi mental : $e');
     }
   }
 
@@ -463,13 +476,9 @@ class ApiService {
         'Content-Type': 'application/json; charset=UTF-8',
       });
       if (response.statusCode == 200) {
-        final Map<String, dynamic> responseData = json.decode(response.body);
-        return responseData;
-        // List<dynamic> responseData = jsonResponse['data'];
-        // List<Map<String, dynamic>> parsedData = responseData.cast<Map<String, dynamic>>();
+        return json.decode(response.body);
       } else {
-        final Map<String, dynamic> responseData = json.decode(response.body);
-        return responseData;
+        return json.decode(response.body);
       }
     } catch (e) {
       throw Exception('Error saat get emosi mental dari usia : $e');
@@ -488,11 +497,9 @@ class ApiService {
         'Content-Type': 'application/json; charset=UTF-8',
       });
       if (response.statusCode == 200) {
-        final Map<String, dynamic> responseData = json.decode(response.body);
-        return responseData;
+        return json.decode(response.body);
       } else {
-        final Map<String, dynamic> responseData = json.decode(response.body);
-        return responseData;
+        return json.decode(response.body);
       }
     } catch (e) {
       throw Exception('Error saat get detail emosi mental : $e');
@@ -511,16 +518,33 @@ class ApiService {
         'Content-Type': 'application/json; charset=UTF-8',
       });
       if (response.statusCode == 200) {
-        final Map<String, dynamic> responseData = json.decode(response.body);
-        return responseData;
-        // List<dynamic> responseData = jsonResponse['data'];
-        // List<Map<String, dynamic>> parsedData = responseData.cast<Map<String, dynamic>>();
+        return json.decode(response.body);
       } else {
-        final Map<String, dynamic> responseData = json.decode(response.body);
-        return responseData;
+        return json.decode(response.body);
       }
     } catch (e) {
       throw Exception('Error saat get nutrisi : $e');
+    }
+  }
+
+  //get nutrisi artikel
+  Future<Map<String, dynamic>> getNutrisiArtikel() async {
+    try {
+      final auth = await getAuthToken();
+      if(auth == 'expired'){
+        return  {'message' : 'token expired'};
+      }
+      final response = await http.get(Uri.parse('$baseUrl/nutrisi/artikel'), headers: <String, String>{
+        'Authorization': auth,
+        'Content-Type': 'application/json; charset=UTF-8',
+      });
+      if (response.statusCode == 200) {
+        return json.decode(response.body);
+      } else {
+        return json.decode(response.body);
+      }
+    } catch (e) {
+      throw Exception('Error saat get artikel nutrisi : $e');
     }
   }
 
@@ -542,13 +566,9 @@ class ApiService {
         'Content-Type': 'application/json; charset=UTF-8',
       });
       if (response.statusCode == 200) {
-        final Map<String, dynamic> responseData = json.decode(response.body);
-        return responseData;
-        // List<dynamic> responseData = jsonResponse['data'];
-        // List<Map<String, dynamic>> parsedData = responseData.cast<Map<String, dynamic>>();
+        return json.decode(response.body);
       } else {
-        final Map<String, dynamic> responseData = json.decode(response.body);
-        return responseData;
+        return json.decode(response.body);
       }
     } catch (e) {
       throw Exception('Error saat get nutrisi dari usia : $e');
@@ -567,11 +587,9 @@ class ApiService {
         'Content-Type': 'application/json; charset=UTF-8',
       });
       if (response.statusCode == 200) {
-        final Map<String, dynamic> responseData = json.decode(response.body);
-        return responseData;
+        return json.decode(response.body);
       } else {
-        final Map<String, dynamic> responseData = json.decode(response.body);
-        return responseData;
+        return json.decode(response.body);
       }
     } catch (e) {
       throw Exception('Error saat get detail nutrisi : $e');
@@ -590,16 +608,33 @@ class ApiService {
         'Content-Type': 'application/json; charset=UTF-8',
       });
       if (response.statusCode == 200) {
-        final Map<String, dynamic> responseData = json.decode(response.body);
-        return responseData;
-        // List<dynamic> responseData = jsonResponse['data'];
-        // List<Map<String, dynamic>> parsedData = responseData.cast<Map<String, dynamic>>();
+        return json.decode(response.body);
       } else {
-        final Map<String, dynamic> responseData = json.decode(response.body);
-        return responseData;
+        return json.decode(response.body);
       }
     } catch (e) {
       throw Exception('Error saat get pengasuhan : $e');
+    }
+  }
+
+  //get pengasuhan artikel
+  Future<Map<String, dynamic>> getPengasuhanArtikel() async {
+    try {
+      final auth = await getAuthToken();
+      if(auth == 'expired'){
+        return  {'message' : 'token expired'};
+      }
+      final response = await http.get(Uri.parse('$baseUrl/pengasuhan/artikel'), headers: <String, String>{
+        'Authorization': auth,
+        'Content-Type': 'application/json; charset=UTF-8',
+      });
+      if (response.statusCode == 200) {
+        return json.decode(response.body);
+      } else {
+        return json.decode(response.body);
+      }
+    } catch (e) {
+      throw Exception('Error saat get artikel pengasuhan : $e');
     }
   }
 
@@ -621,13 +656,9 @@ class ApiService {
         'Content-Type': 'application/json; charset=UTF-8',
       });
       if (response.statusCode == 200) {
-        final Map<String, dynamic> responseData = json.decode(response.body);
-        return responseData;
-        // List<dynamic> responseData = jsonResponse['data'];
-        // List<Map<String, dynamic>> parsedData = responseData.cast<Map<String, dynamic>>();
+        return json.decode(response.body);
       } else {
-        final Map<String, dynamic> responseData = json.decode(response.body);
-        return responseData;
+        return json.decode(response.body);
       }
     } catch (e) {
       throw Exception('Error saat get pengasuhan dari usia : $e');
@@ -646,11 +677,9 @@ class ApiService {
         'Content-Type': 'application/json; charset=UTF-8',
       });
       if (response.statusCode == 200) {
-        final Map<String, dynamic> responseData = json.decode(response.body);
-        return responseData;
+        return json.decode(response.body);
       } else {
-        final Map<String, dynamic> responseData = json.decode(response.body);
-        return responseData;
+        return json.decode(response.body);
       }
     } catch (e) {
       throw Exception('Error saat get detail pengasuhan : $e');
@@ -675,11 +704,9 @@ class ApiService {
         }),
       );
       if (response.statusCode == 200) {
-        final Map<String, dynamic> responseData = json.decode(response.body);
-        return responseData;
+        return json.decode(response.body);
       } else {
-        final Map<String, dynamic> responseData = json.decode(response.body);
-        return responseData;
+        return json.decode(response.body);
       }
     } catch (e) {
       throw Exception('Error saat kirim tambah pencatatan : $e');
@@ -705,11 +732,9 @@ class ApiService {
         }),
       );
       if (response.statusCode == 200) {
-        final Map<String, dynamic> responseData = json.decode(response.body);
-        return responseData;
+        return json.decode(response.body);
       } else {
-        final Map<String, dynamic> responseData = json.decode(response.body);
-        return responseData;
+        return json.decode(response.body);
       }
     } catch (e) {
       throw Exception('Error saat kirim update pencatatan : $e');
@@ -728,16 +753,12 @@ class ApiService {
         'Content-Type': 'application/json; charset=UTF-8',
       });
       if (response.statusCode == 200) {
-        final Map<String, dynamic> responseData = json.decode(response.body);
-        return responseData;
-        // List<dynamic> responseData = jsonResponse['data'];
-        // List<Map<String, dynamic>> parsedData = responseData.cast<Map<String, dynamic>>();
+        return json.decode(response.body);
       } else {
-        final Map<String, dynamic> responseData = json.decode(response.body);
-        return responseData;
+        return json.decode(response.body);
       }
     } catch (e) {
-      throw Exception('Error getting products: $e');
+      throw Exception('Error getting konsultasi : $e');
     }
   }
 
@@ -753,11 +774,9 @@ class ApiService {
           'Content-Type': 'application/json; charset=UTF-8',
       });
       if (response.statusCode == 200) {
-        final Map<String, dynamic> responseData = json.decode(response.body);
-        return responseData;
+        return json.decode(response.body);
       } else {
-        final Map<String, dynamic> responseData = json.decode(response.body);
-        return responseData;
+        return json.decode(response.body);
       }
     } catch (e) {
       throw Exception('Error saat update profile : $e');
