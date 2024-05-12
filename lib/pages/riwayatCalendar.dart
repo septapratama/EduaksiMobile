@@ -1,4 +1,7 @@
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:capitalize/capitalize.dart';
+import 'package:eduapp/utils/Acara.dart';
+import 'package:eduapp/utils/ApiService.dart';
+import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:eduapp/pages/calendar.dart';
 import 'package:eduapp/pages/calendarShow.dart';
@@ -6,55 +9,91 @@ import 'package:eduapp/component/custom_appbar.dart';
 import 'package:eduapp/component/custom_button.dart';
 
 // Define your EventData class
-class EventData {
-  final String tanggal;
-  final String waktu;
-  final String kategori;
-  final String acara;
+// class EventData {
+//   final String tanggal;
+//   final String waktu;
+//   final String kategori;
+//   final String acara;
 
-  EventData({
-    required this.tanggal,
-    required this.waktu,
-    required this.kategori,
-    required this.acara
-  });
-}
+//   EventData({
+//     required this.tanggal,
+//     required this.waktu,
+//     required this.kategori,
+//     required this.acara
+//   });
+// }
 
 // Define your list of data
-List<EventData> eventList = [
-  EventData(
-    tanggal: '2024-05-08',
-    waktu: '13:00',
-    kategori: 'Acara Umum',
-    acara: 'Team meeting for project discussion',
-  ),
-  EventData(
-    tanggal: '2024-05-09',
-    waktu: '10:30',
-    kategori: 'Acara Penting',
-    acara: 'Training session on new software tools',
-  ),
-  EventData(
-    tanggal: '2024-05-10',
-    waktu: '15:45',
-    kategori: 'Acara Keluarga',
-    acara: 'Client presentation for project proposal',
-  ),
-  EventData(
-    tanggal: '2024-05-12',
-    waktu: '09:00',
-    kategori: 'Acara Umum',
-    acara: 'Interview scheduled for new hires',
-  ),
-];
+// List<EventData> acaraData = [
+//   EventData(
+//     tanggal: '2024-05-08',
+//     waktu: '13:00',
+//     kategori: 'umum',
+//     acara: 'Team meeting for project discussion',
+//   ),
+//   EventData(
+//     tanggal: '2024-05-09',
+//     waktu: '10:30',
+//     kategori: 'penting',
+//     acara: 'Training session on new software tools',
+//   ),
+//   EventData(
+//     tanggal: '2024-05-10',
+//     waktu: '15:45',
+//     kategori: 'keluarga',
+//     acara: 'Client presentation for project proposal',
+//   ),
+//   EventData(
+//     tanggal: '2024-05-12',
+//     waktu: '09:00',
+//     kategori: 'umum',
+//     acara: 'Interview scheduled for new hires',
+//   ),
+// ];`
 
 class RiwayatCalendar extends StatefulWidget {
-  RiwayatCalendar({super.key});
+  const RiwayatCalendar({super.key});
 
   @override
   _RiwayatCalendarState createState() => _RiwayatCalendarState();
 }
+
 class _RiwayatCalendarState extends State<RiwayatCalendar> {
+  final ApiService apiService = ApiService();
+  final Acara acaraClass = Acara();
+  final Map<String, dynamic> colorCard = {'umum':Colors.green, 'penting':Colors.red, 'keluarga':Colors.orange, 'default':Colors.grey};
+  List<Map<String, dynamic>> acaraData = [];
+
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
+  void fetchData() async{
+    await acaraClass.init();
+    // await acaraClass.fetchData();
+    acaraData = acaraClass.getAcaraData();
+    setState(() {
+    });
+  }
+
+  void _hapusAcara(BuildContext context, String idAcara) async {
+    try{
+      Map<String, dynamic> response = await apiService.hapusAcara(idAcara);
+      if (response['status'] == 'success') {
+        print(response['message']);
+        acaraClass.deleteAcara(idAcara);
+        setState(() {
+          acaraData.removeWhere((item)=> item['id_acara'] == idAcara);
+        });
+      } else {
+        print(response['message']);
+        // alert(context, response['message']);
+      }
+    } catch (e) {
+      print('Error saat calendar : $e');
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,39 +104,26 @@ class _RiwayatCalendarState extends State<RiwayatCalendar> {
           children: <Widget>[
             Expanded(
               child: ListView.builder(
-                itemCount: eventList.length, // Use eventList here
+                itemCount: acaraData.length,
                 itemBuilder: (BuildContext context, int index) {
-                  // Define color based on category
-                  Color cardColor;
-                  switch (eventList[index].kategori) {
-                    case 'Acara Umum':
-                      cardColor = Colors.green; // Hijau untuk Acara Umum
-                      break;
-                    case 'Acara Penting':
-                      cardColor = Colors.red; // Merah untuk Acara Penting
-                      break;
-                    case 'Acara Keluarga':
-                      cardColor = Colors.orange; // Kuning untuk Acara Keluarga
-                      break;
-                    default:
-                      cardColor = Colors
-                          .grey; // Warna default jika kategori tidak dikenali
-                  }
+                  List<dynamic> datetimee = acaraData[index]['tanggal'].toString().split(' ');
+                  String tanggalData = DateFormat('EEEE, dd-MM-yyyy', 'id_ID').format(DateFormat('dd-MM-yyyy').parse(datetimee[0]));
+                  String waktuData = datetimee[1];
                   return GestureDetector(
                     onTap: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => ShowCalendar()),
+                            builder: (context) => ShowCalendar(idAcara: acaraData[index]['id_acara'])),
                       );
                     },
                     child: Card(
-                      color: cardColor, // Set warna card sesuai dengan kategori
+                      color: colorCard[acaraData[index]['kategori']] ?? colorCard['default'], // Set warna card sesuai dengan kategori
                       margin:
                           const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
                       child: ListTile(
                         title: Text(
-                          'Tanggal: ${eventList[index].tanggal}',
+                          'Tanggal: $tanggalData',
                           style: const TextStyle(
                             color:
                                 Colors.white, // Ganti warna teks menjadi putih
@@ -112,7 +138,7 @@ class _RiwayatCalendarState extends State<RiwayatCalendar> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Waktu: ${eventList[index].waktu}',
+                              'Waktu: $waktuData',
                               style: const TextStyle(
                                 color: Colors
                                     .white, // Ganti warna teks menjadi putih
@@ -122,7 +148,7 @@ class _RiwayatCalendarState extends State<RiwayatCalendar> {
                               ),
                             ),
                             Text(
-                              'Kategori Acara: ${eventList[index].kategori}',
+                              'Kategori: Acara ${IsCapitalize().capitalizeAllWord(value: acaraData[index]['kategori'])}',
                               style: const TextStyle(
                                 color: Colors
                                     .white, // Ganti warna teks menjadi putih
@@ -132,7 +158,7 @@ class _RiwayatCalendarState extends State<RiwayatCalendar> {
                               ),
                             ),
                             Text(
-                              'Acara: ${eventList[index].acara}',
+                              'Acara: ${acaraData[index]['nama_acara']}',
                               style: const TextStyle(
                                 color: Colors
                                     .white, // Ganti warna teks menjadi putih

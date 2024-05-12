@@ -22,26 +22,44 @@ class _AksiCalendarPageState extends State<AksiCalendarPage> {
   DateTime _selectedDay = DateTime.now();
   DateTime _focusedDay = DateTime.now();
   Map<DateTime, List> _events = {};
-  TextEditingController _dateController = TextEditingController();
-  TextEditingController _timeController = TextEditingController();
-  TextEditingController _namaAcaraController = TextEditingController();
-  TextEditingController _descriptionController = TextEditingController();
+  final TextEditingController _dateController = TextEditingController();
+  final TextEditingController _timeController = TextEditingController();
+  final TextEditingController _namaAcaraController = TextEditingController();
+  final TextEditingController _descriptionController = TextEditingController();
   String? _selectedCategory;
 
-  // List pilihan kategori acara
-  final List<String> _categories = [
-    'Acara umum',
-    'Acara penting',
-    'Acara keluarga',
-  ];
-  
   @override
   void initState() {
     super.initState();
-    _dateController = TextEditingController(text: DateFormat('yyyy-MM-dd').format(DateTime.now()));
+    _dateController.text = DateFormat('EEEE, dd-MM-yyyy', 'id_ID').format(DateTime.now());
   }
+
+  dynamic _changeDate(String cond){
+    if (cond == 'date' || cond == 'datetime') {
+      DateTime parsedDate = DateFormat('EEEE, dd-MM-yyyy', 'id_ID').parse(_dateController.text);
+      int day = parsedDate.day;
+      int month = parsedDate.month;
+      int year = parsedDate.year;
+      if (cond == 'date') {
+        return DateTime(year, month, day);
+      } else {
+        List<String> timeParts = _timeController.text.split(':');
+        int minute = int.parse(timeParts[0]);
+        int hour = int.parse(timeParts[1]);
+        return DateTime(year, month, day, hour, minute);
+      }
+    } else if (cond == 'time') {
+      List<String> timeParts = _timeController.text.split(':');
+      int minute = int.parse(timeParts[0]);
+      int hour = int.parse(timeParts[1]);
+      return {'hour': hour, 'minute': minute};
+    } else {
+      return null;
+    }
+  }
+
   void _tambahAcara(BuildContext context) async {
-    try {
+    try{
       List<Map<String, dynamic>> todayAcara = await acaraClass.getTodayAcara();
       String namaAcara = _namaAcaraController.text;
       String deskripsi = _descriptionController.text;
@@ -50,29 +68,6 @@ class _AksiCalendarPageState extends State<AksiCalendarPage> {
       if(todayAcara.length >= 3){
         // alert(context, "Jumlah hari ini maksimal 3 acara !");
         print('Jumlah hari ini maksimal 3 acara !');
-        return;
-      }
-      //if using dd-mm-yyyy mm:hh
-      List<String> dateParts = tanggal.split('-');
-      int day = int.parse(dateParts[0]);
-      int month = int.parse(dateParts[1]);
-      int year = int.parse(dateParts[2]);
-      List<String> timeParts = waktu.split(':');
-      int minute = int.parse(timeParts[0]);
-      int hour = int.parse(timeParts[1]);
-      DateTime pickDatetime = DateTime(year, month, day, hour, minute);
-      // DateTime date = DateTime.parse(tanggal);
-      // // List<String> timeParts = waktu.split(':');
-      // DateTime pickDatetime = DateTime(date.year, date.month, date.day, int.parse(timeParts[0]), int.parse(timeParts[1]));
-      // Validasi form, misalnya memastikan semua field terisi dengan benar
-      if (namaAcara.isEmpty) {
-        // alert(context, "Nama Acara tidak boleh kosong !");
-        print('Nama Acara tidak boleh kosong !');
-        return;
-      }
-      if (deskripsi.isEmpty) {
-        // alert(context, "Deskripsi tidak boleh kosong !");
-        print('Deskripsi tidak boleh kosong !');
         return;
       }
       if (tanggal.isEmpty) {
@@ -85,39 +80,60 @@ class _AksiCalendarPageState extends State<AksiCalendarPage> {
         print('Waktu tidak boleh kosong !');
         return;
       }
+      if (namaAcara.isEmpty) {
+        // alert(context, "Nama Acara tidak boleh kosong !");
+        print('Nama Acara tidak boleh kosong !');
+        return;
+      }
+      if (deskripsi.isEmpty) {
+        // alert(context, "Deskripsi tidak boleh kosong !");
+        print('Deskripsi tidak boleh kosong !');
+        return;
+      }
+      if (_selectedCategory!.isEmpty) {
+        // alert(context, "Kategori tidak boleh kosong !");
+        print('Kategori tidak boleh kosong !');
+        return;
+      }
+      DateTime pickDatetime = _changeDate('datetime');
       if (pickDatetime.isBefore(DateTime.now())){
         // alert(context, "Tanggal harus setelah atau sama dengan tanggal sekarang !");
         print('Tanggal harus setelah atau sama dengan tanggal sekarang !');
-      }
-      if(pickDatetime.isBefore(DateTime.now().add(const Duration(minutes: 5)))) {
+      }else if(pickDatetime.isBefore(DateTime.now().add(const Duration(minutes: 5)))) {
         // alert(context, "Waktu harus lebih dari 5 menit dari waktu sekarang !");
         print('Waktu harus lebih dari 5 menit dari waktu sekarang !');
         return;
       }
       todayAcara.forEach((item) {
         if(DateTime.parse(item['tanggal']).difference(pickDatetime).inMinutes <  5){
+          // alert(context, "Waktu harus lebih dari 5 menit dari setiap acara !");
           print('Waktu harus lebih dari 5 menit dari setiap acara !');
           return;
         }
       });
-      Map<String, dynamic> response = await apiService.buatAcara(namaAcara, deskripsi, DateFormat('dd-MM-yyyy HH:mm').format(pickDatetime));
+      String parDa = DateFormat('dd-MM-yyyy HH:mm').format(pickDatetime);
+      Map<String, dynamic> response = await apiService.buatAcara(namaAcara, deskripsi, _selectedCategory!, parDa);
       if (response['status'] == 'success') {
         Map<String, dynamic> data = {
+          'id_acara':response['data'].toString(),
           'nama_acara':namaAcara,
           'deskripsi':deskripsi,
-          'tanggal':tanggal,
+          'kategori':_selectedCategory!,
+          'tanggal':parDa,
         };
         acaraClass.tambahAcara(data);
-        print(response['message']);
-        // Navigator.pushReplacement(context, pageMove.movepage(RiwayatCalendar()));
+        Future.delayed(const Duration(seconds: 2), () {
+          Navigator.pushReplacement(context, pageMove.movepage(const RiwayatCalendar()));
+        });
       } else {
         print(response['message']);
         // alert(context, response['message']);
       }
     } catch (e) {
-      print('Error saat calendar : $e');
+      print('Error saat tambah calender : $e');
     }
   }
+
   @override
   void dispose() {
     _dateController.dispose();
@@ -133,31 +149,39 @@ class _AksiCalendarPageState extends State<AksiCalendarPage> {
     final TimeOfDay? picked = await showTimePicker(
       context: context,
       initialTime: initialTime,
+      builder: (BuildContext context, Widget? child) {
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
+          child: child!,
+        );
+      },
     );
     if (picked != null) {
+      DateTime pickDate = _changeDate('date');
       final DateTime selectedDateTime = DateTime(
-        now.year,
-        now.month,
-        now.day,
+        pickDate.year,
+        pickDate.month,
+        pickDate.day,
         picked.hour,
         picked.minute,
       );
 
-      final DateTime minDateTime = now.add(const Duration(minutes: 5));
-
-      if (selectedDateTime.isAfter(minDateTime)) {
-        setState(() {
-          _timeController.text = picked.format(context);
-        });
-      } else {
-        // Show a message or handle invalid time selection
+      bool isError = false;
+      String errMessage = '';
+      if(selectedDateTime.isBefore(now)) {
+        errMessage = 'pilih waktu harus lebih dari sekarang !';
+        isError = true;
+      }else if(selectedDateTime.isBefore(now.add(const Duration(minutes: 5)))) {
+        errMessage = 'Pilih waktu minimal 5 menit dari sekarang !';
+        isError = true;
+      }
+      if(isError){
         showDialog(
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
               title: const Text("Invalid Time"),
-              content:
-                  const Text("Tolong pilih waktu minimal 5 menit dari sekarang."),
+              content: Text(errMessage),
               actions: [
                 TextButton(
                   onPressed: () {
@@ -169,6 +193,10 @@ class _AksiCalendarPageState extends State<AksiCalendarPage> {
             );
           },
         );
+      }else{
+      setState(() {
+        _timeController.text = DateFormat('HH:mm').format(selectedDateTime);
+      });
       }
     }
   }
@@ -207,8 +235,7 @@ class _AksiCalendarPageState extends State<AksiCalendarPage> {
                   setState(() {
                     _selectedDay = selectedDay;
                     _focusedDay = focusedDay;
-                    _dateController.text =
-                        DateFormat('yyyy-MM-dd').format(selectedDay);
+                    _dateController.text = DateFormat('EEEE, dd-MM-yyyy', 'id_ID').format(selectedDay);
                   });
                 },
                 eventLoader: (day) {
@@ -315,10 +342,10 @@ class _AksiCalendarPageState extends State<AksiCalendarPage> {
                     isDense: true,
                     contentPadding: EdgeInsets.zero,
                   ),
-                  items: _categories.map((String category) {
+                  items: ['umum', 'penting', 'keluarga'].map((String category) {
                     return DropdownMenuItem<String>(
                       value: category,
-                      child: Text(category),
+                      child: Text('Acara $category'),
                     );
                   }).toList(),
                   onChanged: (value) {
@@ -414,9 +441,7 @@ class _AksiCalendarPageState extends State<AksiCalendarPage> {
                     child: ElevatedButton(
                       style: CustomButton.overallButtonStyle(),
                       onPressed: () {
-                        setState(() {
-                          //isi fungsi disini
-                        });
+                        _tambahAcara(context);
                       },
                       child: const Padding(
                         padding: EdgeInsets.symmetric(

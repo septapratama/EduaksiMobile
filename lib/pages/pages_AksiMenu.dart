@@ -5,6 +5,7 @@ import 'package:eduapp/pages/aksi_calendar_old.dart';
 import 'package:eduapp/pages/edukasi_emotal.dart';
 import 'package:eduapp/pages/edukasi_diisi.dart';
 import 'package:eduapp/pages/edukasi_nutrisi.dart';
+import 'package:eduapp/pages/riwayatCalendar.dart';
 import 'package:eduapp/utils/navigationbar.dart';
 import 'package:flutter/material.dart';
 import 'package:eduapp/component/custom_appbar_withoutarrowback.dart';
@@ -89,7 +90,7 @@ class AksiMenu extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => AksiCalendarPage(),
+                                builder: (context) => RiwayatCalendar(),
                               ),
                             );
                           } 

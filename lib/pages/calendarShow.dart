@@ -1,33 +1,64 @@
-import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
+
+import 'package:capitalize/capitalize.dart';
+import 'package:eduapp/utils/Acara.dart';
+import 'package:eduapp/utils/ApiService.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart';
 import 'package:eduapp/pages/riwayatCalendar.dart';
-
+import 'package:eduapp/component/custom_pagemove.dart';
 import 'package:eduapp/component/custom_button.dart';
 import 'package:eduapp/component/custom_colors.dart';
 
 class ShowCalendar extends StatefulWidget {
-  ShowCalendar({super.key});
-  final List<String> _categories = [
-    'Acara umum',
-    'Acara penting',
-    'Acara keluarga',
-  ];
+  final String idAcara;
+  const ShowCalendar({super.key, required this.idAcara});
 
   @override
   _AksiCalendarPageStateShow createState() => _AksiCalendarPageStateShow();
 }
 
 class _AksiCalendarPageStateShow extends State<ShowCalendar> {
-  DateTime _selectedDay = DateTime.now();
-  DateTime _focusedDay = DateTime.now();
-  Map<DateTime, List> _events = {};
-  final TextEditingController _timeController = TextEditingController();
-  final TextEditingController _eventController = TextEditingController();
-  final TextEditingController _descriptionController = TextEditingController();
-  final TextEditingController _dateController = TextEditingController(text: DateFormat('yyyy-MM-dd').format(DateTime.now()));
-  String? _selectedCategory;
+  final ApiService apiService = ApiService();
+  final Acara acaraClass = Acara();
+  late DateTime _pickDate = DateTime.now();
+  final Map<DateTime, List> _events = {};
+  late Map<String, dynamic> acaraData;
+  // final Map<String, dynamic> acaraData = {
+  //   'nama_acara': 'Training session on new software tools',
+  //   'deskripsi': 'wffwfwffwfwffwf',
+  //   'kategori': 'penting',
+  //   'tanggal': '23-05-2024 12:07',
+  // };
+  final TextEditingController _namaAcaraController = TextEditingController();
+  final TextEditingController _deskripsiController = TextEditingController();
+  final TextEditingController _kategoriController = TextEditingController();
+  final TextEditingController _tanggalController = TextEditingController();
+  final TextEditingController _waktuController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
+  void fetchData() async{
+    await acaraClass.init();
+    acaraData = acaraClass.getAcaraData().firstWhere((item) => item['id_acara'] == widget.idAcara);
+    if(acaraData.isEmpty || acaraData == null){
+      Navigator.pushReplacement(context, pageMove.movepage(const RiwayatCalendar()));
+    }else{
+      setState(() {
+        _namaAcaraController.text = acaraData['nama_acara'];
+        _deskripsiController.text = acaraData['deskripsi'];
+        _kategoriController.text = 'Acara ${IsCapitalize().capitalizeAllWord(value: acaraData['kategori'])}';
+        List<dynamic> datetimee = acaraData['tanggal'].toString().split(' ');
+        _pickDate = DateFormat('dd-MM-yyyy').parse(datetimee[0]);
+        _tanggalController.text = DateFormat('EEEE, dd-MM-yyyy', 'id_ID').format(_pickDate);
+        _waktuController.text = datetimee[1];
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +71,7 @@ class _AksiCalendarPageStateShow extends State<ShowCalendar> {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => RiwayatCalendar()),
+                MaterialPageRoute(builder: (context) => const RiwayatCalendar()),
               );
             },
           ),
@@ -54,24 +85,16 @@ class _AksiCalendarPageStateShow extends State<ShowCalendar> {
             children: <Widget>[
               TableCalendar(
                 firstDay: DateTime.now(),
-                lastDay: DateTime.utc(2030, 3, 14),
-                focusedDay: _focusedDay,
-                availableGestures: AvailableGestures.horizontalSwipe,
+                lastDay: _pickDate,
+                focusedDay: _pickDate,
+                availableGestures: AvailableGestures.none,
                 availableCalendarFormats: const {
                   CalendarFormat.month:
                       'Month', // Hanya menampilkan format bulanan
                 },
-                selectedDayPredicate: (day) {
-                  return isSameDay(_selectedDay, day);
-                },
-                onDaySelected: (selectedDay, focusedDay) {
-                  setState(() {
-                    _selectedDay = selectedDay;
-                    _focusedDay = focusedDay;
-                    _dateController.text =
-                        DateFormat('yyyy-MM-dd').format(selectedDay);
-                  });
-                },
+                // selectedDayPredicate: (day) {
+                //   return isSameDay(_pickDate, day);
+                // },
                 eventLoader: (day) {
                   return _events[day] ?? [];
                 },
@@ -100,13 +123,13 @@ class _AksiCalendarPageStateShow extends State<ShowCalendar> {
                     vertical: 8.0,
                   ),
                   child: TextFormField(
-                    enabled: false,
-                    controller: _dateController,
+                    readOnly: true,
+                    controller: _tanggalController,
                     decoration: const InputDecoration(
                       border: InputBorder.none,
                       isDense: true,
                       contentPadding: EdgeInsets.zero,
-                      hintText: 'Input Tanggal Anda',
+                      hintText: 'Masukkan tanggal Anda',
                     ),
                   ),
                 ),
@@ -135,8 +158,8 @@ class _AksiCalendarPageStateShow extends State<ShowCalendar> {
                     vertical: 8.0,
                   ),
                   child: TextFormField(
-                    enabled: false,
-                    controller: _timeController,
+                    readOnly: true,
+                    controller: _waktuController,
                     decoration: const InputDecoration(
                       border: InputBorder.none,
                       isDense: true,
@@ -167,13 +190,14 @@ class _AksiCalendarPageStateShow extends State<ShowCalendar> {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 20.0, vertical: 8.0),
                 child: TextFormField(
-                  enabled: false,
-                  controller: TextEditingController(text: _selectedCategory),
+                  readOnly: true,
+                  controller: _kategoriController,
                   decoration: const InputDecoration(
                     border: InputBorder.none,
                     isDense: true,
                     contentPadding: EdgeInsets.zero,
                     hintText: 'Pilih Kategori Acara',
+                    // hintText: 'Acara ${_kategoriController.text}',
                   ),
                 ),
               ),
@@ -201,15 +225,15 @@ class _AksiCalendarPageStateShow extends State<ShowCalendar> {
                     vertical: 8.0,
                   ),
                   child: TextFormField(
-                    enabled: false,
-                    controller: _eventController,
+                    readOnly: true,
+                    controller: _namaAcaraController,
                     minLines: 3,
                     maxLines: 5,
                     decoration: const InputDecoration(
                       border: InputBorder.none,
                       isDense: true,
                       contentPadding: EdgeInsets.zero,
-                      hintText: 'Input Acara Anda',
+                      hintText: 'Nama Acara Anda',
                     ),
                   ),
                 ),
@@ -238,8 +262,8 @@ class _AksiCalendarPageStateShow extends State<ShowCalendar> {
                     vertical: 8.0,
                   ),
                   child: TextFormField(
-                    enabled: false,
-                    controller: _descriptionController,
+                    readOnly: true,
+                    controller: _deskripsiController,
                     minLines: 3,
                     maxLines: 5,
                     decoration: const InputDecoration(
@@ -263,7 +287,7 @@ class _AksiCalendarPageStateShow extends State<ShowCalendar> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => RiwayatCalendar()));
+                            builder: (context) => const RiwayatCalendar()));
                     // Handle button press here
                   },
                       child: const Padding(

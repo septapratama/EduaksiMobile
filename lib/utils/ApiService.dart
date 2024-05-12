@@ -1,13 +1,13 @@
 import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
-import 'package:path/path.dart' as p;
+import 'package:eduapp/utils/Acara.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:eduapp/utils/JwtProvider.dart';
 import 'package:http/http.dart' as http;
 
 class ApiService {
   final JwtProvider jwtProvider = JwtProvider();
+  final Acara acaraaaClass = Acara();
   final String baseUrl = "http://192.168.0.105:8000/api/mobile";
   // final String baseUrl = "https://eduaksi.amirzan.my.id/api/mobile";
   final String imgUrl = "http://192.168.0.105:8000/img";
@@ -180,6 +180,7 @@ class ApiService {
       if (response.statusCode == 200) {
         final Map<String, dynamic> responseData = json.decode(response.body);
         jwtProvider.logout();
+        // await acaraaaClass.removeAcara();
         print(jwtProvider.getJwt());
         return responseData;
       } else {
@@ -686,22 +687,46 @@ class ApiService {
     }
   }
 
-  //buat acara
-  Future<Map<String, dynamic>> buatAcara(String nama_lengkap, String deskripsi, String tanggal) async {
+  //fetch acara
+  Future<Map<String, dynamic>> fetchAcara() async {
     try {
       final auth = await getAuthToken();
       if(auth == 'expired'){
         return  {'message' : 'token expired'};
       }
       final response = await http.post(
-        Uri.parse('$baseUrl/kalender'),
+        Uri.parse('$baseUrl/kalender/tambah'),
+        headers: <String, String>{
+          'Authorization': auth,
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+      );
+      if (response.statusCode == 200) {
+        return json.decode(response.body);
+      } else {
+        return json.decode(response.body);
+      }
+    } catch (e) {
+      throw Exception('Error saat kirim fetch acara : $e');
+    }
+  }
+  //buat acara
+  Future<Map<String, dynamic>> buatAcara(String nama_acara, String deskripsi, String kategori, String tanggal) async {
+    try {
+      final auth = await getAuthToken();
+      if(auth == 'expired'){
+        return  {'message' : 'token expired'};
+      }
+      final response = await http.post(
+        Uri.parse('$baseUrl/kalender/tambah'),
         headers: <String, String>{
           'Authorization': auth,
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: jsonEncode(<String, String>{
-          'nama_lengkap': nama_lengkap,
+          'nama_acara': nama_acara,
           'deskripsi': deskripsi,
+          'kategori': kategori,
           'tanggal': tanggal,
         }),
       );
@@ -716,20 +741,20 @@ class ApiService {
   }
 
   //update acara
-  Future<Map<String, dynamic>> editAcara(String idPencatatan, String nama_lengkap) async {
+  Future<Map<String, dynamic>> editAcara(String idAcara, String nama_acara) async {
     try {
       final auth = await getAuthToken();
       if(auth == 'expired'){
         return  {'message' : 'token expired'};
       }
       final response = await http.put(
-        Uri.parse('$baseUrl/acara/update/$idPencatatan'),
+        Uri.parse('$baseUrl/kalender/update'),
         headers: <String, String>{
           'Authorization': auth,
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: jsonEncode(<String, String>{
-          'nama_lengkap': nama_lengkap,
+          'id_acara': idAcara,
         }),
       );
       if (response.statusCode == 200) {
@@ -743,20 +768,20 @@ class ApiService {
   }
 
   //delete acara
-  Future<Map<String, dynamic>> hapusAcara(String idPencatatan, String nama_lengkap) async {
+  Future<Map<String, dynamic>> hapusAcara(String idAcara,) async {
     try {
       final auth = await getAuthToken();
       if(auth == 'expired'){
         return  {'message' : 'token expired'};
       }
       final response = await http.put(
-        Uri.parse('$baseUrl/users/acara/update/$idPencatatan'),
+        Uri.parse('$baseUrl/kalender/delete'),
         headers: <String, String>{
           'Authorization': auth,
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: jsonEncode(<String, String>{
-          'nama_lengkap': nama_lengkap,
+          'id_acara': idAcara,
         }),
       );
       if (response.statusCode == 200) {
@@ -765,7 +790,7 @@ class ApiService {
         return json.decode(response.body);
       }
     } catch (e) {
-      throw Exception('Error saat kirim update acara : $e');
+      throw Exception('Error saat kirim hapus acara : $e');
     }
   }
 
