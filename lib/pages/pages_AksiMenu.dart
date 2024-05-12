@@ -1,7 +1,6 @@
 import 'package:eduapp/component/custom_appbar.dart';
 import 'package:eduapp/component/custom_colors.dart';
 import 'package:eduapp/pages/aksi_calculator.dart';
-import 'package:eduapp/pages/aksi_calendar_old.dart';
 import 'package:eduapp/pages/edukasi_emotal.dart';
 import 'package:eduapp/pages/edukasi_diisi.dart';
 import 'package:eduapp/pages/edukasi_nutrisi.dart';

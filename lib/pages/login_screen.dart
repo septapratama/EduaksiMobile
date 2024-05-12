@@ -49,25 +49,16 @@ class _LoginScreenState extends State<LoginScreen> {
     String kataSandi = passwordController.text;
     // Validasi form, misalnya memastikan semua field terisi dengan benar
     if (email.isEmpty) {
-      // alert(context, "Email tidak boleh kosong !");
-      // return;
+      alert(context, "Email tidak boleh kosong !");
+      return;
     }
     if (kataSandi.isEmpty) {
-      // alert(context, "Kata sandi tidak boleh kosong !");
-      // return;
+      alert(context, "Kata sandi tidak boleh kosong !");
+      return;
     }
     try {
       Map<String, dynamic> response = await apiService.login(email, kataSandi);
       if (response['status'] == 'success') {
-        // Set the user data using the provider
-        // context.read()<UserProvider>().setUserBaru(
-        //       UserModelBaru(
-        //         email: email,
-        //         nama_lengkap: response['data']['nama_lengkap'] ?? '',
-        //         no_hp: response['data']['no_hp'] ?? '',
-        //         foto_profil: response['data']['foto_profil'] ?? '',
-        //       ),
-        //     );
         Navigator.pushReplacement(context, pageMove.movepage(const BottomNav()));
       } else {
         alert(context, response['message']);

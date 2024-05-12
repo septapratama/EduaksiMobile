@@ -1,23 +1,59 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:eduapp/component/custom_appbar.dart';
 import 'package:eduapp/component/custom_textformfieldKonsultasi.dart';
+import 'package:eduapp/pages/konsultasi.dart';
+import 'package:eduapp/utils/ApiService.dart';
 import 'package:flutter/material.dart';
+import 'package:eduapp/component/custom_pagemove.dart';
 import 'package:eduapp/component/custom_appbar_withoutarrowback.dart';
-import 'package:eduapp/component/custom_textformfieldKonsultasi.dart';
 
 class Konsultasipages extends StatefulWidget {
-  const Konsultasipages({super.key});
+  final String idKonsultasi;
+  const Konsultasipages({super.key, required this.idKonsultasi});
 
   @override
   _KonsultasipagesState createState() => _KonsultasipagesState();
 }
 
 class _KonsultasipagesState extends State<Konsultasipages> {
-  TextEditingController emailController = TextEditingController();
-  TextEditingController namaController = TextEditingController();
-  TextEditingController noTelponController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
-  File? _imageFile;
+  final ApiService apiService = ApiService();
+  late Map<String, dynamic> konsultasiData;
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _namaController = TextEditingController();
+  final TextEditingController _noTelponController = TextEditingController();
+  final TextEditingController _alamatController = TextEditingController();
+  final TextEditingController _kategoriController = TextEditingController();
+  late String _linkFoto = '';
+  final String docstorNotFound = 'assets/images/default_profile.jpg';
+
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
+  Future<void> fetchData() async {
+    try {
+      Map<String, dynamic> response = await apiService.getKonsultasiDetail(widget.idKonsultasi);
+      if (response['status'] == 'success') {
+        setState(() {
+          konsultasiData = response['data'];
+          _namaController.text = konsultasiData['nama_lengkap'];
+          _kategoriController.text = 'Dokter ${konsultasiData['kategori']}';
+          _noTelponController.text = konsultasiData['no_telpon'];
+          _alamatController.text = konsultasiData['alamat'];
+          _emailController.text = konsultasiData['email'];
+          _linkFoto = konsultasiData['foto'];
+        });
+      } else if(response['code'] == 404){
+        Navigator.pushReplacement(context, pageMove.movepage(Konsultasi()));
+      }else{
+        print(response['message']);
+      }
+    } catch (e) {
+      print('Error fetching konsultasi detail page: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,78 +74,88 @@ class _KonsultasipagesState extends State<Konsultasipages> {
             const SizedBox(
               height: 20, // Jarak antara AppBar dan Container foto profil
             ),
-            GestureDetector(
-              onTap: () {
-                // Memanggil metode untuk memilih foto
-              },
-              child: Center(
-                // Menengahkan konten secara horizontal dan vertikal
-                child: Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    Container(
-                      width: 138.0, // Lebar foto profil
-                      height: 141.0, // Tinggi foto profil
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle, // Bentuk lingkaran
-                        color: Colors.blue, // Warna latar belakang
-                      ),
+            Center(
+              // Menengahkan konten secara horizontal dan vertikal
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  Container(
+                    width: 138.0, // Lebar foto profil
+                    height: 141.0, // Tinggi foto profil
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle, // Bentuk lingkaran
+                      color: Colors.blue, // Warna latar belakang
                     ),
-                    Container(
-                      width: 138.0, // Lebar foto profil
-                      height: 141.0, // Tinggi foto profil
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle, // Bentuk lingkaran
-                        color: Colors.transparent, // Hapus warna latar belakang
-                      ),
-                      child: Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          _imageFile != null
-                              ? ClipOval(
-                                  child: Image.file(
-                                    _imageFile!, // Menampilkan foto yang dipilih
-                                    width: 138, // Lebar foto yang dipilih
-                                    height: 141, // Tinggi foto yang dipilih
-                                    fit: BoxFit.cover,
-                                  ),
-                                )
-                              : Container(), // Kosongkan kontainer jika tidak ada foto yang dipilih
-                        ],
-                      ),
+                  ),
+                  Container(
+                    width: 138.0, // Lebar foto profil
+                    height: 141.0, // Tinggi foto profil
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle, // Bentuk lingkaran
+                      color: Colors.transparent, // Hapus warna latar belakang
                     ),
-                  ],
-                ),
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        ClipOval(
+                          child: _linkFoto.startsWith('assets/') // Check if _linkFoto is an asset
+                          ? Image.asset(
+                              _linkFoto,
+                              width: 138,
+                              height: 141,
+                              fit: BoxFit.cover,
+                            )
+                          : Image.network(
+                            '${apiService.imgUrl}/konsultasi/$_linkFoto',
+                            width: 138,
+                            height: 141,
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) {
+                              print('Error loading image:${error}');
+                              return Image.asset(
+                                docstorNotFound,
+                                width: 138,
+                                height: 141,
+                                fit: BoxFit.cover,
+                                // fit: BoxFit.contain,
+                              );
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
             ),
             const SizedBox(height: 40),
             CustomTextFieldWidget(
               labelText: 'Nama Lengkap',
-              controller: namaController,
+              controller: _namaController,
               keyboardType: TextInputType.text,
               hintText: 'Nama Pengguna',
             ),
             const SizedBox(height: 20),
             CustomTextFieldWidget(
                 labelText: 'Email',
-                controller: emailController,
+                controller: _emailController,
                 hintText: 'Email'),
             const SizedBox(height: 20),
             CustomTextFieldWidget(
                 labelText: 'No Telepon',
-                controller: noTelponController,
+                controller: _noTelponController,
                 keyboardType: TextInputType.text,
                 hintText: 'No Telepon'),
             const SizedBox(height: 20),
             CustomTextFieldWidget(
                 labelText: 'Alamat Praktek',
-                controller: noTelponController,
+                controller: _alamatController,
                 keyboardType: TextInputType.text,
                 hintText: 'Alamat Praktek'),
             const SizedBox(height: 20),
             CustomTextFieldWidget(
               labelText: 'Deskripsi',
-              controller: passwordController,
+              controller: _kategoriController,
               keyboardType: TextInputType.text,
               hintText: 'Deskripsi',
               contentPadding:

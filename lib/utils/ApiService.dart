@@ -51,8 +51,8 @@ class ApiService {
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: jsonEncode(<String, String>{
-          'email': 'UserTesting2@gmail.com',
-          // 'email': email,
+          // 'email': 'UserTesting2@gmail.com',
+          'email': email,
           'password': kataSandi,
         }),
       );
@@ -829,7 +829,9 @@ class ApiService {
       if (response.statusCode == 200) {
         return json.decode(response.body);
       } else {
-        return json.decode(response.body);
+        dynamic errr = json.decode(response.body);
+        errr['code'] = response.statusCode;
+        return errr;
       }
     } catch (e) {
       throw Exception('Error saat update profile : $e');

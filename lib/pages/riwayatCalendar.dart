@@ -111,11 +111,7 @@ class _RiwayatCalendarState extends State<RiwayatCalendar> {
                   String waktuData = datetimee[1];
                   return GestureDetector(
                     onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => ShowCalendar(idAcara: acaraData[index]['id_acara'])),
-                      );
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => ShowCalendar(idAcara: acaraData[index]['id_acara'])));
                     },
                     child: Card(
                       color: colorCard[acaraData[index]['kategori']] ?? colorCard['default'], // Set warna card sesuai dengan kategori
