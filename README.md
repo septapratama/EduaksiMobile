@@ -1,4 +1,4 @@
-# eduapp
+# edukasi_baru
 
 A new Flutter project.
 

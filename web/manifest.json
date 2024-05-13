@@ -1,6 +1,6 @@
 {
-    "name": "eduapp",
-    "short_name": "eduapp",
+    "name": "edukasi_baru",
+    "short_name": "edukasi_baru",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
