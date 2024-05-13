@@ -147,12 +147,13 @@ class _ProfilPagesState extends State<ProfilPages> {
       appBar: const appbarwithoutarrow(
         title: 'Profil Pengguna',
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          const SizedBox(
-            height: 20, // Jarak antara AppBar dan Container foto profil
-          ),
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const SizedBox(
+              height: 20, // Jarak antara AppBar dan Container foto profil
+            ),
           GestureDetector(
             onTap: () {
               // Memanggil metode untuk memilih foto
@@ -300,6 +301,7 @@ class _ProfilPagesState extends State<ProfilPages> {
           ),
         ],
       ),
+      )
     );
   }
 }

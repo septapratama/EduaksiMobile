@@ -8,10 +8,10 @@ import 'package:http/http.dart' as http;
 class ApiService {
   final JwtProvider jwtProvider = JwtProvider();
   final Acara acaraaaClass = Acara();
-  final String baseUrl = "http://192.168.0.105:8000/api/mobile";
+  final String baseUrl = "http://172.16.106.81:8000/api/mobile";
   // final String baseUrl = "https://eduaksi.amirzan.my.id/api/mobile";
-  final String imgUrl = "http://192.168.0.105:8000/img";
-  final String fotoProfilUrl = "http://192.168.0.105:8000/eduaksi/mobile/img/profile/users/";
+  final String imgUrl = "http://172.16.106.81:8000/img";
+  final String fotoProfilUrl = "http://172.16.106.81:8000/eduaksi/mobile/img/profile/users/";
   Future<String> getAuthToken() async {
     if(await jwtProvider.isExpired()){
       return 'expired';
