@@ -1,3 +1,4 @@
+import 'package:eduapp/pages/login_screen.dart';
 import 'package:eduapp/utils/Acara.dart';
 import 'package:eduapp/component/custom_appbar.dart';
 import 'package:eduapp/utils/ApiService.dart';
@@ -126,8 +127,13 @@ class _AksiCalendarPageState extends State<AksiCalendarPage> {
           Navigator.pushReplacement(context, pageMove.movepage(const RiwayatCalendar()));
         });
       } else {
-        print(response['message']);
         // alert(context, response['message']);
+        String errRes = response['message'].toString();
+        if(errRes.contains('login') || errRes.contains('expired')){
+          Future.delayed(const Duration(seconds: 2), () {
+            return Navigator.pushReplacement(context, pageMove.movepage(const LoginScreen()));
+          });
+        }
       }
     } catch (e) {
       print('Error saat tambah calender : $e');

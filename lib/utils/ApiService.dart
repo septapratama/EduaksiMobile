@@ -7,13 +7,15 @@ import 'package:http/http.dart' as http;
 
 class ApiService {
   final JwtProvider jwtProvider = JwtProvider();
-  final Acara acaraaaClass = Acara();
-  final String baseUrl = "http://172.16.106.218:8000/api/mobile";
+  final Acara acaraClass = Acara();
+  final String baseUrl = "http://192.168.1.8:8000/api/mobile";
   // final String baseUrl = "https://eduaksi.amirzan.my.id/api/mobile";
-  final String imgUrl = "http://172.16.106.218:8000/img";
-  final String fotoProfilUrl = "http://172.16.106.218:8000/eduaksi/mobile/img/profile/users/";
+  final String imgUrl = "http://192.168.1.8:8000/img";
+  final String fotoProfilUrl = "http://192.168.1.8:8000/eduaksi/mobile/img/profile/users/";
   Future<String> getAuthToken() async {
-    if(await jwtProvider.isExpired()){
+    if(await jwtProvider.isLogout){
+      return 'logout';
+    }else if(await jwtProvider.isExpired()){
       return 'expired';
     }
     return jwtProvider.getJwt();
@@ -51,7 +53,7 @@ class ApiService {
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: jsonEncode(<String, String>{
-          'email': 'UserTesting2@gmail.com',
+          'email': 'UserTesting1@gmail.com',
           // 'email': email,
           'password': kataSandi,
         }),
@@ -59,6 +61,7 @@ class ApiService {
       if (response.statusCode == 200) {
         final Map<String, dynamic> responseData = json.decode(response.body);
         await jwtProvider.setJwt(responseData['data']);
+        await acaraClass.fetchData(this);
         return responseData;
       } else {
         return json.decode(response.body);
@@ -169,7 +172,6 @@ class ApiService {
       if(auth == 'expired'){
         return  {'message' : 'token expired'};
       }
-      print(auth);
       final response = await http.post(
         Uri.parse('$baseUrl/users/logout'),
         headers: <String, String>{
@@ -179,13 +181,14 @@ class ApiService {
       );
       if (response.statusCode == 200) {
         final Map<String, dynamic> responseData = json.decode(response.body);
-        jwtProvider.logout();
-        // await acaraaaClass.removeAcara();
-        print(jwtProvider.getJwt());
-        return responseData;
+        if(await jwtProvider.logout()){
+          await acaraClass.removeAcara();
+          return responseData;
+        }else{
+          return {'status': 'error', 'message': 'error logout !'};
+        }
       } else {
         final Map<String, dynamic> responseData = json.decode(response.body);
-        print('erorr');
         print(responseData['message']);
         return responseData;
       }
@@ -195,12 +198,12 @@ class ApiService {
   }
 
   //download profile
-  Future<void> checkFotoProfile() async {
+  Future<Map<String, dynamic>> getFotoProfile() async {
     try {
       final ext = {'image/jpeg':'jpg', 'image/png':'png'};
       final auth = await getAuthToken();
       if(auth == 'expired'){
-        // return  {'message' : 'token expired'};
+        return  {'message' : 'token expired'};
       }
       final response = await http.post(
         Uri.parse('$baseUrl/users/profile/foto'),
@@ -212,21 +215,26 @@ class ApiService {
       if (response.statusCode == 200) {
         String contentType = response.headers['content-type']!;
         if (contentType != null && contentType.contains('application/json')) {
-          dynamic responseData = json.decode(response.body);
-          print(responseData['message']);
+          dynamic res =  json.decode(response.body);
+          return res;
         } else if (contentType != null && contentType.contains('image')) {
-          Directory directory = await getApplicationDocumentsDirectory();
-          String filePath = '${directory.path}/user/profile/foto.${ext[contentType] ?? 'jpg'}';
+          final String dirPath = '${(await getApplicationDocumentsDirectory()).path}/user/profile';
+          if(!(await Directory(dirPath).exists())){
+            await Directory(dirPath).create(recursive: true);
+          }
+          String filePath = '$dirPath/foto.${ext[contentType] ?? 'jpg'}';
           File tempFile = File('$filePath.temp');
           await tempFile.writeAsBytes(response.bodyBytes);
           await tempFile.rename(filePath);
-          print('Image file saved locally at: $filePath');
+          // print('Image file saved locally at: $filePath');
+          return {'status': 'success', 'message': 'get new foto', 'data': filePath};
         } else {
-          print('Unknown response type');
+          return {'status': 'error', 'message': 'random type'};
         }
       } else {
         final Map<String, dynamic> responseData = json.decode(response.body);
-        print(responseData['message']);
+        responseData['status_code'] = response.statusCode;
+        return responseData;
       }
     } catch (e) {
       throw Exception('Error saat download profile : $e');
@@ -234,29 +242,33 @@ class ApiService {
   }
 
   //update profile
-  Future<Map<String, dynamic>> updateProfile(String email, String nama_lengkap, String no_hp, String kata_sandi, File? file) async {
+  Future<Map<String, dynamic>> updateProfile(String email, String nama_lengkap, String jenisKelamin, String no_hp, String? kata_sandiLama, String? kata_sandi, String? kata_sandiUlangi, File? file) async {
     try {
       final auth = await getAuthToken();
       if(auth == 'expired'){
         return  {'message' : 'token expired'};
       }
-      final request = http.MultipartRequest('PUT', Uri.parse('$baseUrl/users/profile'));
+      final request = http.MultipartRequest('POST', Uri.parse('$baseUrl/users/profile/update'));
       request.headers['Authorization'] = auth;
-      request.fields['email'] = email;
+      request.fields['email_new'] = email;
       request.fields['nama_lengkap'] = nama_lengkap;
+      request.fields['jenis_kelamin'] = jenisKelamin;
       request.fields['no_telpon'] = no_hp;
+      if((kata_sandiLama != null && kata_sandiLama.isNotEmpty) && (kata_sandi != null && kata_sandi.isNotEmpty) && (kata_sandiUlangi != null && kata_sandiUlangi.isNotEmpty)){
+        request.fields['password_old'] = kata_sandiLama;
+        request.fields['password'] = kata_sandi;
+        request.fields['password_confirm'] = kata_sandiUlangi;
+      }
       if(file != null){
-        request.files.add(await http.MultipartFile.fromPath('image', file.path));
+        request.files.add(await http.MultipartFile.fromPath('foto', file.path));
       }
       final response = await request.send();
       if (response.statusCode == 200) {
         final responseData = json.decode(await response.stream.transform(utf8.decoder).join());
-        print(responseData['message']);
-        // await jwtProvider.setJwt(responseData['data']);
-        return responseData['message'];
+        await jwtProvider.setJwt(responseData['data']);
+        return responseData;
       } else {
         final responseData = json.decode(await response.stream.transform(utf8.decoder).join());
-        print(responseData['message']);
         return responseData;
       }
     } catch (e) {

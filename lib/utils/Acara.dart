@@ -1,11 +1,10 @@
+// import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'dart:convert';
 import 'package:eduapp/utils/ApiService.dart';
-// import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 class Acara{
   late SharedPreferences prefs;
-  // final ApiService apiServices = ApiService();
   Acara(){
     init();
   }
@@ -26,17 +25,18 @@ class Acara{
     prefs.setString('acara', json.encode(acaraData));
   }
 
-  // Future<void> fetchData() async {
-  //   if(prefs.getString('acara') != null){
-  //     Map<String, dynamic> response = await apiServices.fetchAcara();
-  //     if (response['status'] == 'success') {
-  //       prefs.setString('acara', json.encode(response['data']));
-  //       _sorted();
-  //     } else {
-  //       // print(response['message']);
-  //     }
-  //   }
-  // }
+  Future<void> fetchData(ApiService apiService) async {
+    if(prefs.getString('acara') != null){
+      Map<String, dynamic> response = await apiService.fetchAcara();
+      if (response['status'] == 'success') {
+        print(response['data']);
+        prefs.setString('acara', json.encode(response['data']));
+        _sorted();
+      } else {
+        // print(response['message']);
+      }
+    }
+  }
   List<Map<String, dynamic>> getAcaraData() {
     return prefs.getString('acara') != null ? json.decode(prefs.getString('acara')!).cast<Map<String, dynamic>>() : [];
   }

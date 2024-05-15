@@ -1,12 +1,12 @@
 import 'package:eduapp/utils/ApiService.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 class GoogleLogin{
-  final googleSignIn = GoogleSignIn();
+  static final _googleSignIn = GoogleSignIn();
   final ApiService apiService = ApiService();
   GoogleSignInAccount? _user;
   GoogleSignInAccount get user => _user!;
   Future<Map<String, dynamic>> loginGoogle() async{
-    final googleResponse = await googleSignIn.signIn();
+    final googleResponse = await _googleSignIn.signIn();
     print(googleResponse);
     //send data
       return {'status' : 'error', 'message' : 'login google error'};
@@ -17,8 +17,8 @@ class GoogleLogin{
 
   }
   Future logout() async {
-    await googleSignIn.disconnect();
-    await googleSignIn.signOut();
+    await _googleSignIn.disconnect();
+    await _googleSignIn.signOut();
     _user = null;
   }
 }

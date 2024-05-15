@@ -1,5 +1,7 @@
 import 'package:eduapp/component/custom_appbar.dart';
+import 'package:eduapp/component/custom_pagemove.dart';
 import 'package:eduapp/pages/edukasi_pengasuhan.dart';
+import 'package:eduapp/pages/login_screen.dart';
 import 'package:eduapp/utils/ApiService.dart';
 import 'package:flutter/material.dart';
 
@@ -46,7 +48,11 @@ class _EdukasiPengasuhanartikelState extends State<EdukasiPengasuhanartikel> {
         });
 
       } else {
-        //do something
+        if(response['message'].toString().contains('login')){
+          Future.delayed(const Duration(seconds: 2), () {
+            return Navigator.pushReplacement(context, pageMove.movepage(const LoginScreen()));
+          });
+        }
       }
     } catch (e) {
       print('Error fetching pengasuhan artikel data: $e');

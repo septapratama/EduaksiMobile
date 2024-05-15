@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:eduapp/component/custom_appbar.dart';
 import 'package:eduapp/component/custom_textformfieldKonsultasi.dart';
 import 'package:eduapp/pages/konsultasi.dart';
+import 'package:eduapp/pages/login_screen.dart';
 import 'package:eduapp/utils/ApiService.dart';
 import 'package:flutter/material.dart';
 import 'package:eduapp/component/custom_pagemove.dart';
@@ -48,7 +49,12 @@ class _KonsultasipagesState extends State<Konsultasipages> {
       } else if(response['code'] == 404){
         Navigator.pushReplacement(context, pageMove.movepage(Konsultasi()));
       }else{
-        print(response['message']);
+        String errRes = response['message'].toString();
+        if(errRes.contains('login') || errRes.contains('expired')){
+          Future.delayed(const Duration(seconds: 2), () {
+            return Navigator.pushReplacement(context, pageMove.movepage(const LoginScreen()));
+          });
+        }
       }
     } catch (e) {
       print('Error fetching konsultasi detail page: $e');

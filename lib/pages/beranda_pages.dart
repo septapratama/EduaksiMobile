@@ -1,8 +1,10 @@
 import 'dart:convert';
 
+import 'package:eduapp/component/custom_pagemove.dart';
 import 'package:eduapp/pages/beranda_LihatArticles.dart';
 import 'package:eduapp/pages/edukasi_nutrisi.dart';
 import 'package:eduapp/pages/konsultasi.dart';
+import 'package:eduapp/pages/login_screen.dart';
 import 'package:eduapp/pages/pages_AksiMenu.dart';
 import 'package:eduapp/pages/pages_EdukasiMenu.dart';
 import 'package:eduapp/pages/pages_profil.dart';
@@ -79,7 +81,12 @@ class _BerandaState extends State<Beranda> {
         });
 
       } else {
-        //do something
+        String errRes = response['message'].toString();
+        if(errRes.contains('login') || errRes.contains('expired')){
+          Future.delayed(const Duration(seconds: 2), () {
+            return Navigator.pushReplacement(context, pageMove.movepage(const LoginScreen()));
+          });
+        }
       }
     } catch (e) {
       print('Error fetching dashboard data: $e');

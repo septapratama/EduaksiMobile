@@ -1,10 +1,12 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:eduapp/pages/login_screen.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import 'package:eduapp/component/custom_appbar_withoutarrowback.dart';
 import 'package:eduapp/component/custom_textformfield.dart';
 import 'package:eduapp/controller/controller_profil.dart';
+import 'package:eduapp/component/custom_pagemove.dart';
 import 'package:eduapp/utils/JwtProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:eduapp/utils/ApiService.dart';
@@ -22,109 +24,188 @@ class _ProfilPagesState extends State<ProfilPages> {
   TextEditingController emailController = TextEditingController();
   TextEditingController namaController = TextEditingController();
   TextEditingController noTelponController = TextEditingController();
+  TextEditingController passwordLamaController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  TextEditingController passwordUlangiController = TextEditingController();
+  String? jenisKelamin = 'laki-laki';
   File? _imageFile;
+  late final String dirPath;
   late String _filePath = 'assets/images/default_profile.jpg';
   @override
   void initState() {
     super.initState();
     fetchData();
-    // setupProfilePhoto();
+    setupProfilePhoto();
   }
   Future<void> fetchData() async {
     Map<String, dynamic> profileData = await jwtProvider.getData();
     setState(() {
       emailController.text = profileData['email'];
       namaController.text = profileData['nama_lengkap'];
-      noTelponController.text = profileData['no_telpon']; 
+      jenisKelamin = profileData['jenis_kelamin'];
+      noTelponController.text = profileData['no_telpon'];
     });
   }
   Future<void> setupProfilePhoto() async {
-    await apiService.checkFotoProfile();
-    Directory directory = await getApplicationDocumentsDirectory();
-    List<FileSystemEntity> files = directory.listSync();
-    FileSystemEntity? file = files.firstWhere(
-      (entity) => entity is File,
-      orElse: () => File(''),
-    );
-    if (file != null && file is File) {
-      _filePath = file.path;
-    } else {
-      _filePath = 'assets/images/default_profile.jpg';
+    dirPath = '${(await getApplicationDocumentsDirectory()).path}/user/profile';
+    List<FileSystemEntity> files = Directory(dirPath).listSync();
+    if(files.isNotEmpty){
+      FileSystemEntity? file = files.firstWhere(
+        (entity) => entity is File,
+      );
+      if (file != null && file is File) {
+        _filePath = file.path;
+        setState(() {});
+        return;
+      }
     }
-    setState(() {});
-    //if doesnt working try this
-    // _filePath = '${directory.path}/user/profile/foto.png}';
-    // if (!File(_filePath).existsSync()) {
-    //   _filePath = 'assets/images/default_profile.jpg';
-    // }
-    // setState(() {});
+    Map<String, dynamic> res = await apiService.getFotoProfile();
+    if(res['status'] == 'error'){
+      String errRes = res['message'].toString();
+      if(errRes.contains('login') || errRes.contains('expired')){
+        Future.delayed(const Duration(seconds: 2), () {
+          return Navigator.pushReplacement(context, pageMove.movepage(const LoginScreen()));
+        });
+      } else if (res['status'] == 404 || errRes.contains('not found')) {
+        _filePath = 'assets/images/default_profile.jpg'; // Use default profile image
+        setState(() {});
+    }
+    }else{
+      _filePath = res['data'];
+      setState(() {});
+    }
   }
   void _updateProfile(BuildContext context) async {
     String email = emailController.text;
     String nama_lengkap = namaController.text;
     String no_telpon = noTelponController.text;
+    String kata_sandiLama = passwordLamaController.text;
     String kata_sandi = passwordController.text;
+    String kata_sandiUlangi = passwordUlangiController.text;
+    bool isUpPass = false;
     // Validasi form, misalnya memastikan semua field terisi dengan benar
     if(email.isEmpty || email == null){
-      alert(context, "Email tidak boleh kosong !", "gagal mendaftar!",Icons.error, Colors.red);
+      alert(context, "Email tidak boleh kosong !", "gagal update profile!",Icons.error, Colors.red);
       return;
     }
     if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(email)) {
-      alert(context, "Email tidak valid!", "Gagal mendaftar!", Icons.error, Colors.red);
+      alert(context, "Email tidak valid!", "Gagal update profile!", Icons.error, Colors.red);
       return;
     }
     if(nama_lengkap.isEmpty || nama_lengkap == null){
-      alert(context, "Nama Lengkap tidak boleh kosong !", "gagal mendaftar!",Icons.error, Colors.red);
+      alert(context, "Nama Lengkap tidak boleh kosong !", "gagal update profile!",Icons.error, Colors.red);
+      return;
+    }
+    if(jenisKelamin!.isEmpty || jenisKelamin == null){
+      alert(context, "Jenis kelamin tidak boleh kosong !", "gagal update profile!",Icons.error, Colors.red);
       return;
     }
     if(no_telpon.isEmpty || no_telpon == null){
-      alert(context, "No telpon tidak boleh kosong !", "gagal mendaftar!",Icons.error, Colors.red);
+      alert(context, "No telpon tidak boleh kosong !", "gagal update profile!",Icons.error, Colors.red);
       return;
     }
     if (!RegExp(r'^[0-9]+$').hasMatch(no_telpon)) {
-      alert(context, "No telpon hanya boleh berisi angka !", "gagal mendaftar!", Icons.error, Colors.red);
+      alert(context, "No telpon hanya boleh berisi angka !", "gagal update profile!", Icons.error, Colors.red);
       return;
     }
     if (no_telpon.length < 10 || no_telpon.length > 13) {
-        alert(context, "No telpon harus memiliki panjang antara 10 dan 13 digit!", "Gagal mendaftar!", Icons.error, Colors.red);
-        return;
+      alert(context, "No telpon harus memiliki panjang antara 10 dan 13 digit!", "Gagal update profile!", Icons.error, Colors.red);
+      return;
     }
     if (!no_telpon.startsWith("08")) {
-        alert(context, "No telpon harus dimulai dengan '08'!", "Gagal mendaftar!", Icons.error, Colors.red);
+      alert(context, "No telpon harus dimulai dengan '08'!", "Gagal update profile!", Icons.error, Colors.red);
+      return;
+    }
+    if((kata_sandiLama.isNotEmpty && kata_sandiLama != null) || (kata_sandi.isNotEmpty && kata_sandi != null) || kata_sandiUlangi.isNotEmpty && kata_sandiUlangi != null){
+      if(kata_sandiLama.isEmpty || kata_sandiLama == null){
+        alert(context, "Kata Sandi lama tidak boleh kosong !", "gagal update profile!",Icons.error, Colors.red);
         return;
+      }
+      if(kata_sandi.isEmpty || kata_sandi == null){
+        alert(context, "Kata Sandi baru tidak boleh kosong !", "gagal update profile!",Icons.error, Colors.red);
+        return;
+      }
+      if(kata_sandiUlangi.isEmpty || kata_sandiUlangi == null){
+        alert(context, "Konfirmasi Kata Sandi tidak boleh kosong !", "gagal update profile!",Icons.error, Colors.red);
+        return;
+      }
+      isUpPass = true;
     }
     try {
       Map<String, dynamic> response;
       if(_imageFile != null){
-        response = await apiService.updateProfile(email, nama_lengkap, no_telpon, kata_sandi, _imageFile);
+        if(isUpPass){
+          response = await apiService.updateProfile(email, nama_lengkap, jenisKelamin!, no_telpon, kata_sandiLama, kata_sandi, kata_sandiUlangi, _imageFile);
+        }else{
+          response = await apiService.updateProfile(email, nama_lengkap, jenisKelamin!, no_telpon, null, null , null, _imageFile);
+        }
       }else{
-        response = await apiService.updateProfile(email, nama_lengkap, no_telpon, kata_sandi, null);
+        if(isUpPass){
+          response = await apiService.updateProfile(email, nama_lengkap, jenisKelamin!, no_telpon, kata_sandiLama, kata_sandi, kata_sandiUlangi, null);
+        }else{
+          response = await apiService.updateProfile(email, nama_lengkap, jenisKelamin!, no_telpon, null, null, null, null);
+        }
       }
       if (response['status'] == 'success') {
-        print(response['message']);
-        //save img
-        Directory directory = await getApplicationDocumentsDirectory();
-        String filePath = '${directory.path}/user/profile/foto.${p.extension(_imageFile!.path)}';
-        await _imageFile!.copy(filePath);
-        print('Image file saved locally at: $filePath');
-        // alert(context, "Profile Berhasil diperbarui","Berhasil Perbarui!",Icons.check, Colors.green);
+        if(_imageFile != null){
+          // save img
+          if(!(await Directory(dirPath).exists())){
+            await Directory(dirPath).create(recursive: true);
+          }
+          String filePath = '$dirPath/foto${p.extension(_imageFile!.path)}';
+          await _imageFile!.copy(filePath);
+          // print('Image file saved locally at: $filePath');
+          List<FileSystemEntity> files = Directory(dirPath).listSync();
+        }
+        alert(context, "Profile Berhasil diperbarui","Berhasil Perbarui!",Icons.check, Colors.green);
       } else {
-        print(response['message']);
-        // alert(context, response['message'], "Gagal Perbarui!", Icons.error, Colors.red);
+        alert(context, response['message'], "Gagal Perbarui!", Icons.error, Colors.red);
+        String errRes = response['message'].toString();
+        if(errRes.contains('login') || errRes.contains('expired')){
+          Future.delayed(const Duration(seconds: 2), () {
+            return Navigator.pushReplacement(context, pageMove.movepage(const LoginScreen()));
+          });
+        }
       }
     } catch (e) {
-      print('Error saat login: $e');
+      print('Error saat update profile page : $e');
     }
   }
   void _logout(BuildContext context) async {
-    Map<String, dynamic> response = await apiService.logout();
-      if (response['status'] == 'success') {
-        print(response['message']);
-      } else {
-        print(response['message']);
-        // alert(context, response['message']);
-      }
+    try{
+      Map<String, dynamic> response = await apiService.logout();
+        if (response['status'] == 'success') {
+          alert(context, response['message'],"Berhasil Logout!",Icons.check, Colors.green);
+          //delete profile foto
+          List<FileSystemEntity> files = Directory(dirPath).listSync();
+          for (FileSystemEntity file in files) {
+            try {
+              if (file is File) {
+                await file.delete();
+                print('Deleted file: ${file.path}');
+              } else if (file is Directory) {
+                await file.delete(recursive: true);
+                print('Deleted directory: ${file.path}');
+              }
+            } catch (e) {
+              print('Error deleting file: ${file.path}, error: $e');
+            }
+          }
+          Future.delayed(const Duration(seconds: 2), () {
+            return Navigator.pushReplacement(context, pageMove.movepage(const LoginScreen()));
+          });
+        } else {
+          alert(context, response['message'], "Gagal Logout!", Icons.error, Colors.red);
+          String errRes = response['message'].toString();
+          if(errRes.contains('login') || errRes.contains('expired')){
+            Future.delayed(const Duration(seconds: 2), () {
+              return Navigator.pushReplacement(context, pageMove.movepage(const LoginScreen()));
+            });
+          }
+        }
+    } catch (e) {
+      throw Exception('Error saat logoutt page : $e');
+    }
   }
   void alert(BuildContext context, String message, String title, IconData icon, Color color) {
     showDialog(
@@ -238,6 +319,30 @@ class _ProfilPagesState extends State<ProfilPages> {
               keyboardType: TextInputType.text,
               prefixIcon: Icons.person),
           const SizedBox(height: 20),
+          DropdownButtonFormField<String>(
+            decoration: const InputDecoration(
+              labelText: 'Jenis Kelamin',
+              prefixIcon: Icon(Icons.wc),
+              border: OutlineInputBorder(),
+            ),
+            value: jenisKelamin,
+            items: const [
+              DropdownMenuItem(
+                value: 'laki-laki',
+                child: Text('Laki-Laki'),
+              ),
+              DropdownMenuItem(
+                value: 'perempuan',
+                child: Text('Perempuan'),
+              ),
+            ],
+            onChanged: (value) {
+              setState(() {
+                jenisKelamin = value;
+              });
+            },
+          ),
+          const SizedBox(height: 20),
           CustomTextFieldWidget(
               labelText: 'Email',
               controller: emailController,
@@ -253,50 +358,102 @@ class _ProfilPagesState extends State<ProfilPages> {
               prefixIcon: Icons.phone),
           const SizedBox(height: 20),
           CustomTextFieldWidget(
-            labelText: 'Kata Sandi',
+            labelText: 'Kata Sandi Lama',
+            controller: passwordLamaController,
+            keyboardType: TextInputType.text,
+            prefixIcon: Icons.fingerprint,
+            obscureText: true, // Mengatur agar input teks tersembunyi
+          ),
+          const SizedBox(height: 20),
+          CustomTextFieldWidget(
+            labelText: 'Kata Sandi Baru',
             controller: passwordController,
-            initialValue: 'Kata Sandi Lama',
+            keyboardType: TextInputType.text,
+            prefixIcon: Icons.fingerprint,
+            obscureText: true, // Mengatur agar input teks tersembunyi
+          ),
+          const SizedBox(height: 20),
+          CustomTextFieldWidget(
+            labelText: 'Konfirmasi Kata Sandi Baru',
+            controller: passwordUlangiController,
             keyboardType: TextInputType.text,
             prefixIcon: Icons.fingerprint,
             obscureText: true, // Mengatur agar input teks tersembunyi
           ),
           const SizedBox(height: 24),
           Padding(
-            padding: const EdgeInsets.only(
-                right: 40.0), // Sesuaikan padding dengan kebutuhan Anda
-            child: Align(
-              alignment: Alignment.centerRight,
-              child: ElevatedButton(
-                onPressed: () {
-                  _updateProfile(context);
-                },
-                style: ElevatedButton.styleFrom(
-                  padding: EdgeInsets.zero,
-                  foregroundColor: Colors.white,
-                  backgroundColor: const Color.fromRGBO(30, 84, 135, 1),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(
-                        20.0), // Atur border radius sesuai kebutuhan Anda
+            padding: const EdgeInsets.symmetric(horizontal: 40.0), // Sesuaikan padding dengan kebutuhan Anda
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    _logout(context);
+                  },
+                  style: ElevatedButton.styleFrom(
+                    padding: EdgeInsets.zero,
+                    foregroundColor: Colors.white,
+                    backgroundColor: Colors.red,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
                   ),
-                ),
-                child: const Padding(
-                  padding: EdgeInsets.symmetric(
-                      vertical: 12.0, horizontal: 30.0),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        'Simpan',
-                        style: TextStyle(
-                          fontFamily: 'Poppins_SemiBold',
-                          fontWeight: FontWeight.w600,
-                          fontSize: 18,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 12.0, horizontal: 20.0),
+                    child: Row(
+                      children: [
+                        Image.asset(
+                          'assets/images/logout.png',
+                          width: 24,
+                          height: 24,
+                          fit: BoxFit.cover,
                         ),
-                      ),
-                    ],
+                        const SizedBox(width: 8),
+                        const Text(
+                          'Logout',
+                          style: TextStyle(
+                            fontFamily: 'Poppins_SemiBold',
+                            fontWeight: FontWeight.w600,
+                            fontSize: 18,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
+                ElevatedButton(
+                  onPressed: () {
+                    _updateProfile(context);
+                  },
+                  style: ElevatedButton.styleFrom(
+                    padding: EdgeInsets.zero,
+                    foregroundColor: Colors.white,
+                    backgroundColor: const Color.fromRGBO(30, 84, 135, 1),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(
+                          20.0), // Atur border radius sesuai kebutuhan Anda
+                    ),
+                  ),
+                  child: const Padding(
+                    padding: EdgeInsets.symmetric(
+                        vertical: 12.0, horizontal: 30.0),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          'Simpan',
+                          style: TextStyle(
+                            fontFamily: 'Poppins_SemiBold',
+                            fontWeight: FontWeight.w600,
+                            fontSize: 18,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ],

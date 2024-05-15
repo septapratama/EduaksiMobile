@@ -1,6 +1,8 @@
 import 'package:eduapp/component/custom_appbar.dart';
+import 'package:eduapp/component/custom_pagemove.dart';
 import 'package:eduapp/component/custom_colors.dart';
 import 'package:eduapp/pages/edukasi_nutrisiArtikel.dart';
+import 'package:eduapp/pages/login_screen.dart';
 import 'package:eduapp/pages/pages_EdukasiMenu.dart';
 import 'package:eduapp/utils/ApiService.dart';
 import 'package:flutter/material.dart';
@@ -48,7 +50,12 @@ class _EdukasiNutrisiState extends State<EdukasiNutrisi> {
         });
 
       } else {
-        //do something
+        String errRes = response['message'].toString();
+        if(errRes.contains('login') || errRes.contains('expired')){
+          Future.delayed(const Duration(seconds: 2), () {
+            return Navigator.pushReplacement(context, pageMove.movepage(const LoginScreen()));
+          });
+        }
       }
     } catch (e) {
       print('Error fetching nutrisi data: $e');

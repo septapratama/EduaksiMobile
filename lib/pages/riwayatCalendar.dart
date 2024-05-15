@@ -1,4 +1,6 @@
+import 'package:eduapp/component/custom_pagemove.dart';
 import 'package:capitalize/capitalize.dart';
+import 'package:eduapp/pages/login_screen.dart';
 import 'package:eduapp/utils/Acara.dart';
 import 'package:eduapp/utils/ApiService.dart';
 import 'package:intl/intl.dart';
@@ -88,6 +90,12 @@ class _RiwayatCalendarState extends State<RiwayatCalendar> {
         });
       } else {
         print(response['message']);
+        String errRes = response['message'].toString();
+        if(errRes.contains('login') || errRes.contains('expired')){
+          Future.delayed(const Duration(seconds: 2), () {
+            return Navigator.pushReplacement(context, pageMove.movepage(const LoginScreen()));
+          });
+        }
         // alert(context, response['message']);
       }
     } catch (e) {
