@@ -1,5 +1,6 @@
 import 'package:eduapp/component/custom_colors.dart';
 import 'package:eduapp/component/custom_text.dart';
+import 'package:eduapp/pages/login_screen.dart';
 import 'package:eduapp/pages/pages_auth.dart';
 import 'package:eduapp/utils/ApiService.dart';
 import 'package:flutter/material.dart';
@@ -68,7 +69,7 @@ class _LupakatasandiState extends State<Lupakatasandi> {
                 const SizedBox(height: 25),
                 TextField(
                   controller: emailController,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: 'Masukan Email Aktif Anda!',
                     labelStyle: TextStyle(
                       color: Color.fromRGBO(30, 84, 135, 1),
@@ -92,11 +93,66 @@ class _LupakatasandiState extends State<Lupakatasandi> {
                         EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
                     floatingLabelBehavior: FloatingLabelBehavior.never,
                   ),
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.black,
                   ),
                 ),
-                const SizedBox(height: 60.0),
+                const SizedBox(height: 6.0),
+                Center(
+                  child: LayoutBuilder(
+                    builder: (context, constraints) {
+                      double fontSize = 15.0; // Initial font size
+                      double screenWidth = MediaQuery.of(context).size.width;
+
+                      // Adjust the font size based on the width of the screen
+                      if (screenWidth < 400) {
+                        fontSize = 12.0;
+                      } else if (screenWidth < 600) {
+                        fontSize = 13.0;
+                      } else {
+                        fontSize = 16.0;
+                      }
+
+                      return SizedBox(
+                        width: MediaQuery.of(context).size.width *
+                            0.7, // Adjust the width as needed
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Flexible(
+                              child: Text(
+                                'Sudah punya akun ?',
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  fontSize: fontSize,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'Poppins_SemiBold',
+                                  color: const Color.fromRGBO(0, 0, 0, 0.445),
+                                ),
+                              ),
+                            ),
+                            TextButton(
+                              onPressed: () => Navigator.pushReplacement(context, pageMove.movepage(const LoginScreen())),
+                              child: Text(
+                                'Masuk disini',
+                                style: TextStyle(
+                                  fontSize:
+                                      fontSize, // Use the fontSize variable here
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'Poppins_SemiBold',
+                                  color: const Color.fromRGBO(30, 84, 135, 1),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                const SizedBox(height: 20.0),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20.0),
                   child: ElevatedButton(

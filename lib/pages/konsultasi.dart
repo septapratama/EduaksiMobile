@@ -118,7 +118,7 @@ class _KonsultasiState extends State<Konsultasi> {
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(15),
                             child: Image.network(
-                              '${apiService.imgUrl}/konsultasi/${doctor['gambar']}',
+                              '${apiService.imgUrl}/konsultasi/${doctor['foto']}',
                               width: 135,
                               height: 100,
                               fit: BoxFit.cover,

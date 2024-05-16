@@ -1,6 +1,7 @@
 import 'package:eduapp/controller/controller_register.dart';
 import 'package:eduapp/utils/ApiService.dart';
 import 'package:eduapp/utils/Google_login.dart';
+import 'package:eduapp/utils/JwtProvider.dart';
 import 'package:eduapp/utils/navigationbar.dart';
 import 'package:eduapp/utils/user_model_baru.dart';
 import 'package:eduapp/utils/user_provider.dart';
@@ -26,7 +27,17 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   final ApiService apiService = ApiService();
+  final JwtProvider jwtProvider = JwtProvider();
   final GoogleLogin googlelogin = GoogleLogin();
+  @override
+  void initState() {
+    super.initState();
+    if (!JwtProvider.isLogout) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Navigator.pushReplacement(context, pageMove.movepage(const BottomNav()));
+      });
+    }
+  }
 
   void alert(BuildContext context, String message) {
     showDialog(
@@ -72,14 +83,12 @@ class _LoginScreenState extends State<LoginScreen> {
     try {
       final response = await googlelogin.loginGoogle();
       if (response['status'] == 'success') {
-        return;
         Navigator.pushReplacement(context, pageMove.movepage(const BottomNav()));
       } else {
-        // print('Login failed: ${response['message']}');
-        alert(context, "terjadi kesalahan pada jaringan");
+        alert(context, response['message']);
       }
     } catch (e) {
-      rethrow;
+      print('error at login google $e');
     }
   }
 

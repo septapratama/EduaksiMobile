@@ -6,15 +6,12 @@ class GoogleLogin{
   GoogleSignInAccount? _user;
   GoogleSignInAccount get user => _user!;
   Future<Map<String, dynamic>> loginGoogle() async{
+    await _googleSignIn.signOut();
     final googleResponse = await _googleSignIn.signIn();
-    print(googleResponse);
-    //send data
+    if(googleResponse == 'null'){
       return {'status' : 'error', 'message' : 'login google error'};
-    // if(googleResponse.email == null){
-    //   return {'status' : 'error', 'message' : 'login google error'};
-    // }
-    // return await apiService.loginGoogle(googleResponse.email);
-
+    }
+    return await apiService.loginGoogle(googleResponse!.email);
   }
   Future logout() async {
     await _googleSignIn.disconnect();

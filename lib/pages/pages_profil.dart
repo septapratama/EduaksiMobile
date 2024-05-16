@@ -48,15 +48,19 @@ class _ProfilPagesState extends State<ProfilPages> {
   }
   Future<void> setupProfilePhoto() async {
     dirPath = '${(await getApplicationDocumentsDirectory()).path}/user/profile';
-    List<FileSystemEntity> files = Directory(dirPath).listSync();
-    if(files.isNotEmpty){
-      FileSystemEntity? file = files.firstWhere(
-        (entity) => entity is File,
-      );
-      if (file != null && file is File) {
-        _filePath = file.path;
-        setState(() {});
-        return;
+    if(!(await Directory(dirPath).exists())){
+      await Directory(dirPath).create(recursive: true);
+    }else{
+      List<FileSystemEntity> files = Directory(dirPath).listSync();
+      if(files.isNotEmpty){
+        FileSystemEntity? file = files.firstWhere(
+          (entity) => entity is File,
+        );
+        if (file != null && file is File) {
+          _filePath = file.path;
+          setState(() {});
+          return;
+        }
       }
     }
     Map<String, dynamic> res = await apiService.getFotoProfile();
@@ -149,12 +153,8 @@ class _ProfilPagesState extends State<ProfilPages> {
       if (response['status'] == 'success') {
         if(_imageFile != null){
           // save img
-          if(!(await Directory(dirPath).exists())){
-            await Directory(dirPath).create(recursive: true);
-          }
           String filePath = '$dirPath/foto${p.extension(_imageFile!.path)}';
           await _imageFile!.copy(filePath);
-          // print('Image file saved locally at: $filePath');
           List<FileSystemEntity> files = Directory(dirPath).listSync();
         }
         alert(context, "Profile Berhasil diperbarui","Berhasil Perbarui!",Icons.check, Colors.green);
@@ -204,7 +204,7 @@ class _ProfilPagesState extends State<ProfilPages> {
           }
         }
     } catch (e) {
-      throw Exception('Error saat logoutt page : $e');
+      print('Error saat logoutt page : $e');
     }
   }
   void alert(BuildContext context, String message, String title, IconData icon, Color color) {
@@ -236,14 +236,24 @@ class _ProfilPagesState extends State<ProfilPages> {
               height: 20, // Jarak antara AppBar dan Container foto profil
             ),
           GestureDetector(
-            onTap: () {
+            onTap: () async {
               // Memanggil metode untuk memilih foto
-              ImagePickerHelper().getImageFromGallery().then((File? image) {
+              final image = await ImagePickerHelper().getImageFromGallery();
+              if (!mounted) return;
+              if (image != null) {
+                if(image.lengthSync() >= (5 * 1024 * 1024)){
+                  alert(context, 'Foto tidak boleh lebih dari 5 MB', "Gagal pilih foto!", Icons.error, Colors.red);
+                  return;
+                }
+                if (!['.jpg', '.jpeg', '.png'].contains(p.extension(image.path))) {
+                  alert(context, 'Foto harus jpg, jpeg, png', "Gagal pilih foto!", Icons.error, Colors.red);
+                  return;
+                }
                 setState(() {
                   // Menyimpan foto yang dipilih ke dalam variabel _imageFile
                   _imageFile = image;
                 });
-              });
+              };
             },
             child: Center(
               // Menengahkan konten secara horizontal dan vertikal

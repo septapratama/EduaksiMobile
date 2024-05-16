@@ -3,7 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class JwtProvider{
   // final ApiService apiServices = ApiService();
   late SharedPreferences prefs;
-  bool isLogout = false;
+  static bool isLogout = true;
 
   JwtProvider(){
     init();
@@ -25,9 +25,8 @@ class JwtProvider{
   Future<bool> setJwt(String token) async {
     try {
       await FlutterSessionJwt.saveToken(token);
-      bool isSet = await prefs.setString('auth_token', token);
-      isLogout = !isSet;
-      return isSet;
+      isLogout = !(await prefs.setString('auth_token', token));
+      return isLogout;
     } catch (e) {
       print("Error setting JWT token: $e");
       return false;

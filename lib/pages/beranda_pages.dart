@@ -76,9 +76,11 @@ class _BerandaState extends State<Beranda> {
     try {
       Map<String, dynamic> response = await apiService.getDashboard();
       if (response['status'] == 'success') {
-        setState(() {
-          articles = List<Map<String, dynamic>>.from(response['data']);
-        });
+        if(mounted){
+          setState(() {
+            articles = List<Map<String, dynamic>>.from(response['data']);
+          });
+        }
 
       } else {
         String errRes = response['message'].toString();
@@ -126,7 +128,7 @@ class _BerandaState extends State<Beranda> {
                   ],
                 ),
                 const SizedBox(height: 20),
-                Center(
+                const Center(
                   child: Padding(
                     padding: EdgeInsets.only(left: 3, bottom: 15),
                     child: Text(
@@ -216,7 +218,7 @@ class _BerandaState extends State<Beranda> {
                           const SizedBox(height: 14),
                           Text(
                             menu[index],
-                            style:  TextStyle(
+                            style:  const TextStyle(
                               fontSize: 15,
                               fontFamily: 'Poppins_SemiBold',
                               color: Colors.black,
