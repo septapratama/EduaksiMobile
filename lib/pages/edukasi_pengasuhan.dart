@@ -4,6 +4,7 @@ import 'package:eduapp/component/custom_colors.dart';
 import 'package:eduapp/pages/edukasi_pengasuhanArtikel.dart';
 import 'package:eduapp/pages/login_screen.dart';
 import 'package:eduapp/pages/pages_EdukasiMenu.dart';
+import 'package:eduapp/pages/pages_detailArtikel.dart';
 import 'package:eduapp/utils/ApiService.dart';
 import 'package:flutter/material.dart';
 
@@ -46,7 +47,7 @@ class _EdukasiPengasuhanState extends State<EdukasiPengasuhan> {
       Map<String, dynamic> response = await apiService.getPengasuhan();
       if (response['status'] == 'success') {
         setState(() {
-          articles = List<Map<String, dynamic>>.from(response['data']['artikel']);
+          articles = List<Map<String, dynamic>>.from(response['data']);
         });
 
       } else {
@@ -338,52 +339,57 @@ class _EdukasiPengasuhanState extends State<EdukasiPengasuhan> {
                     physics: const NeverScrollableScrollPhysics(),
                     itemCount: articles.length,
                     itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.only(bottom: 16),
-                        child: Card(
-                          elevation: 2,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Image.network(
-                                '${apiService.imgUrl}/artikel/${articles[index]['gambar']}',
-                                width: double.infinity,
-                                height: 150,
-                                fit: BoxFit.cover,
-                                errorBuilder: (context, error, stackTrace) {
-                                  print('Error loading image:${error}');
-                                  return Image.asset(
-                                    artikelNotFound,
-                                    width: 135,
-                                    height: 100,
-                                    fit: BoxFit.cover,
-                                    // fit: BoxFit.contain,
-                                  );
-                                },
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(12),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      articles[index]['judul']!,
-                                      style: const TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 8),
-                                    Text(
-                                      'Tanggal Upload: ${articles[index]['tanggal']}',
-                                      style: const TextStyle(
-                                        color: Colors.grey,
-                                      ),
-                                    ),
-                                  ],
+                      return InkWell(
+                        onTap: (){
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => DetailArtikel(detailData: {'id_data':articles[index]['id_data'], 'table': 'pengasuhan'})));
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.only(bottom: 16),
+                          child: Card(
+                            elevation: 2,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Image.network(
+                                  '${apiService.imgUrl}/artikel/${articles[index]['gambar']}',
+                                  width: double.infinity,
+                                  height: 150,
+                                  fit: BoxFit.cover,
+                                  errorBuilder: (context, error, stackTrace) {
+                                    print('Error loading image:${error}');
+                                    return Image.asset(
+                                      artikelNotFound,
+                                      width: 135,
+                                      height: 100,
+                                      fit: BoxFit.cover,
+                                      // fit: BoxFit.contain,
+                                    );
+                                  },
                                 ),
-                              ),
-                            ],
+                                Padding(
+                                  padding: const EdgeInsets.all(12),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        articles[index]['judul']!,
+                                        style: const TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 8),
+                                      Text(
+                                        'Tanggal Upload: ${articles[index]['tanggal']}',
+                                        style: const TextStyle(
+                                          color: Colors.grey,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       );

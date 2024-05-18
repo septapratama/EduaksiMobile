@@ -1,13 +1,11 @@
 import 'dart:async';
+import 'package:eduapp/component/custom_alert.dart';
 import 'package:eduapp/component/custom_appbar.dart';
 import 'package:eduapp/component/custom_colors.dart';
+import 'package:eduapp/component/custom_loading.dart';
 import 'package:eduapp/pages/ganti_password.dart';
-import 'package:eduapp/pages/login_screen.dart';
-import 'package:eduapp/pages/pages_lupakatasandi.dart';
 import 'package:eduapp/pages/popup_screen.dart';
-import 'package:eduapp/pages/register_screen.dart';
 import 'package:eduapp/utils/ApiService.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pin_input_text_field/pin_input_text_field.dart';
@@ -68,17 +66,19 @@ class _OTPScreenState extends State<OTPScreen> {
   void sendOTP(BuildContext context) async {
     try {
       if(!widget._timerRunning){
-        print('Cannot send OTP ');
-        // alert(context, response['message']);
+        print('kode otp sudah terkirim mohon cek kembali');
+        CostumAlert.show(context, 'kode otp sudah terkirim mohon cek kembali', "Gagal kirim ulang kode otp!", Icons.error, Colors.red);
         return;
       }
       if(otpController.text.length < 6){
-        print('Please fill all boxes');
-        // Alert or display an error message
+        print('Semua kotak harus di isi !');
+        CostumAlert.show(context, 'Semua kotak harus di isi !', "Gagal kirim ulang kode otp!", Icons.error, Colors.red);
         return;
       }
       String cond = widget.otpData['cond'];
+      CustomLoading.showLoading(context);
       Map<String, dynamic> response = await apiService.verifyOtp(widget.otpData['email'], widget.linkVerifyOtp[cond]!, otpController.text);
+      CustomLoading.closeLoading(context);
       if (response['status'] == 'success') {
         //check if from register or lupa password
         if(cond == 'email'){
@@ -88,7 +88,7 @@ class _OTPScreenState extends State<OTPScreen> {
         }
       } else {
         print(response['message']);
-        // alert(context, response['message']);
+        CostumAlert.show(context, response['message'], "Gagal kirim ulang kode otp!", Icons.error, Colors.red);
       }
     } catch (e) {
       print('Error saat kirim otp : $e');
@@ -97,27 +97,28 @@ class _OTPScreenState extends State<OTPScreen> {
   void reSendOTP() async {
     try {
       if(widget._timerRunning){
-        print('Cannot resend OTP as timer is still running');
-        // alert(context, response['message']);
+        CostumAlert.show(context, 'Kode otp sudah terkirim mohon cek kembali', "Gagal kirim ulang kode otp!", Icons.error, Colors.red);
         return;
       }
+      CustomLoading.showLoading(context);
       Map<String, dynamic> response = await apiService.sendOtp(widget.otpData['email'], widget.linkOtp[widget.otpData['cond']]!);
+      CustomLoading.closeLoading(context);
       if (response['status'] == 'success') {
+        CostumAlert.show(context, 'Kode otp sukses terkirim mohon cek kembali',"Berhasil kirim ulang kode otp!",Icons.check, Colors.green);
         widget.startCountdown(DateTime.parse(response['data']['waktu']));
-        // alert(context, response['message']);
       } else {
-        print(response['message']);
-        // alert(context, response['message']);
+        CostumAlert.show(context, response['message'], "Gagal kirim ulang kode otp!", Icons.error, Colors.red);
       }
     } catch (e) {
       print('Error saat kirim ulang otp : $e');
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const CustomAppBar(title: 'Kode OTP'),
-      body: SafeArea(
+      body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.only(top: 50, left: 75, right: 75),
           child: Column(
@@ -150,6 +151,9 @@ class _OTPScreenState extends State<OTPScreen> {
                     const Color(0xFFCCCCCC), // Default border color
                     Colors.black, // Border color when typing
                   ),
+                  gapSpace: 10.0, // Space between each input box
+                  strokeWidth: 2.0, // Border width
+
                 ),
                 autoFocus: true,
                 textInputAction: TextInputAction.done,

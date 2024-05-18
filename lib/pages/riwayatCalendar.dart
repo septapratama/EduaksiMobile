@@ -1,3 +1,4 @@
+import 'package:eduapp/component/custom_loading.dart';
 import 'package:eduapp/component/custom_pagemove.dart';
 import 'package:capitalize/capitalize.dart';
 import 'package:eduapp/pages/login_screen.dart';
@@ -73,7 +74,6 @@ class _RiwayatCalendarState extends State<RiwayatCalendar> {
   }
   void fetchData() async{
     await acaraClass.init();
-    // await acaraClass.fetchData();
     acaraData = acaraClass.getAcaraData();
     setState(() {
     });
@@ -81,7 +81,9 @@ class _RiwayatCalendarState extends State<RiwayatCalendar> {
 
   void _hapusAcara(BuildContext context, String idAcara) async {
     try{
+      CustomLoading.showLoading(context);
       Map<String, dynamic> response = await apiService.hapusAcara(idAcara);
+      CustomLoading.closeLoading(context);
       if (response['status'] == 'success') {
         print(response['message']);
         acaraClass.deleteAcara(idAcara);

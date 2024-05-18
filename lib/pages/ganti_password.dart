@@ -1,3 +1,5 @@
+import 'package:eduapp/component/custom_alert.dart';
+import 'package:eduapp/component/custom_loading.dart';
 import 'package:eduapp/controller/controller_register.dart';
 import 'package:eduapp/pages/pages_auth.dart';
 import 'package:eduapp/pages/popup_screen.dart';
@@ -31,41 +33,31 @@ class _GaPassScreenState extends State<GaPassScreen> {
       String kataSandi = passwordController.text;
       String passUlangi = passwordUlangiController.text;
       if (kataSandi.isEmpty) {
-        alert(context, "Kata sandi tidak boleh kosong !");
+        CostumAlert.show(context, 'Kata sandi baru tidak boleh kosong !', "Gagal kirim ganti kata sandi !", Icons.error, Colors.red);
         return;
       }
       if (passUlangi.isEmpty) {
-        alert(context, "Ulangi password tidak boleh kosong !");
+        CostumAlert.show(context, 'Ulangi Kata sandi tidak boleh kosong', "Gagal kirim ganti kata sandi !", Icons.error, Colors.red);
         return;
       }
+      CustomLoading.showLoading(context);
       Map<String, dynamic> response = await apiService.resetPass(widget.gaPassData['email'], widget.gaPassData['otp'], kataSandi, passUlangi);
+      CustomLoading.closeLoading(context);
       if (response['status'] == 'success') {
-        Navigator.pushReplacement(context, pageMove.movepage(const PopupScreen(pesan: 'Berhasil ganti password')));
+        Navigator.pushReplacement(context, pageMove.movepage(const PopupScreen(pesan: 'Berhasil ganti kata sandi')));
       } else {
-        print(response['message']);
-        // alert(context, response['message']);
         if(response['message'].toString().toLowerCase().contains('expired')){
-          Navigator.pushReplacement(context, pageMove.movepage(OTPScreen(otpData: {'email':widget.gaPassData['email'], 'cond':'password'})));
+          CostumAlert.show(context, 'Kode otp kadaluarsa', "Gagal kirim ganti kata sandi !", Icons.error, Colors.red);
+          Future.delayed(const Duration(seconds: 2), () {
+            Navigator.pushReplacement(context, pageMove.movepage(OTPScreen(otpData: {'email':widget.gaPassData['email'], 'cond':'password'})));
+          });
+        }else{
+          CostumAlert.show(context, response['message'], "Gagal kirim ganti kata sandi !", Icons.error, Colors.red);
         }
       }
     } catch (e) {
-      print('Error saat ganti password: $e');
+      print('Error saat ganti kata sandi: $e');
     }
-  }
-  void alert(BuildContext context, String message) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return Dialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10.0),
-          ),
-          elevation: 0,
-          backgroundColor: Colors.transparent,
-          child: contentBox(context, message),
-        );
-      },
-    );
   }
 
   @override
@@ -94,7 +86,7 @@ class _GaPassScreenState extends State<GaPassScreen> {
                 ),
                 const SizedBox(height: 0.0),
                 const Text(
-                  'Selamat Datang',
+                  'Ganti Kata ssandi',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontFamily: 'Poppins_SemiBold',
@@ -103,16 +95,16 @@ class _GaPassScreenState extends State<GaPassScreen> {
                     fontSize: 20.0,
                   ),
                 ),
-                const Text(
-                  'EduAksi Parenting',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontFamily: 'Poppins_SemiBold',
-                    fontWeight: FontWeight.w800,
-                    color: Color.fromRGBO(30, 84, 135, 1),
-                    fontSize: 18.0,
-                  ),
-                ),
+                // const Text(
+                //   'EduAksi Parenting',
+                //   textAlign: TextAlign.center,
+                //   style: TextStyle(
+                //     fontFamily: 'Poppins_SemiBold',
+                //     fontWeight: FontWeight.w800,
+                //     color: Color.fromRGBO(30, 84, 135, 1),
+                //     fontSize: 18.0,
+                //   ),
+                // ),
                 const SizedBox(height: 60.0),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -190,7 +182,7 @@ class _GaPassScreenState extends State<GaPassScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text(
-                      'UlangiKata Sandi',
+                      'Ulangi Kata Sandi',
                       style: TextStyle(
                         fontFamily: 'Poppins_SemiBold',
                         color: Color.fromRGBO(30, 84, 135, 1),
@@ -279,7 +271,7 @@ class _GaPassScreenState extends State<GaPassScreen> {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Text(
-                            'Ganti Password',
+                            'Ganti Kata sandi',
                             style: TextStyle(
                               fontFamily: 'Poppins_SemiBold',
                               fontWeight: FontWeight.w600,
@@ -298,79 +290,4 @@ class _GaPassScreenState extends State<GaPassScreen> {
       ),
     );
   }
-}
-
-Widget contentBox(BuildContext context, String message) {
-  return Stack(
-    children: <Widget>[
-      Container(
-        padding: const EdgeInsets.only(
-          left: 20,
-          top: 45,
-          right: 20,
-          bottom: 20,
-        ),
-        margin: const EdgeInsets.only(top: 45),
-        decoration: BoxDecoration(
-          shape: BoxShape.rectangle,
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(10),
-          boxShadow: const [
-            BoxShadow(
-              color: Colors.black,
-              offset: Offset(0, 10),
-              blurRadius: 10,
-            ),
-          ],
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            const Text(
-              'Gagal Login!',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 15),
-            Text(
-              message,
-              style: const TextStyle(
-                fontSize: 18,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 22),
-            Align(
-              alignment: Alignment.bottomRight,
-              child: TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: const Text(
-                  'OKE',
-                  style: TextStyle(color: Color.fromRGBO(203, 164, 102, 1)),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-      const Positioned(
-        top: 0,
-        left: 20,
-        right: 20,
-        child: CircleAvatar(
-          backgroundColor: Colors.redAccent,
-          radius: 30,
-          child: Icon(
-            Icons.error_outline,
-            color: Colors.white,
-            size: 40,
-          ),
-        ),
-      ),
-    ],
-  );
 }

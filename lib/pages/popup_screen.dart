@@ -1,19 +1,7 @@
-import 'package:eduapp/controller/controller_register.dart';
 import 'package:eduapp/pages/login_screen.dart';
-import 'package:eduapp/utils/ApiService.dart';
-import 'package:eduapp/utils/Google_login.dart';
 import 'package:eduapp/utils/navigationbar.dart';
-import 'package:eduapp/utils/user_model_baru.dart';
-import 'package:eduapp/utils/user_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:eduapp/component/custom_button.dart';
-import 'package:eduapp/component/custom_colors.dart';
 import 'package:eduapp/component/custom_pagemove.dart';
-import 'package:eduapp/component/custom_text.dart';
-import 'package:eduapp/pages/pages_lupakatasandi.dart';
-import 'package:eduapp/pages/register_screen.dart';
-import 'package:eduapp/utils/navigationbar.dart';
-import 'package:provider/provider.dart';
 
 class PopupScreen extends StatelessWidget {
   final String pesan;
@@ -46,7 +34,7 @@ class PopupScreen extends StatelessWidget {
                 Text(
                   pesan,
                   textAlign: TextAlign.center,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontFamily: 'Poppins_SemiBold',
                     fontWeight: FontWeight.w800,
                     color: Color.fromRGBO(30, 84, 135, 1),

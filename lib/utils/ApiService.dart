@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:eduapp/component/custom_loading.dart';
 import 'package:eduapp/utils/Acara.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:eduapp/utils/JwtProvider.dart';
 import 'package:http/http.dart' as http;
@@ -8,10 +10,10 @@ import 'package:http/http.dart' as http;
 class ApiService {
   final JwtProvider jwtProvider = JwtProvider();
   final Acara acaraClass = Acara();
-  final String baseUrl = "http://192.168.0.105:8000/api/mobile";
+  final String baseUrl = "http://192.168.110.33:8000/api/mobile";
   // final String baseUrl = "https://eduaksi.amirzan.my.id/api/mobile";
-  final String imgUrl = "http://192.168.0.105:8000/img";
-  final String fotoProfilUrl = "http://192.168.0.105:8000/eduaksi/mobile/img/profile/users/";
+  final String imgUrl = "http://192.168.110.33:8000/img";
+  final String fotoProfilUrl = "http://192.168.110.33:8000/eduaksi/mobile/img/profile/users/";
   Future<String> getAuthToken() async {
     if(JwtProvider.isLogout){
       return 'logout';
@@ -72,8 +74,9 @@ class ApiService {
   }
 
   //Send data google login
-  Future<Map<String, dynamic>> loginGoogle(String email) async {
+  Future<Map<String, dynamic>> loginGoogle(String email, BuildContext context) async {
     try {
+      CustomLoading.showLoading(context);
       final response = await http.post(
         Uri.parse('$baseUrl/users/login/google'),
         headers: <String, String>{
@@ -83,6 +86,7 @@ class ApiService {
           'email': email,
         }),
       );
+      CustomLoading.closeLoading(context);
       if (response.statusCode == 200) {
         final Map<String, dynamic> responseData = json.decode(response.body);
         await jwtProvider.setJwt(responseData['data']);
@@ -315,7 +319,7 @@ class ApiService {
   }
 
   //get detail artikel for detail artikel page
-  Future<Map<String, dynamic>> getDetailArtikel(String link) async {
+  Future<Map<String, dynamic>> getArtikelDetail(String link) async {
     try {
       final auth = await getAuthToken();
       if(auth == 'expired' || auth == 'logout'){ 
@@ -495,13 +499,13 @@ class ApiService {
   }
 
   //get emosi mental detail
-  Future<Map<String, dynamic>> getEmotalDetail(String idDisi) async {
+  Future<Map<String, dynamic>> getEmotalDetail(String idEmotal) async {
     try {
       final auth = await getAuthToken();
       if(auth == 'expired' || auth == 'logout'){
         return  {'message' : 'token expired'};
       }
-      final response = await http.get(Uri.parse('$baseUrl/emotal/$idDisi'), headers: <String, String>{
+      final response = await http.get(Uri.parse('$baseUrl/emotal/$idEmotal'), headers: <String, String>{
         'Authorization': auth,
         'Content-Type': 'application/json; charset=UTF-8',
       });

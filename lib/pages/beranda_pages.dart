@@ -1,13 +1,10 @@
-import 'dart:convert';
-
 import 'package:eduapp/component/custom_pagemove.dart';
 import 'package:eduapp/pages/beranda_LihatArticles.dart';
-import 'package:eduapp/pages/edukasi_nutrisi.dart';
 import 'package:eduapp/pages/konsultasi.dart';
 import 'package:eduapp/pages/login_screen.dart';
 import 'package:eduapp/pages/pages_AksiMenu.dart';
 import 'package:eduapp/pages/pages_EdukasiMenu.dart';
-import 'package:eduapp/pages/pages_profil.dart';
+import 'package:eduapp/pages/pages_detailArtikel.dart';
 import 'package:eduapp/utils/ApiService.dart';
 import 'package:flutter/material.dart';
 import 'package:eduapp/component/custom_colors.dart';
@@ -132,7 +129,7 @@ class _BerandaState extends State<Beranda> {
                   child: Padding(
                     padding: EdgeInsets.only(left: 3, bottom: 15),
                     child: Text(
-                      "SUP, HOMIESSS",
+                      "Selamat datang",
                       style: TextStyle(
                         fontSize: 25,
                         fontFamily: 'Poppins_Bold',
@@ -285,7 +282,7 @@ class _BerandaState extends State<Beranda> {
                       child: InkWell(
                         borderRadius: BorderRadius.circular(10),
                         onTap: () {
-                          // Implementasi penanganan ketika item diklik (navigasi ke halaman detail, misalnya)
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => DetailArtikel(detailData: {'id_data':articles[index]['judul'].toString().replaceAll(' ', '-'), 'table': 'artikel'})));
                         },
                         child: Row(
                           children: [

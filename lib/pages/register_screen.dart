@@ -1,5 +1,7 @@
 // register_screen.dart
+import 'package:eduapp/component/custom_alert.dart';
 import 'package:eduapp/component/custom_appbar.dart';
+import 'package:eduapp/component/custom_loading.dart';
 import 'package:eduapp/pages/login_screen.dart';
 import 'package:eduapp/pages/pages_auth.dart';
 import 'package:eduapp/pages/pages_lupakatasandi.dart';
@@ -30,27 +32,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
 
-  final bool _verificationFilled = false;
   @override
   void initState() {
     super.initState();
     // Inisialisasi nilai _passwordStrength ke 'Rendah' saat form pertama kali dibuka
     _passwordStrength = 'Rendah';
-  }
-  void alert(BuildContext context, String message, String title, IconData icon, Color color) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return Dialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10.0),
-          ),
-          elevation: 0,
-          backgroundColor: Colors.transparent,
-          child: contentBox(context, message, title, icon, color),
-        );
-      },
-    );
   }
   void _register() async {
     String email = emailController.text;
@@ -60,43 +46,45 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
     // Validasi form, misalnya memastikan semua field terisi dengan benar
     if(email.isEmpty){
-      alert(context, "Email tidak boleh kosong !", "gagal mendaftar!",Icons.error, Colors.red);
+      CostumAlert.show(context, "Email tidak boleh kosong !", "gagal mendaftar!",Icons.error, Colors.red);
       return;
     }
     if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(email)) {
-      alert(context, "Email tidak valid!", "Gagal mendaftar!", Icons.error, Colors.red);
+      CostumAlert.show(context, "Email tidak valid!", "Gagal mendaftar!", Icons.error, Colors.red);
       return;
     }
     if(namaLengkap.isEmpty){
-      alert(context, "Nama Lengkap tidak boleh kosong !", "gagal mendaftar!",Icons.error, Colors.red);
+      CostumAlert.show(context, "Nama Lengkap tidak boleh kosong !", "gagal mendaftar!",Icons.error, Colors.red);
       return;
     }
     if(kataSandi.isEmpty){
-      alert(context, "Kata sandi tidak boleh kosong !", "gagal mendaftar!",Icons.error, Colors.red);
+      CostumAlert.show(context, "Kata sandi tidak boleh kosong !", "gagal mendaftar!",Icons.error, Colors.red);
       return;
     }
     if (kataSandi.length < 8) {
-      alert(context, "Kata sandi harus terdiri dari minimal 8 karakter !", "Gagal mendaftar!", Icons.error, Colors.red);
+      CostumAlert.show(context, "Kata sandi harus terdiri dari minimal 8 karakter !", "Gagal mendaftar!", Icons.error, Colors.red);
       return;
     }
     if (!RegExp(r'\d').hasMatch(kataSandi)) {
-      alert(context, "Kata sandi harus mengandung minimal 1 angka!", "Gagal mendaftar!", Icons.error, Colors.red);
+      CostumAlert.show(context, "Kata sandi harus mengandung minimal 1 angka!", "Gagal mendaftar!", Icons.error, Colors.red);
       return;
     }
     if(konfirmasi.isEmpty){
-      alert(context, "Ulangi kata sandi tidak boleh kosong !", "gagal mendaftar!",Icons.error, Colors.red);
+      CostumAlert.show(context, "Ulangi kata sandi tidak boleh kosong !", "gagal mendaftar!",Icons.error, Colors.red);
       return;
     }
     if (kataSandi != konfirmasi) {
-      alert(context, "Kata sandi dan Ulangi kata sandi tidak sesuai !", "gagal mendaftar!", Icons.error,Colors.red);
+      CostumAlert.show(context, "Kata sandi dan Ulangi kata sandi tidak sesuai !", "gagal mendaftar!", Icons.error,Colors.red);
       return;
     }
     try {
+      CustomLoading.showLoading(context);
       Map<String, dynamic> response = await apiService.register(email, namaLengkap, kataSandi, konfirmasi);
+      CustomLoading.closeLoading(context);
       if (response['status'] == 'success') {
         Navigator.pushReplacement(context, pageMove.movepage(OTPScreen(otpData: {'email':email, 'waktu': DateTime.parse(response['data']['waktu']), 'cond':'email'})));
       } else {
-        alert(context, "${response['message']}", "gagal mendaftar!", Icons.error,Colors.red);
+        CostumAlert.show(context, "${response['message']}", "gagal mendaftar!", Icons.error,Colors.red);
       }
     } catch (e) {
       print('Error during registration: $e');
@@ -492,78 +480,4 @@ class _RegisterScreenState extends State<RegisterScreen> {
       ),
     );
   }
-}
-Widget contentBox(BuildContext context, String message, String title, IconData icon, Color color) {
-  return Stack(
-    children: <Widget>[
-      Container(
-        padding: const EdgeInsets.only(
-          left: 20,
-          top: 45,
-          right: 20,
-          bottom: 20,
-        ),
-        margin: const EdgeInsets.only(top: 45),
-        decoration: BoxDecoration(
-          shape: BoxShape.rectangle,
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(10),
-          boxShadow: const [
-            BoxShadow(
-              color: Colors.black,
-              offset: Offset(0, 10),
-              blurRadius: 10,
-            ),
-          ],
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Text(
-              title,
-              style: const TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 15),
-            Text(
-              message,
-              style: const TextStyle(
-                fontSize: 18,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 22),
-            Align(
-              alignment: Alignment.bottomRight,
-              child: TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: const Text(
-                  'OKE',
-                  style: TextStyle(color: Color.fromRGBO(203, 164, 102, 1)),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-      Positioned(
-        top: 0,
-        left: 20,
-        right: 20,
-        child: CircleAvatar(
-          backgroundColor: color,
-          radius: 30,
-          child: Icon(
-            icon,
-            color: Colors.white,
-            size: 40,
-          ),
-        ),
-      ),
-    ],
-  );
 }

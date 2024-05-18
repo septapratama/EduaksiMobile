@@ -1,17 +1,42 @@
-// import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'dart:convert';
 import 'package:eduapp/utils/ApiService.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:timezone/data/latest.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
+
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 class Acara{
   late SharedPreferences prefs;
+  late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
   Acara(){
     init();
   }
 
   Future<void> init() async {
     prefs = await SharedPreferences.getInstance();
+    _removeExpiredEvents();
   }
+
+  Future<void> _initNotifications() async {
+    flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+    const AndroidInitializationSettings initializationSettingsAndroid = AndroidInitializationSettings('@mipmap/ic_launcher');
+    const InitializationSettings initializationSettings = InitializationSettings(android: initializationSettingsAndroid);
+    await flutterLocalNotificationsPlugin.initialize(initializationSettings);
+    // Initialize time zones
+    tz.initializeTimeZones();
+  }
+
+  Future<void> _removeExpiredEvents() async {
+    List<Map<String, dynamic>> acaraData = getAcaraData();
+    DateTime now = DateTime.now();
+    acaraData.removeWhere((item) {
+      DateTime dateTime = DateFormat('dd-MM-yyyy HH:mm').parse(item['tanggal']);
+      return dateTime.isBefore(now);
+    });
+    prefs.setString('acara', json.encode(acaraData));
+  }
+
 
   Future<void> _sorted() async {
     List<Map<String, dynamic>> acaraData = prefs.getString('acara') != null ? json.decode(prefs.getString('acara')!).cast<Map<String, dynamic>>() : [];
@@ -26,7 +51,7 @@ class Acara{
   }
 
   Future<void> fetchData(ApiService apiService) async {
-    if(prefs.getString('acara') != null){
+    if(prefs.getString('acara') == null){
       Map<String, dynamic> response = await apiService.fetchAcara();
       if (response['status'] == 'success') {
         print(response['data']);
@@ -37,6 +62,7 @@ class Acara{
       }
     }
   }
+
   List<Map<String, dynamic>> getAcaraData() {
     return prefs.getString('acara') != null ? json.decode(prefs.getString('acara')!).cast<Map<String, dynamic>>() : [];
   }
@@ -56,7 +82,7 @@ class Acara{
     acaraData.add(data);
     prefs.setString('acara', json.encode(acaraData));
     _sorted();
-    // await scheduleNotification();
+    await scheduleNotification(acaraData);
   }
 
   Future<void> editAcara(String idAcara,Map<String, dynamic> data) async {
@@ -70,48 +96,45 @@ class Acara{
     });
     prefs.setString('acara', json.encode(acaraData));
     _sorted();
-    // await scheduleNotification();
+    await scheduleNotification(acaraData);
   }
 
+  //delete acara from riwayat acara
   Future<void> deleteAcara(String idAcara) async {
     List<Map<String,dynamic>> acaraData = getAcaraData();
     acaraData.removeWhere((item)=> item['id_acara'] == idAcara);
     prefs.setString('acara', json.encode(acaraData));
     _sorted();
-    // await scheduleNotification();
+    await scheduleNotification(acaraData);
   }
 
   Future<void> removeAcara() async{
     prefs.remove('acara');
   }
 
-  // Future<void> scheduleNotification(Map<String, dynamic> data) async {
-  //   // Extract event details from the data map
-  //   String namaAcara = data['nama_acara'];
-  //   String deskripsi = data['deskripsi'];
-  //   String tanggalWaktu = data['tanggal_waktu'];
-
-  //   // Schedule the notification
-  //   final DateTime notificationTime = DateTime.parse(tanggalWaktu);
-  //   const AndroidNotificationDetails androidPlatformChannelSpecifics =
-  //       AndroidNotificationDetails(
-  //     'acara_channel_id', // Change this to a unique channel ID for your app
-  //     'acara_channel_name', // Change this to a unique channel name for your app
-  //     'acara_channel_description', // Change this to a unique channel description for your app
-  //     importance: Importance.max,
-  //     priority: Priority.high,
-  //     ticker: 'ticker',
-  //   );
-  //   const NotificationDetails platformChannelSpecifics = NotificationDetails(android: androidPlatformChannelSpecifics);
-  //   await flutterLocalNotificationsPlugin.zonedSchedule(
-  //     0, // Use a unique ID for each notification
-  //     'Reminder: $namaAcara', // Notification title
-  //     deskripsi, // Notification body
-  //     tz.TZDateTime.from(notificationTime, tz.local), // Notification time
-  //     platformChannelSpecifics,
-  //     androidAllowWhileIdle: true,
-  //     uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
-  //   );
-  // }
-
+  Future<void> scheduleNotification(List<Map<String, dynamic>> acaraList) async {
+    _initNotifications();
+    acaraList.forEach((acara) async {
+      DateTime dateTime = DateFormat('dd-MM-yyyy HH:mm').parse(acara['tanggal']);
+      // Schedule the notification
+      const AndroidNotificationDetails androidPlatformChannelSpecifics = AndroidNotificationDetails(
+        'acara_channel_id', // Change this to a unique channel ID for your app
+        'acara_channel_name', // Change this to a unique channel name for your app
+        'acara_channel_description', // Change this to a unique channel description for your app
+        importance: Importance.max,
+        priority: Priority.high,
+        ticker: 'ticker',
+      );
+      const NotificationDetails platformChannelSpecifics = NotificationDetails(android: androidPlatformChannelSpecifics);
+      await flutterLocalNotificationsPlugin.zonedSchedule(
+        acara['id'], // Use a unique ID for each notification
+        acara['nama_acara'], // Notification title
+        acara['deskripsi'], // Notification body
+        tz.TZDateTime.from(dateTime, tz.local), // Notification time
+        platformChannelSpecifics,
+        androidAllowWhileIdle: true,
+        uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
+      );
+    });
+  }
 }

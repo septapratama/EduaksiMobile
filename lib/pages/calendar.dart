@@ -1,3 +1,5 @@
+import 'package:eduapp/component/custom_alert.dart';
+import 'package:eduapp/component/custom_loading.dart';
 import 'package:eduapp/pages/login_screen.dart';
 import 'package:eduapp/utils/Acara.dart';
 import 'package:eduapp/component/custom_appbar.dart';
@@ -67,53 +69,55 @@ class _AksiCalendarPageState extends State<AksiCalendarPage> {
       String tanggal = _dateController.text;
       String waktu = _timeController.text;
       if(todayAcara.length >= 3){
-        // alert(context, "Jumlah hari ini maksimal 3 acara !");
-        print('Jumlah hari ini maksimal 3 acara !');
+        CostumAlert.show(context, "Jumlah hari ini maksimal 3 acara !", "gagal tambah acara!",Icons.error, Colors.red);
+        // print('Jumlah hari ini maksimal 3 acara !');
         return;
       }
       if (tanggal.isEmpty) {
-        // alert(context, "Tanggal tidak boleh kosong !");
-        print('Tanggal tidak boleh kosong !');
+        CostumAlert.show(context, "Tanggal tidak boleh kosong !", "gagal tambah acara!",Icons.error, Colors.red);
+        // print('Tanggal tidak boleh kosong !');
         return;
       }
       if (waktu.isEmpty) {
-        // alert(context, "Waktu tidak boleh kosong !");
-        print('Waktu tidak boleh kosong !');
+        CostumAlert.show(context, "Waktu tidak boleh kosong !", "gagal tambah acara!",Icons.error, Colors.red);
+        // print('Waktu tidak boleh kosong !');
         return;
       }
       if (namaAcara.isEmpty) {
-        // alert(context, "Nama Acara tidak boleh kosong !");
-        print('Nama Acara tidak boleh kosong !');
+        CostumAlert.show(context, "Nama acara tidak boleh kosong !", "gagal tambah acara!",Icons.error, Colors.red);
+        // print('Nama Acara tidak boleh kosong !');
         return;
       }
       if (deskripsi.isEmpty) {
-        // alert(context, "Deskripsi tidak boleh kosong !");
-        print('Deskripsi tidak boleh kosong !');
+        CostumAlert.show(context, "Deskripsi tidak boleh kosong !", "gagal tambah acara!",Icons.error, Colors.red);
+        // print('Deskripsi tidak boleh kosong !');
         return;
       }
       if (_selectedCategory!.isEmpty) {
-        // alert(context, "Kategori tidak boleh kosong !");
-        print('Kategori tidak boleh kosong !');
+        CostumAlert.show(context, "Kategori tidak boleh kosong !", "gagal tambah acara!",Icons.error, Colors.red);
+        // print('Kategori tidak boleh kosong !');
         return;
       }
       DateTime pickDatetime = _changeDate('datetime');
       if (pickDatetime.isBefore(DateTime.now())){
-        // alert(context, "Tanggal harus setelah atau sama dengan tanggal sekarang !");
+        // CostumAlert.show(context, "Tanggal harus setelah atau sama dengan tanggal sekarang !", "gagal tambah acara!",Icons.error, Colors.red);
         print('Tanggal harus setelah atau sama dengan tanggal sekarang !');
       }else if(pickDatetime.isBefore(DateTime.now().add(const Duration(minutes: 5)))) {
-        // alert(context, "Waktu harus lebih dari 5 menit dari waktu sekarang !");
+        // CostumAlert.show(context, "Waktu harus lebih dari 5 menit dari waktu sekarang !", "gagal tambah acara!",Icons.error, Colors.red);
         print('Waktu harus lebih dari 5 menit dari waktu sekarang !');
         return;
       }
       todayAcara.forEach((item) {
         if(DateTime.parse(item['tanggal']).difference(pickDatetime).inMinutes <  5){
-          // alert(context, "Waktu harus lebih dari 5 menit dari setiap acara !");
+          // CostumAlert.show(context, "Waktu harus lebih dari 5 menit dari setiap acara !", "gagal tambah acara!",Icons.error, Colors.red);
           print('Waktu harus lebih dari 5 menit dari setiap acara !');
           return;
         }
       });
       String parDa = DateFormat('dd-MM-yyyy HH:mm').format(pickDatetime);
+      CustomLoading.showLoading(context);
       Map<String, dynamic> response = await apiService.buatAcara(namaAcara, deskripsi, _selectedCategory!, parDa);
+      CustomLoading.closeLoading(context);
       if (response['status'] == 'success') {
         Map<String, dynamic> data = {
           'id_acara':response['data'].toString(),
@@ -127,7 +131,7 @@ class _AksiCalendarPageState extends State<AksiCalendarPage> {
           Navigator.pushReplacement(context, pageMove.movepage(const RiwayatCalendar()));
         });
       } else {
-        // alert(context, response['message']);
+        CostumAlert.show(context, response['message'], "gagal tambah acara!",Icons.error, Colors.red);
         String errRes = response['message'].toString();
         if(errRes.contains('login') || errRes.contains('expired')){
           Future.delayed(const Duration(seconds: 2), () {
@@ -171,39 +175,16 @@ class _AksiCalendarPageState extends State<AksiCalendarPage> {
         picked.hour,
         picked.minute,
       );
-
-      bool isError = false;
-      String errMessage = '';
       if(selectedDateTime.isBefore(now)) {
-        errMessage = 'pilih waktu harus lebih dari sekarang !';
-        isError = true;
+        CostumAlert.show(context, "Pilih waktu harus lebih dari sekarang !", "Invalid time!",Icons.error, Colors.red);
+        return;
       }else if(selectedDateTime.isBefore(now.add(const Duration(minutes: 5)))) {
-        errMessage = 'Pilih waktu minimal 5 menit dari sekarang !';
-        isError = true;
+        CostumAlert.show(context, "Pilih waktu minimal 5 menit dari sekarang !", "Invalid time!",Icons.error, Colors.red);
+        return;
       }
-      if(isError){
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: const Text("Invalid Time"),
-              content: Text(errMessage),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: const Text("OK"),
-                ),
-              ],
-            );
-          },
-        );
-      }else{
       setState(() {
         _timeController.text = DateFormat('HH:mm').format(selectedDateTime);
       });
-      }
     }
   }
 

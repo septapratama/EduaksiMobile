@@ -1,3 +1,5 @@
+import 'package:eduapp/component/custom_alert.dart';
+import 'package:eduapp/component/custom_loading.dart';
 import 'package:eduapp/controller/controller_register.dart';
 import 'package:eduapp/utils/ApiService.dart';
 import 'package:eduapp/utils/Google_login.dart';
@@ -39,40 +41,26 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  void alert(BuildContext context, String message) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return Dialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10.0),
-          ),
-          elevation: 0,
-          backgroundColor: Colors.transparent,
-          child: contentBox(context, message),
-        );
-      },
-    );
-  }
-
   void _login(BuildContext context) async {
     String email = emailController.text;
     String kataSandi = passwordController.text;
     // Validasi form, misalnya memastikan semua field terisi dengan benar
     if (email.isEmpty) {
-      // alert(context, "Email tidak boleh kosong !");
-      // return;
+      CostumAlert.show(context, "Email tidak boleh kosong !", "gagal mendaftar!", Icons.error,Colors.red);
+      return;
     }
     if (kataSandi.isEmpty) {
-      // alert(context, "Kata sandi tidak boleh kosong !");
-      // return;
+      CostumAlert.show(context, "Kata sandi tidak boleh kosong !", "gagal mendaftar!", Icons.error,Colors.red);
+      return;
     }
     try {
+      CustomLoading.showLoading(context);
       Map<String, dynamic> response = await apiService.login(email, kataSandi);
+      CustomLoading.closeLoading(context);
       if (response['status'] == 'success') {
         Navigator.pushReplacement(context, pageMove.movepage(const BottomNav()));
       } else {
-        alert(context, response['message']);
+        CostumAlert.show(context, response['message'], "gagal mendaftar!", Icons.error,Colors.red);
       }
     } catch (e) {
       print('Error saat login: $e');
@@ -81,11 +69,11 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void _loginGoogle(BuildContext context) async {
     try {
-      final response = await googlelogin.loginGoogle();
+      final response = await googlelogin.loginGoogle(context);
       if (response['status'] == 'success') {
         Navigator.pushReplacement(context, pageMove.movepage(const BottomNav()));
       } else {
-        alert(context, response['message']);
+        CostumAlert.show(context, response['message'], "gagal mendaftar!", Icons.error,Colors.red);
       }
     } catch (e) {
       print('error at login google $e');
@@ -428,77 +416,4 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
   }
-}
-
-Widget contentBox(BuildContext context, String message) {
-  return Stack(
-    children: <Widget>[
-      Container(
-        padding: const EdgeInsets.only(
-          left: 20,
-          top: 45,
-          right: 20,
-          bottom: 20,
-        ),
-        margin: const EdgeInsets.only(top: 45),
-        decoration: BoxDecoration(
-          shape: BoxShape.rectangle,
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(10),
-          boxShadow: const [
-            BoxShadow(
-              color: Colors.black,
-              offset: Offset(0, 10),
-              blurRadius: 10,
-            ),
-          ],
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            const Text(
-              'Gagal Login!',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 15),
-            Text(
-              message,
-              style: const TextStyle(
-                fontSize: 18,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 22),
-            Align(
-              alignment: Alignment.bottomRight,
-              child: TextButton(
-                onPressed: () => Navigator.of(context).pop(),
-                child: const Text(
-                  'OKE',
-                  style: TextStyle(color: Color.fromRGBO(203, 164, 102, 1)),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-      const Positioned(
-        top: 0,
-        left: 20,
-        right: 20,
-        child: CircleAvatar(
-          backgroundColor: Colors.redAccent,
-          radius: 30,
-          child: Icon(
-            Icons.error_outline,
-            color: Colors.white,
-            size: 40,
-          ),
-        ),
-      ),
-    ],
-  );
 }

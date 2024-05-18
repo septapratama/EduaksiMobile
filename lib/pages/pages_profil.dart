@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:eduapp/component/custom_alert.dart';
+import 'package:eduapp/component/custom_loading.dart';
 import 'package:eduapp/pages/login_screen.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
@@ -89,53 +91,54 @@ class _ProfilPagesState extends State<ProfilPages> {
     bool isUpPass = false;
     // Validasi form, misalnya memastikan semua field terisi dengan benar
     if(email.isEmpty || email == null){
-      alert(context, "Email tidak boleh kosong !", "gagal update profile!",Icons.error, Colors.red);
+      CostumAlert.show(context, "Email tidak boleh kosong !", "gagal update profile!",Icons.error, Colors.red);
       return;
     }
     if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(email)) {
-      alert(context, "Email tidak valid!", "Gagal update profile!", Icons.error, Colors.red);
+      CostumAlert.show(context, "Email tidak valid!", "Gagal update profile!", Icons.error, Colors.red);
       return;
     }
     if(nama_lengkap.isEmpty || nama_lengkap == null){
-      alert(context, "Nama Lengkap tidak boleh kosong !", "gagal update profile!",Icons.error, Colors.red);
+      CostumAlert.show(context, "Nama Lengkap tidak boleh kosong !", "gagal update profile!",Icons.error, Colors.red);
       return;
     }
     if(jenisKelamin!.isEmpty || jenisKelamin == null){
-      alert(context, "Jenis kelamin tidak boleh kosong !", "gagal update profile!",Icons.error, Colors.red);
+      CostumAlert.show(context, "Jenis kelamin tidak boleh kosong !", "gagal update profile!",Icons.error, Colors.red);
       return;
     }
     if(no_telpon.isEmpty || no_telpon == null){
-      alert(context, "No telpon tidak boleh kosong !", "gagal update profile!",Icons.error, Colors.red);
+      CostumAlert.show(context, "No telpon tidak boleh kosong !", "gagal update profile!",Icons.error, Colors.red);
       return;
     }
     if (!RegExp(r'^[0-9]+$').hasMatch(no_telpon)) {
-      alert(context, "No telpon hanya boleh berisi angka !", "gagal update profile!", Icons.error, Colors.red);
+      CostumAlert.show(context, "No telpon hanya boleh berisi angka !", "gagal update profile!", Icons.error, Colors.red);
       return;
     }
     if (no_telpon.length < 10 || no_telpon.length > 13) {
-      alert(context, "No telpon harus memiliki panjang antara 10 dan 13 digit!", "Gagal update profile!", Icons.error, Colors.red);
+      CostumAlert.show(context, "No telpon harus memiliki panjang antara 10 dan 13 digit!", "Gagal update profile!", Icons.error, Colors.red);
       return;
     }
     if (!no_telpon.startsWith("08")) {
-      alert(context, "No telpon harus dimulai dengan '08'!", "Gagal update profile!", Icons.error, Colors.red);
+      CostumAlert.show(context, "No telpon harus dimulai dengan '08'!", "Gagal update profile!", Icons.error, Colors.red);
       return;
     }
     if((kata_sandiLama.isNotEmpty && kata_sandiLama != null) || (kata_sandi.isNotEmpty && kata_sandi != null) || kata_sandiUlangi.isNotEmpty && kata_sandiUlangi != null){
       if(kata_sandiLama.isEmpty || kata_sandiLama == null){
-        alert(context, "Kata Sandi lama tidak boleh kosong !", "gagal update profile!",Icons.error, Colors.red);
+        CostumAlert.show(context, "Kata Sandi lama tidak boleh kosong !", "gagal update profile!",Icons.error, Colors.red);
         return;
       }
       if(kata_sandi.isEmpty || kata_sandi == null){
-        alert(context, "Kata Sandi baru tidak boleh kosong !", "gagal update profile!",Icons.error, Colors.red);
+        CostumAlert.show(context, "Kata Sandi baru tidak boleh kosong !", "gagal update profile!",Icons.error, Colors.red);
         return;
       }
       if(kata_sandiUlangi.isEmpty || kata_sandiUlangi == null){
-        alert(context, "Konfirmasi Kata Sandi tidak boleh kosong !", "gagal update profile!",Icons.error, Colors.red);
+        CostumAlert.show(context, "Konfirmasi Kata Sandi tidak boleh kosong !", "gagal update profile!",Icons.error, Colors.red);
         return;
       }
       isUpPass = true;
     }
     try {
+      CustomLoading.showLoading(context);
       Map<String, dynamic> response;
       if(_imageFile != null){
         if(isUpPass){
@@ -150,6 +153,7 @@ class _ProfilPagesState extends State<ProfilPages> {
           response = await apiService.updateProfile(email, nama_lengkap, jenisKelamin!, no_telpon, null, null, null, null);
         }
       }
+      CustomLoading.closeLoading(context);
       if (response['status'] == 'success') {
         if(_imageFile != null){
           // save img
@@ -157,9 +161,9 @@ class _ProfilPagesState extends State<ProfilPages> {
           await _imageFile!.copy(filePath);
           List<FileSystemEntity> files = Directory(dirPath).listSync();
         }
-        alert(context, "Profile Berhasil diperbarui","Berhasil Perbarui!",Icons.check, Colors.green);
+        CostumAlert.show(context, "Profile Berhasil diperbarui","Berhasil Perbarui!",Icons.check, Colors.green);
       } else {
-        alert(context, response['message'], "Gagal Perbarui!", Icons.error, Colors.red);
+        CostumAlert.show(context, response['message'], "Gagal Perbarui!", Icons.error, Colors.red);
         String errRes = response['message'].toString();
         if(errRes.contains('login') || errRes.contains('expired')){
           Future.delayed(const Duration(seconds: 2), () {
@@ -173,9 +177,11 @@ class _ProfilPagesState extends State<ProfilPages> {
   }
   void _logout(BuildContext context) async {
     try{
+      CustomLoading.showLoading(context);
       Map<String, dynamic> response = await apiService.logout();
+      CustomLoading.closeLoading(context);
         if (response['status'] == 'success') {
-          alert(context, response['message'],"Berhasil Logout!",Icons.check, Colors.green);
+          CostumAlert.show(context, response['message'],"Berhasil Logout!",Icons.check, Colors.green);
           //delete profile foto
           List<FileSystemEntity> files = Directory(dirPath).listSync();
           for (FileSystemEntity file in files) {
@@ -195,7 +201,7 @@ class _ProfilPagesState extends State<ProfilPages> {
             return Navigator.pushReplacement(context, pageMove.movepage(const LoginScreen()));
           });
         } else {
-          alert(context, response['message'], "Gagal Logout!", Icons.error, Colors.red);
+          CostumAlert.show(context, response['message'], "Gagal Logout!", Icons.error, Colors.red);
           String errRes = response['message'].toString();
           if(errRes.contains('login') || errRes.contains('expired')){
             Future.delayed(const Duration(seconds: 2), () {
@@ -206,21 +212,6 @@ class _ProfilPagesState extends State<ProfilPages> {
     } catch (e) {
       print('Error saat logoutt page : $e');
     }
-  }
-  void alert(BuildContext context, String message, String title, IconData icon, Color color) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return Dialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10.0),
-          ),
-          elevation: 0,
-          backgroundColor: Colors.transparent,
-          child: contentBox(context, message, title, icon, color),
-        );
-      },
-    );
   }
   @override
   Widget build(BuildContext context) {
@@ -242,11 +233,11 @@ class _ProfilPagesState extends State<ProfilPages> {
               if (!mounted) return;
               if (image != null) {
                 if(image.lengthSync() >= (5 * 1024 * 1024)){
-                  alert(context, 'Foto tidak boleh lebih dari 5 MB', "Gagal pilih foto!", Icons.error, Colors.red);
+                  CostumAlert.show(context, 'Foto tidak boleh lebih dari 5 MB', "Gagal pilih foto!", Icons.error, Colors.red);
                   return;
                 }
                 if (!['.jpg', '.jpeg', '.png'].contains(p.extension(image.path))) {
-                  alert(context, 'Foto harus jpg, jpeg, png', "Gagal pilih foto!", Icons.error, Colors.red);
+                  CostumAlert.show(context, 'Foto harus jpg, jpeg, png', "Gagal pilih foto!", Icons.error, Colors.red);
                   return;
                 }
                 setState(() {
@@ -471,78 +462,4 @@ class _ProfilPagesState extends State<ProfilPages> {
       )
     );
   }
-}
-Widget contentBox(BuildContext context, String message, String title, IconData icon, Color color) {
-  return Stack(
-    children: <Widget>[
-      Container(
-        padding: const EdgeInsets.only(
-          left: 20,
-          top: 45,
-          right: 20,
-          bottom: 20,
-        ),
-        margin: const EdgeInsets.only(top: 45),
-        decoration: BoxDecoration(
-          shape: BoxShape.rectangle,
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(10),
-          boxShadow: const [
-            BoxShadow(
-              color: Colors.black,
-              offset: Offset(0, 10),
-              blurRadius: 10,
-            ),
-          ],
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Text(
-              title,
-              style: const TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 15),
-            Text(
-              message,
-              style: const TextStyle(
-                fontSize: 18,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 22),
-            Align(
-              alignment: Alignment.bottomRight,
-              child: TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: const Text(
-                  'OKE',
-                  style: TextStyle(color: Color.fromRGBO(203, 164, 102, 1)),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-      Positioned(
-        top: 0,
-        left: 20,
-        right: 20,
-        child: CircleAvatar(
-          backgroundColor: color,
-          radius: 30,
-          child: Icon(
-            icon,
-            color: Colors.white,
-            size: 40,
-          ),
-        ),
-      ),
-    ],
-  );
 }

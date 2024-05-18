@@ -1,5 +1,6 @@
 import 'package:eduapp/component/custom_appbar.dart';
 import 'package:eduapp/pages/edukasi_nutrisi.dart';
+import 'package:eduapp/pages/pages_detailArtikel.dart';
 import 'package:eduapp/utils/ApiService.dart';
 import 'package:eduapp/utils/navigationbar.dart';
 import 'package:flutter/material.dart';
@@ -82,51 +83,56 @@ class _BerandaLihatarticlesState extends State<BerandaLihatarticles> {
                     itemCount: articles.length,
                     itemBuilder: (context, index) {
                       var article = articles[index];
-                      return Padding(
-                        padding: const EdgeInsets.only(bottom: 10),
-                        child: Card(
-                          elevation: 2,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Image.network(
-                                '${apiService.imgUrl}/artikel/${article['foto']}',
-                                width: 135,
-                                height: 100,
-                                fit: BoxFit.cover,
-                                errorBuilder: (context, error, stackTrace) {
-                                  print('Error loading image:${error}');
-                                  return Image.asset(
-                                    'assets/images/artikel 1.png',  
-                                    width: 135,
-                                    height: 100,
-                                    fit: BoxFit.cover,
-                                  );
-                                },
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(12),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      article['judul']!,
-                                      style: const TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 8),
-                                    Text(
-                                      'Tanggal Upload: ${article['created_at']}',
-                                      style: const TextStyle(
-                                        color: Colors.grey,
-                                      ),
-                                    ),
-                                  ],
+                      return InkWell(
+                        onTap: (){
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => DetailArtikel(detailData: {'id_data':articles[index]['judul'].toString().replaceAll(' ', '-'), 'table': 'artikel'})));
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.only(bottom: 10),
+                          child: Card(
+                            elevation: 2,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Image.network(
+                                  '${apiService.imgUrl}/artikel/${article['foto']}',
+                                  width: 135,
+                                  height: 100,
+                                  fit: BoxFit.cover,
+                                  errorBuilder: (context, error, stackTrace) {
+                                    print('Error loading image:${error}');
+                                    return Image.asset(
+                                      'assets/images/artikel 1.png',  
+                                      width: 135,
+                                      height: 100,
+                                      fit: BoxFit.cover,
+                                    );
+                                  },
                                 ),
-                              ),
-                            ],
+                                Padding(
+                                  padding: const EdgeInsets.all(12),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        article['judul']!,
+                                        style: const TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 8),
+                                      Text(
+                                        'Tanggal Upload: ${article['created_at']}',
+                                        style: const TextStyle(
+                                          color: Colors.grey,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       );
