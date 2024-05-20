@@ -4,13 +4,13 @@ import 'package:eduapp/component/custom_appbar.dart';
 import 'package:eduapp/component/custom_colors.dart';
 import 'package:eduapp/component/custom_loading.dart';
 import 'package:eduapp/pages/ganti_password.dart';
+import 'package:eduapp/pages/pages_lupakatasandi.dart';
 import 'package:eduapp/pages/popup_screen.dart';
 import 'package:eduapp/utils/ApiService.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
-import 'package:pin_input_text_field/pin_input_text_field.dart';
 import 'package:eduapp/component/custom_pagemove.dart';
 
 class OTPScreen extends StatefulWidget {
@@ -123,7 +123,15 @@ class _OTPScreenState extends State<OTPScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomAppBar(title: 'Kode OTP'),
+      appBar: CustomAppBar(
+        title: 'Kode OTP',
+        leadingOnPressed: () {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const Lupakatasandi()),
+          );
+        },
+      ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.only(top: 50),
@@ -213,27 +221,6 @@ class _OTPScreenState extends State<OTPScreen> {
                     }),
                 ),
               ),
-              // PinInputTextField(
-              //   pinLength: 6,
-              //   controller: otpController,
-              //   keyboardType: TextInputType.number,
-              //   decoration: BoxLooseDecoration(
-              //     textStyle: const TextStyle(fontSize: 20, color: Colors.black),
-              //     strokeColorBuilder: PinListenColorBuilder(
-              //       const Color(0xFFCCCCCC), // Default border color
-              //       Colors.black, // Border color when typing
-              //     ),
-              //     gapSpace: 10.0, // Space between each input box
-              //     strokeWidth: 2.0, // Border width
-
-              //   ),
-              //   autoFocus: true,
-              //   textInputAction: TextInputAction.done,
-              //   inputFormatters: <TextInputFormatter>[
-              //     FilteringTextInputFormatter.digitsOnly
-              //   ],
-              // ),
-              // Add space between the OTP input and text button
               StreamBuilder<String>(
                 stream: widget.timerStream,
                 builder: (context, snapshot){

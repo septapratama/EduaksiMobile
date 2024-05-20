@@ -320,11 +320,22 @@ class _ProfilPagesState extends State<ProfilPages> {
               keyboardType: TextInputType.text,
               prefixIcon: Icons.person),
           const SizedBox(height: 20),
-          DropdownButtonFormField<String>(
-            decoration: const InputDecoration(
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 40.0),
+            child: DropdownButtonFormField<String>(
+            decoration: InputDecoration(
               labelText: 'Jenis Kelamin',
-              prefixIcon: Icon(Icons.wc),
-              border: OutlineInputBorder(),
+              prefixIcon: const Icon(Icons.wc),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(13.0),
+                borderSide: const BorderSide(
+                  color: Colors.black,
+                ),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(13.0),
+                borderSide: const BorderSide(color: Color.fromRGBO(30, 84, 135, 1)),
+              ),
             ),
             value: jenisKelamin,
             items: const [
@@ -342,6 +353,7 @@ class _ProfilPagesState extends State<ProfilPages> {
                 jenisKelamin = value;
               });
             },
+          ),
           ),
           const SizedBox(height: 20),
           CustomTextFieldWidget(

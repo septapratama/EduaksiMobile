@@ -96,13 +96,13 @@ class _CustomTextFieldWidgetState extends State<CustomTextFieldWidget> {
           contentPadding: const EdgeInsets.symmetric(horizontal: 20.0),
           alignLabelWithHint: true,
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(20.0),
+            borderRadius: BorderRadius.circular(13.0),
             borderSide: const BorderSide(
               color: Colors.black,
             ),
           ),
           focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(20.0),
+            borderRadius: BorderRadius.circular(13.0),
             borderSide: const BorderSide(color: Color.fromRGBO(30, 84, 135, 1)),
           ),
           floatingLabelBehavior: FloatingLabelBehavior

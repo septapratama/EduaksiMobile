@@ -55,7 +55,7 @@ class ApiService {
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: jsonEncode(<String, String>{
-          'email': 'amirzanfikri5@gmail.com',
+          'email': 'UserTesting2@gmail.com',
           // 'email': email,
           'password': kataSandi,
         }),
