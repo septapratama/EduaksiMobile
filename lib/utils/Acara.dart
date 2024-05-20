@@ -54,7 +54,7 @@ class Acara{
     if(prefs.getString('acara') == null){
       Map<String, dynamic> response = await apiService.fetchAcara();
       if (response['status'] == 'success') {
-        print(response['data']);
+        // print(response['data']);
         prefs.setString('acara', json.encode(response['data']));
         _sorted();
       } else {
@@ -70,7 +70,6 @@ class Acara{
   Future<List<Map<String, dynamic>>> getTodayAcara() async {
     List<Map<String, dynamic>> acaraData = getAcaraData();
     DateTime curDay = DateTime.now();
-    print(json.encode(acaraData));
     return acaraData.where((item) {
       DateTime tooDate = DateFormat('dd-MM-yyyy HH:mm').parse(item['tanggal']);
       return tooDate.year == curDay.year && tooDate.month == curDay.month && tooDate.day == curDay.day;
@@ -82,7 +81,7 @@ class Acara{
     acaraData.add(data);
     prefs.setString('acara', json.encode(acaraData));
     _sorted();
-    await scheduleNotification(acaraData);
+    // await scheduleNotification(acaraData);
   }
 
   Future<void> editAcara(String idAcara,Map<String, dynamic> data) async {
@@ -96,7 +95,7 @@ class Acara{
     });
     prefs.setString('acara', json.encode(acaraData));
     _sorted();
-    await scheduleNotification(acaraData);
+    // await scheduleNotification(acaraData);
   }
 
   //delete acara from riwayat acara
@@ -105,36 +104,36 @@ class Acara{
     acaraData.removeWhere((item)=> item['id_acara'] == idAcara);
     prefs.setString('acara', json.encode(acaraData));
     _sorted();
-    await scheduleNotification(acaraData);
+    // await scheduleNotification(acaraData);
   }
 
   Future<void> removeAcara() async{
     prefs.remove('acara');
   }
 
-  Future<void> scheduleNotification(List<Map<String, dynamic>> acaraList) async {
-    _initNotifications();
-    acaraList.forEach((acara) async {
-      DateTime dateTime = DateFormat('dd-MM-yyyy HH:mm').parse(acara['tanggal']);
-      // Schedule the notification
-      const AndroidNotificationDetails androidPlatformChannelSpecifics = AndroidNotificationDetails(
-        'acara_channel_id', // Change this to a unique channel ID for your app
-        'acara_channel_name', // Change this to a unique channel name for your app
-        'acara_channel_description', // Change this to a unique channel description for your app
-        importance: Importance.max,
-        priority: Priority.high,
-        ticker: 'ticker',
-      );
-      const NotificationDetails platformChannelSpecifics = NotificationDetails(android: androidPlatformChannelSpecifics);
-      await flutterLocalNotificationsPlugin.zonedSchedule(
-        acara['id'], // Use a unique ID for each notification
-        acara['nama_acara'], // Notification title
-        acara['deskripsi'], // Notification body
-        tz.TZDateTime.from(dateTime, tz.local), // Notification time
-        platformChannelSpecifics,
-        androidAllowWhileIdle: true,
-        uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
-      );
-    });
-  }
+  // Future<void> scheduleNotification(List<Map<String, dynamic>> acaraList) async {
+  //   _initNotifications();
+  //   acaraList.forEach((acara) async {
+  //     DateTime dateTime = DateFormat('dd-MM-yyyy HH:mm').parse(acara['tanggal']);
+  //     // Schedule the notification
+  //     const AndroidNotificationDetails androidPlatformChannelSpecifics = AndroidNotificationDetails(
+  //       'acara_channel_id', // Change this to a unique channel ID for your app
+  //       'acara_channel_name', // Change this to a unique channel name for your app
+  //       'acara_channel_description', // Change this to a unique channel description for your app
+  //       importance: Importance.max,
+  //       priority: Priority.high,
+  //       ticker: 'ticker',
+  //     );
+  //     const NotificationDetails platformChannelSpecifics = NotificationDetails(android: androidPlatformChannelSpecifics);
+  //     await flutterLocalNotificationsPlugin.zonedSchedule(
+  //       acara['id'], // Use a unique ID for each notification
+  //       acara['nama_acara'], // Notification title
+  //       acara['deskripsi'], // Notification body
+  //       tz.TZDateTime.from(dateTime, tz.local), // Notification time
+  //       platformChannelSpecifics,
+  //       androidAllowWhileIdle: true,
+  //       uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
+  //     );
+  //   });
+  // }
 }

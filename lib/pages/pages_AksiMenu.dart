@@ -1,13 +1,9 @@
 import 'package:eduapp/component/custom_appbar.dart';
 import 'package:eduapp/component/custom_colors.dart';
 import 'package:eduapp/pages/aksi_calculator.dart';
-import 'package:eduapp/pages/edukasi_emotal.dart';
-import 'package:eduapp/pages/edukasi_diisi.dart';
-import 'package:eduapp/pages/edukasi_nutrisi.dart';
 import 'package:eduapp/pages/riwayatCalendar.dart';
 import 'package:eduapp/utils/navigationbar.dart';
 import 'package:flutter/material.dart';
-import 'package:eduapp/component/custom_appbar_withoutarrowback.dart';
 
 class AksiMenu extends StatelessWidget {
   AksiMenu({super.key});
@@ -18,7 +14,7 @@ class AksiMenu extends StatelessWidget {
       'image': 'assets/images/artikel 1.png',
     },
     {
-      'title': 'Catat Tumbuh Kembang Anak',
+      'title': 'Aksi Kalender Pintar',
       'image': 'assets/images/image 36.png',
     },
     // Add more articles as needed
@@ -89,7 +85,7 @@ class AksiMenu extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => RiwayatCalendar(),
+                                builder: (context) => const RiwayatCalendar(),
                               ),
                             );
                           } 

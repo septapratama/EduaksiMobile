@@ -30,6 +30,7 @@ class _AksiCalendarPageState extends State<AksiCalendarPage> {
   final TextEditingController _namaAcaraController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   String? _selectedCategory;
+  bool isTambah = false;
 
   @override
   void initState() {
@@ -63,6 +64,7 @@ class _AksiCalendarPageState extends State<AksiCalendarPage> {
 
   void _tambahAcara(BuildContext context) async {
     try{
+      if(isTambah) return;
       List<Map<String, dynamic>> todayAcara = await acaraClass.getTodayAcara();
       String namaAcara = _namaAcaraController.text;
       String deskripsi = _descriptionController.text;
@@ -100,16 +102,16 @@ class _AksiCalendarPageState extends State<AksiCalendarPage> {
       }
       DateTime pickDatetime = _changeDate('datetime');
       if (pickDatetime.isBefore(DateTime.now())){
-        // CostumAlert.show(context, "Tanggal harus setelah atau sama dengan tanggal sekarang !", "gagal tambah acara!",Icons.error, Colors.red);
+        CostumAlert.show(context, "Tanggal harus setelah atau sama dengan tanggal sekarang !", "gagal tambah acara!",Icons.error, Colors.red);
         print('Tanggal harus setelah atau sama dengan tanggal sekarang !');
       }else if(pickDatetime.isBefore(DateTime.now().add(const Duration(minutes: 5)))) {
-        // CostumAlert.show(context, "Waktu harus lebih dari 5 menit dari waktu sekarang !", "gagal tambah acara!",Icons.error, Colors.red);
+        CostumAlert.show(context, "Waktu harus lebih dari 5 menit dari waktu sekarang !", "gagal tambah acara!",Icons.error, Colors.red);
         print('Waktu harus lebih dari 5 menit dari waktu sekarang !');
         return;
       }
       todayAcara.forEach((item) {
         if(DateTime.parse(item['tanggal']).difference(pickDatetime).inMinutes <  5){
-          // CostumAlert.show(context, "Waktu harus lebih dari 5 menit dari setiap acara !", "gagal tambah acara!",Icons.error, Colors.red);
+          CostumAlert.show(context, "Waktu harus lebih dari 5 menit dari setiap acara !", "gagal tambah acara!",Icons.error, Colors.red);
           print('Waktu harus lebih dari 5 menit dari setiap acara !');
           return;
         }
@@ -127,8 +129,10 @@ class _AksiCalendarPageState extends State<AksiCalendarPage> {
           'tanggal':parDa,
         };
         acaraClass.tambahAcara(data);
+        CostumAlert.show(context, "Berhasil tambah acara","Berhasil tambah acara",Icons.check, Colors.green);
+        isTambah = true;
         Future.delayed(const Duration(seconds: 2), () {
-          Navigator.pushReplacement(context, pageMove.movepage(const RiwayatCalendar()));
+          Navigator.pop(context);
         });
       } else {
         CostumAlert.show(context, response['message'], "gagal tambah acara!",Icons.error, Colors.red);
@@ -140,7 +144,7 @@ class _AksiCalendarPageState extends State<AksiCalendarPage> {
         }
       }
     } catch (e) {
-      print('Error saat tambah calender : $e');
+      print('Error saat tambah kalender : $e');
     }
   }
 
@@ -192,11 +196,11 @@ class _AksiCalendarPageState extends State<AksiCalendarPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        title: 'Aksi Calendar Pintar',
+        title: 'Tambah Kalender',
         buttonOnPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => RiwayatCalendar()),
+            MaterialPageRoute(builder: (context) => const RiwayatCalendar()),
           );
         },
       ),

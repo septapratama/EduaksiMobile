@@ -1,5 +1,6 @@
 import 'package:capitalize/capitalize.dart';
 import 'package:eduapp/component/custom_alert.dart';
+import 'package:eduapp/component/custom_appbar.dart';
 import 'package:eduapp/component/custom_loading.dart';
 import 'package:eduapp/pages/login_screen.dart';
 import 'package:eduapp/utils/Acara.dart';
@@ -166,26 +167,21 @@ class _AksiCalendarPageStateShow extends State<ShowCalendar> {
         }
       }
     } catch (e) {
-      print('Error saat tambah calender : $e');
+      print('Error saat edit calender : $e');
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Aksi Calendar Pintar'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const RiwayatCalendar()),
-              );
-            },
-          ),
-        ],
+      appBar: CustomAppBar(
+        title: 'Lihat Kalender',
+        buttonOnPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const RiwayatCalendar()),
+          );
+        },
       ),
       body: SafeArea(
         child: SingleChildScrollView(

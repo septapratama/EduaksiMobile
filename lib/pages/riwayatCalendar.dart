@@ -2,6 +2,7 @@ import 'package:eduapp/component/custom_loading.dart';
 import 'package:eduapp/component/custom_pagemove.dart';
 import 'package:capitalize/capitalize.dart';
 import 'package:eduapp/pages/login_screen.dart';
+import 'package:eduapp/pages/pages_AksiMenu.dart';
 import 'package:eduapp/utils/Acara.dart';
 import 'package:eduapp/utils/ApiService.dart';
 import 'package:intl/intl.dart';
@@ -85,7 +86,6 @@ class _RiwayatCalendarState extends State<RiwayatCalendar> {
       Map<String, dynamic> response = await apiService.hapusAcara(idAcara);
       CustomLoading.closeLoading(context);
       if (response['status'] == 'success') {
-        print(response['message']);
         acaraClass.deleteAcara(idAcara);
         setState(() {
           acaraData.removeWhere((item)=> item['id_acara'] == idAcara);
@@ -101,13 +101,21 @@ class _RiwayatCalendarState extends State<RiwayatCalendar> {
         // alert(context, response['message']);
       }
     } catch (e) {
-      print('Error saat calendar : $e');
+      print('Error saat Kalender : $e');
     }
   }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomAppBar(title: 'Riwayat Calendar'),
+      appBar: CustomAppBar(
+        title: 'Riwayat Kalender',
+        buttonOnPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => AksiMenu()),
+          );
+        },
+      ),
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,

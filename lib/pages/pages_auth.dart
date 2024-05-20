@@ -126,7 +126,7 @@ class _OTPScreenState extends State<OTPScreen> {
       appBar: const CustomAppBar(title: 'Kode OTP'),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.only(top: 50, left: 75, right: 75),
+          padding: const EdgeInsets.only(top: 50),
           child: Column(
             crossAxisAlignment:
                 CrossAxisAlignment.center, // Align content to the start (left)
@@ -146,19 +146,18 @@ class _OTPScreenState extends State<OTPScreen> {
                     fontFamily: 'Poppins_Regular',
                     color: Color.fromARGB(255, 80, 81, 85)),
               ),
-              const SizedBox(height: 40),
-              Center(
-                child: SizedBox(
-                  width: double.infinity,
+              const SizedBox(height: 30),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 13),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: List.generate(6, (index) {
-                      return Flexible(
+                      return SizedBox(
                         child:Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 7.0),
                           child: Container(
-                            // height: 68,
-                            // width: 100,
+                            height: 40,
+                            width: 40,
                             child: TextField(
                               controller: otpController[index],
                               onChanged: (value) {
@@ -166,11 +165,11 @@ class _OTPScreenState extends State<OTPScreen> {
                                   FocusScope.of(context).nextFocus();
                                 }
                               },
+                              showCursor: false,
                               decoration: InputDecoration(
                                 contentPadding: EdgeInsets.zero,
                                 filled: true,
                                 fillColor: Colors.white,
-                                // isDense: true,
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(8.0),
                                   borderSide: const BorderSide(
@@ -197,7 +196,10 @@ class _OTPScreenState extends State<OTPScreen> {
                                   // minHeight: 100,
                                 ),
                               ),
-                              style: Theme.of(context).textTheme.headlineLarge,
+                              style: const TextStyle(
+                                fontSize: 22,
+                                fontWeight: FontWeight.w400,
+                              ),
                               keyboardType: TextInputType.number,
                               textAlign: TextAlign.center,
                               inputFormatters: [
@@ -209,7 +211,6 @@ class _OTPScreenState extends State<OTPScreen> {
                         ),
                       );
                     }),
-                  ),
                 ),
               ),
               // PinInputTextField(
@@ -243,7 +244,7 @@ class _OTPScreenState extends State<OTPScreen> {
                   }
                 }
               ),
-              const SizedBox(height: 35),
+              const SizedBox(height: 10),
               const Text(
                 'Anda belum menerima kode OTP? ',
                 style: TextStyle(fontSize: 16, fontFamily: 'Poppins_Regular'),
@@ -258,19 +259,17 @@ class _OTPScreenState extends State<OTPScreen> {
                       fontFamily: 'Poppins_SemiBold'),
                 ),
               ),
-              const SizedBox(height: 50),
+              const SizedBox(height: 20),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 30.0),
                 child: ElevatedButton(
                   onPressed: () => sendOTP(context),
                   style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 20,
-                        horizontal: 50), // Adjust padding as needed
+                    minimumSize: const Size(130, 47),
                     foregroundColor: Colors.white,
                     backgroundColor: const Color.fromRGBO(30, 84, 135, 1),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8.0),
+                      borderRadius: BorderRadius.circular(15.0),
                     ),
                   ),
                   child: const Text(
@@ -278,7 +277,7 @@ class _OTPScreenState extends State<OTPScreen> {
                     style: TextStyle(
                       fontFamily: 'Poppins_SemiBold',
                       fontWeight: FontWeight.w600,
-                      fontSize: 18,
+                      fontSize: 23,
                     ),
                   ),
                 ),
