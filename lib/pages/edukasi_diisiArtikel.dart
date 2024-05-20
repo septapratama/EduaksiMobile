@@ -102,7 +102,7 @@ class _EdukasiDiisiartikelState extends State<EdukasiDiisiartikel> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Image.network(
-                                  '${apiService.imgUrl}/artikel/${articles[index]['gambar']}',
+                                  '${apiService.imgUrl}/digital_literasi/${articles[index]['gambar']}',
                                   width: double.infinity,
                                   height: 150,
                                   fit: BoxFit.cover,

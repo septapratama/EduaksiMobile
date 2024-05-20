@@ -102,7 +102,7 @@ class _EdukasiNutrisiartikelState extends State<EdukasiNutrisiartikel> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Image.network(
-                                  '${apiService.imgUrl}/artikel/${articles[index]['gambar']}',
+                                  '${apiService.imgUrl}/nutrisi/${articles[index]['gambar']}',
                                   width: double.infinity,
                                   height: 150,
                                   fit: BoxFit.cover,

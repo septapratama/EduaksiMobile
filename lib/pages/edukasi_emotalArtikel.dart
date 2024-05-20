@@ -102,7 +102,7 @@ class _EdukasiEmotalState extends State<EdukasiEmotalartikel> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Image.network(
-                                  '${apiService.imgUrl}/artikel/${articles[index]['gambar']}',
+                                  '${apiService.imgUrl}/emosi_mental/${articles[index]['gambar']}',
                                   width: double.infinity,
                                   height: 150,
                                   fit: BoxFit.cover,

@@ -30,7 +30,6 @@ class _DetailArtikelState extends State<DetailArtikel> {
 
   Future<void> fetchData() async {
     try {
-      print(widget.detailData);
       Map<String, dynamic> response = {};
       switch (widget.detailData['table']) {
         case 'disi':
@@ -46,7 +45,6 @@ class _DetailArtikelState extends State<DetailArtikel> {
           response = await apiService.getPengasuhanDetail(widget.detailData['id_data']);
           break;
         case 'artikel':
-        print('select artikell');
           response = await apiService.getArtikelDetail(widget.detailData['id_data']);
           break;
       }
@@ -193,13 +191,11 @@ class _DetailArtikelState extends State<DetailArtikel> {
                                 children: [
                                   Image.network(
                                     '${apiService.imgUrl}/${widget.tableConst[widget.detailData['table']] ?? widget.detailData['table']}/${articles[index]['gambar']}',
-                                    // width: MediaQuery.of(context).size.width * 0.8,
-                                    // '${apiService.imgUrl}/artikel/${articles[index]['gambar']}',
                                     width: double.infinity,
                                     height: 150,
                                     fit: BoxFit.cover,
                                     errorBuilder: (context, error, stackTrace) {
-                                      print('Error loading image:${error}');
+                                      print('Error loading image:$error');
                                       return Image.asset(
                                         artikelNotFound,
                                         width: 135,

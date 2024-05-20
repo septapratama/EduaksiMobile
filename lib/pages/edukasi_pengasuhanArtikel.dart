@@ -101,7 +101,7 @@ class _EdukasiPengasuhanartikelState extends State<EdukasiPengasuhanartikel> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Image.network(
-                                  '${apiService.imgUrl}/artikel/${articles[index]['gambar']}',
+                                  '${apiService.imgUrl}/pengasuhan/${articles[index]['gambar']}',
                                   width: double.infinity,
                                   height: 150,
                                   fit: BoxFit.cover,
