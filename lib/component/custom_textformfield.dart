@@ -6,6 +6,7 @@ class CustomTextFieldWidget extends StatefulWidget {
   final TextInputType keyboardType;
   final TextEditingController controller;
   final bool obscureText;
+  final double horizontal;
   final IconData? prefixIcon;
 
   const CustomTextFieldWidget({
@@ -16,6 +17,7 @@ class CustomTextFieldWidget extends StatefulWidget {
     required this.controller,
     this.obscureText = false,
     this.prefixIcon,
+    this.horizontal = 40,
   });
 
   @override
@@ -77,7 +79,7 @@ class _CustomTextFieldWidgetState extends State<CustomTextFieldWidget> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 40.0),
+      padding: EdgeInsets.symmetric(horizontal: widget.horizontal),
       child: TextFormField(
         controller: _textEditingController,
         keyboardType: widget.keyboardType,

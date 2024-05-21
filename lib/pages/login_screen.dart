@@ -46,11 +46,11 @@ class _LoginScreenState extends State<LoginScreen> {
     String kataSandi = passwordController.text;
     // Validasi form, misalnya memastikan semua field terisi dengan benar
     if (email.isEmpty) {
-      // CostumAlert.show(context, "Email tidak boleh kosong !", "gagal mendaftar!", Icons.error,Colors.red);
+      // CostumAlert.show(context, "Email tidak boleh kosong !", "gagal masuk!", Icons.error,Colors.red);
       // return;
     }
     if (kataSandi.isEmpty) {
-      // CostumAlert.show(context, "Kata sandi tidak boleh kosong !", "gagal mendaftar!", Icons.error,Colors.red);
+      // CostumAlert.show(context, "Kata sandi tidak boleh kosong !", "gagal masuk!", Icons.error,Colors.red);
       // return;
     }
     try {
@@ -60,7 +60,7 @@ class _LoginScreenState extends State<LoginScreen> {
       if (response['status'] == 'success') {
         Navigator.pushReplacement(context, pageMove.movepage(const BottomNav()));
       } else {
-        CostumAlert.show(context, response['message'], "gagal mendaftar!", Icons.error,Colors.red);
+        CostumAlert.show(context, response['message'], "gagal masuk!", Icons.error,Colors.red);
       }
     } catch (e) {
       print('Error saat login: $e');
@@ -73,7 +73,7 @@ class _LoginScreenState extends State<LoginScreen> {
       if (response['status'] == 'success') {
         Navigator.pushReplacement(context, pageMove.movepage(const BottomNav()));
       } else {
-        CostumAlert.show(context, response['message'], "gagal mendaftar!", Icons.error,Colors.red);
+        CostumAlert.show(context, response['message'], "gagal masuk!", Icons.error,Colors.red);
       }
     } catch (e) {
       print('error at login google $e');

@@ -71,48 +71,39 @@ class _AksiCalendarPageState extends State<AksiCalendarPage> {
       String tanggal = _dateController.text;
       String waktu = _timeController.text;
       if(todayAcara.length >= 3){
-        CostumAlert.show(context, "Jumlah hari ini maksimal 3 acara !", "gagal tambah acara!",Icons.error, Colors.red);
-        // print('Jumlah hari ini maksimal 3 acara !');
+        CostumAlert.show(context, "Jumlah hari ini maksimal 3 acara !", "Gagal tambah acara !",Icons.error, Colors.red);
         return;
       }
       if (tanggal.isEmpty) {
-        CostumAlert.show(context, "Tanggal tidak boleh kosong !", "gagal tambah acara!",Icons.error, Colors.red);
-        // print('Tanggal tidak boleh kosong !');
+        CostumAlert.show(context, "Tanggal tidak boleh kosong !", "Gagal tambah acara !",Icons.error, Colors.red);
         return;
       }
       if (waktu.isEmpty) {
-        CostumAlert.show(context, "Waktu tidak boleh kosong !", "gagal tambah acara!",Icons.error, Colors.red);
-        // print('Waktu tidak boleh kosong !');
+        CostumAlert.show(context, "Waktu tidak boleh kosong !", "Gagal tambah acara !",Icons.error, Colors.red);
         return;
       }
       if (namaAcara.isEmpty) {
-        CostumAlert.show(context, "Nama acara tidak boleh kosong !", "gagal tambah acara!",Icons.error, Colors.red);
-        // print('Nama Acara tidak boleh kosong !');
+        CostumAlert.show(context, "Nama acara tidak boleh kosong !", "Gagal tambah acara !",Icons.error, Colors.red);
         return;
       }
       if (deskripsi.isEmpty) {
-        CostumAlert.show(context, "Deskripsi tidak boleh kosong !", "gagal tambah acara!",Icons.error, Colors.red);
-        // print('Deskripsi tidak boleh kosong !');
+        CostumAlert.show(context, "Deskripsi tidak boleh kosong !", "Gagal tambah acara !",Icons.error, Colors.red);
         return;
       }
       if (_selectedCategory!.isEmpty) {
-        CostumAlert.show(context, "Kategori tidak boleh kosong !", "gagal tambah acara!",Icons.error, Colors.red);
-        // print('Kategori tidak boleh kosong !');
+        CostumAlert.show(context, "Kategori tidak boleh kosong !", "Gagal tambah acara !",Icons.error, Colors.red);
         return;
       }
       DateTime pickDatetime = _changeDate('datetime');
       if (pickDatetime.isBefore(DateTime.now())){
-        CostumAlert.show(context, "Tanggal harus setelah atau sama dengan tanggal sekarang !", "gagal tambah acara!",Icons.error, Colors.red);
-        print('Tanggal harus setelah atau sama dengan tanggal sekarang !');
+        CostumAlert.show(context, "Tanggal harus setelah atau sama dengan tanggal sekarang !", "Gagal tambah acara !",Icons.error, Colors.red);
       }else if(pickDatetime.isBefore(DateTime.now().add(const Duration(minutes: 5)))) {
-        CostumAlert.show(context, "Waktu harus lebih dari 5 menit dari waktu sekarang !", "gagal tambah acara!",Icons.error, Colors.red);
-        print('Waktu harus lebih dari 5 menit dari waktu sekarang !');
+        CostumAlert.show(context, "Waktu harus lebih dari 5 menit dari waktu sekarang !", "Gagal tambah acara !",Icons.error, Colors.red);
         return;
       }
       todayAcara.forEach((item) {
         if(DateTime.parse(item['tanggal']).difference(pickDatetime).inMinutes <  5){
-          CostumAlert.show(context, "Waktu harus lebih dari 5 menit dari setiap acara !", "gagal tambah acara!",Icons.error, Colors.red);
-          print('Waktu harus lebih dari 5 menit dari setiap acara !');
+          CostumAlert.show(context, "Waktu harus lebih dari 5 menit dari setiap acara !", "Gagal tambah acara !",Icons.error, Colors.red);
           return;
         }
       });
@@ -121,6 +112,9 @@ class _AksiCalendarPageState extends State<AksiCalendarPage> {
       Map<String, dynamic> response = await apiService.buatAcara(namaAcara, deskripsi, _selectedCategory!, parDa);
       CustomLoading.closeLoading(context);
       if (response['status'] == 'success') {
+        setState(() {
+          isTambah = true;
+        });
         Map<String, dynamic> data = {
           'id_acara':response['data'].toString(),
           'nama_acara':namaAcara,
@@ -130,12 +124,13 @@ class _AksiCalendarPageState extends State<AksiCalendarPage> {
         };
         acaraClass.tambahAcara(data);
         CostumAlert.show(context, "Berhasil tambah acara","Berhasil tambah acara",Icons.check, Colors.green);
-        isTambah = true;
         Future.delayed(const Duration(seconds: 2), () {
           Navigator.pop(context);
+          Navigator.pop(context);
+          Navigator.push(context, pageMove.movepage(const RiwayatCalendar()));
         });
       } else {
-        CostumAlert.show(context, response['message'], "gagal tambah acara!",Icons.error, Colors.red);
+        CostumAlert.show(context, response['message'], "Gagal tambah acara !",Icons.error, Colors.red);
         String errRes = response['message'].toString();
         if(errRes.contains('login') || errRes.contains('expired')){
           Future.delayed(const Duration(seconds: 2), () {
@@ -197,11 +192,13 @@ class _AksiCalendarPageState extends State<AksiCalendarPage> {
     return Scaffold(
       appBar: CustomAppBar(
         title: 'Tambah Kalender',
-        buttonOnPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const RiwayatCalendar()),
-          );
+        leadingOnPressed: () {
+          if(!isTambah){
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const RiwayatCalendar()),
+            );
+          }
         },
       ),
       body: SafeArea(

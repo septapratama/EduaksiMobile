@@ -314,14 +314,16 @@ class _ProfilPagesState extends State<ProfilPages> {
           ),
           const SizedBox(height: 40),
           CustomTextFieldWidget(
-              labelText: 'Nama Pengguna',
-              controller: namaController,
-              initialValue: 'Nama Pengguna',
-              keyboardType: TextInputType.text,
-              prefixIcon: Icons.person),
+            labelText: 'Nama Pengguna',
+            controller: namaController,
+            initialValue: 'Nama Pengguna',
+            keyboardType: TextInputType.text,
+            horizontal: 20,
+            prefixIcon: Icons.person
+          ),
           const SizedBox(height: 20),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 40.0),
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: DropdownButtonFormField<String>(
             decoration: InputDecoration(
               labelText: 'Jenis Kelamin',
@@ -357,18 +359,22 @@ class _ProfilPagesState extends State<ProfilPages> {
           ),
           const SizedBox(height: 20),
           CustomTextFieldWidget(
-              labelText: 'Email',
-              controller: emailController,
-              initialValue: 'Email',
-              keyboardType: TextInputType.text,
-              prefixIcon: Icons.mail),
+            labelText: 'Email',
+            controller: emailController,
+            initialValue: 'Email',
+            keyboardType: TextInputType.text,
+            prefixIcon: Icons.mail,
+            horizontal: 20,
+          ),
           const SizedBox(height: 20),
           CustomTextFieldWidget(
-              labelText: 'No Telepon',
-              controller: noTelponController,
-              initialValue: 'No Telepon',
-              keyboardType: TextInputType.text,
-              prefixIcon: Icons.phone),
+            labelText: 'No Telepon',
+            controller: noTelponController,
+            initialValue: 'No Telepon',
+            keyboardType: TextInputType.text,
+            prefixIcon: Icons.phone,
+            horizontal: 20,
+          ),
           const SizedBox(height: 20),
           CustomTextFieldWidget(
             labelText: 'Kata Sandi Lama',
@@ -376,6 +382,7 @@ class _ProfilPagesState extends State<ProfilPages> {
             keyboardType: TextInputType.text,
             prefixIcon: Icons.fingerprint,
             obscureText: true, // Mengatur agar input teks tersembunyi
+            horizontal: 20,
           ),
           const SizedBox(height: 20),
           CustomTextFieldWidget(
@@ -383,7 +390,9 @@ class _ProfilPagesState extends State<ProfilPages> {
             controller: passwordController,
             keyboardType: TextInputType.text,
             prefixIcon: Icons.fingerprint,
-            obscureText: true, // Mengatur agar input teks tersembunyi
+            obscureText: true,
+            horizontal: 20,
+             // Mengatur agar input teks tersembunyi
           ),
           const SizedBox(height: 20),
           CustomTextFieldWidget(
@@ -392,10 +401,11 @@ class _ProfilPagesState extends State<ProfilPages> {
             keyboardType: TextInputType.text,
             prefixIcon: Icons.fingerprint,
             obscureText: true, // Mengatur agar input teks tersembunyi
+            horizontal: 20,
           ),
           const SizedBox(height: 24),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 40.0), // Sesuaikan padding dengan kebutuhan Anda
+            padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20), // Sesuaikan padding dengan kebutuhan Anda
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -408,7 +418,7 @@ class _ProfilPagesState extends State<ProfilPages> {
                     foregroundColor: Colors.white,
                     backgroundColor: Colors.red,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0),
+                      borderRadius: BorderRadius.circular(12.0),
                     ),
                   ),
                   child: Padding(
@@ -445,7 +455,7 @@ class _ProfilPagesState extends State<ProfilPages> {
                     backgroundColor: const Color.fromRGBO(30, 84, 135, 1),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(
-                          20.0), // Atur border radius sesuai kebutuhan Anda
+                          12.0), // Atur border radius sesuai kebutuhan Anda
                     ),
                   ),
                   child: const Padding(

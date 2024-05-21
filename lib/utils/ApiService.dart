@@ -57,12 +57,14 @@ class ApiService {
         body: jsonEncode(<String, String>{
           'email': 'UserTesting2@gmail.com',
           // 'email': email,
-          'password': kataSandi,
+          // 'password': kataSandi,
+          'password': 'Admin@1234567890',
         }),
       );
       if (response.statusCode == 200) {
         final Map<String, dynamic> responseData = json.decode(response.body);
         await jwtProvider.setJwt(responseData['data']);
+        await acaraClass.removeAcara();
         await acaraClass.fetchData(this);
         return responseData;
       } else {
@@ -90,6 +92,7 @@ class ApiService {
       if (response.statusCode == 200) {
         final Map<String, dynamic> responseData = json.decode(response.body);
         await jwtProvider.setJwt(responseData['data']);
+        await acaraClass.removeAcara();
         await acaraClass.fetchData(this);
         return responseData;
       } else {
@@ -706,8 +709,8 @@ class ApiService {
       if(auth == 'expired' || auth == 'logout'){
         return  {'message' : 'token expired'};
       }
-      final response = await http.post(
-        Uri.parse('$baseUrl/kalender/tambah'),
+      final response = await http.get(
+        Uri.parse('$baseUrl/kalender'),
         headers: <String, String>{
           'Authorization': auth,
           'Content-Type': 'application/json; charset=UTF-8',
@@ -786,7 +789,7 @@ class ApiService {
       if(auth == 'expired' || auth == 'logout'){
         return  {'message' : 'token expired'};
       }
-      final response = await http.put(
+      final response = await http.delete(
         Uri.parse('$baseUrl/kalender/delete'),
         headers: <String, String>{
           'Authorization': auth,

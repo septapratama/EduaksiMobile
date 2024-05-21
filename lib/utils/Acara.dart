@@ -15,17 +15,17 @@ class Acara{
 
   Future<void> init() async {
     prefs = await SharedPreferences.getInstance();
-    _removeExpiredEvents();
+    // _removeExpiredEvents();
   }
 
-  Future<void> _initNotifications() async {
-    flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-    const AndroidInitializationSettings initializationSettingsAndroid = AndroidInitializationSettings('@mipmap/ic_launcher');
-    const InitializationSettings initializationSettings = InitializationSettings(android: initializationSettingsAndroid);
-    await flutterLocalNotificationsPlugin.initialize(initializationSettings);
-    // Initialize time zones
-    tz.initializeTimeZones();
-  }
+  // Future<void> _initNotifications() async {
+  //   flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+  //   const AndroidInitializationSettings initializationSettingsAndroid = AndroidInitializationSettings('@mipmap/ic_launcher');
+  //   const InitializationSettings initializationSettings = InitializationSettings(android: initializationSettingsAndroid);
+  //   await flutterLocalNotificationsPlugin.initialize(initializationSettings);
+  //   // Initialize time zones
+  //   tz.initializeTimeZones();
+  // }
 
   Future<void> _removeExpiredEvents() async {
     List<Map<String, dynamic>> acaraData = getAcaraData();
@@ -54,7 +54,6 @@ class Acara{
     if(prefs.getString('acara') == null){
       Map<String, dynamic> response = await apiService.fetchAcara();
       if (response['status'] == 'success') {
-        // print(response['data']);
         prefs.setString('acara', json.encode(response['data']));
         _sorted();
       } else {
@@ -99,9 +98,11 @@ class Acara{
   }
 
   //delete acara from riwayat acara
-  Future<void> deleteAcara(String idAcara) async {
+  Future<void> deleteAcara(List<String> idAcara) async {
     List<Map<String,dynamic>> acaraData = getAcaraData();
-    acaraData.removeWhere((item)=> item['id_acara'] == idAcara);
+    idAcara.forEach((element) {
+      acaraData.removeWhere((item)=> item['id_acara'] == element);
+    });
     prefs.setString('acara', json.encode(acaraData));
     _sorted();
     // await scheduleNotification(acaraData);

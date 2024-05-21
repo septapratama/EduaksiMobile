@@ -41,7 +41,7 @@ class _AksiCalendarPageStateShow extends State<ShowCalendar> {
   DateTime _selectedDay = DateTime.now();
   String? _selectedCategory;
   String? _categoryEdited;
-  bool isEdit = false;
+  bool _isEdit = false;
   bool _isEditProcess = false;
 
   @override
@@ -61,7 +61,7 @@ class _AksiCalendarPageStateShow extends State<ShowCalendar> {
         _deskripsiController.text = acaraData['deskripsi'];
         _selectedCategory = _categoryList.contains(acaraData['kategori']) ? acaraData['kategori'] : null;
         List<dynamic> datetimee = acaraData['tanggal'].toString().split(' ');
-        _pickDateShow = DateFormat('dd-MM-yyyy').parse(datetimee[0]);
+        _pickDateShow = DateFormat('yyyy-MM-dd').parse(datetimee[0]);
         _tanggalController.text = DateFormat('EEEE, dd-MM-yyyy', 'id_ID').format(_pickDateShow);
         _waktuController.text = datetimee[1];
       });
@@ -186,7 +186,7 @@ class _AksiCalendarPageStateShow extends State<ShowCalendar> {
   }
 
   Future<void> _selectTime(BuildContext context) async {
-    if(!isEdit) return;
+    if(!_isEdit) return;
     final DateTime now = DateTime.now();
     final TimeOfDay initialTime = TimeOfDay(hour: now.hour, minute: now.minute);
     final TimeOfDay? picked = await showTimePicker(
@@ -222,9 +222,9 @@ class _AksiCalendarPageStateShow extends State<ShowCalendar> {
   }
 
   void _changeMode(){
-    isEdit = !isEdit;
+    _isEdit = !_isEdit;
     setState(() {
-      if (isEdit) {
+      if (_isEdit) {
         _focusNode1.unfocus();
         _focusNode2.unfocus();
       }else{
@@ -241,7 +241,7 @@ class _AksiCalendarPageStateShow extends State<ShowCalendar> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        title: isEdit ? 'Edit Kalender' : 'Lihat Kalender',
+        title: _isEdit ? 'Edit Kalender' : 'Lihat Kalender',
         buttonOnPressed: () {
           Navigator.push(
             context,
@@ -254,7 +254,7 @@ class _AksiCalendarPageStateShow extends State<ShowCalendar> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              isEdit ? TableCalendar(
+              _isEdit ? TableCalendar(
                 firstDay: DateTime.now(),
                 lastDay: DateTime.utc(2030, 3, 14),
                 focusedDay: _pickDateEdit,
@@ -400,7 +400,7 @@ class _AksiCalendarPageStateShow extends State<ShowCalendar> {
                             child: Text('Acara $category'),
                           );
                         }).toList(),
-                        onChanged: isEdit ? (value) {
+                        onChanged: _isEdit ? (value) {
                           setState(() {
                             _selectedCategory = value;
                           });
@@ -432,7 +432,7 @@ class _AksiCalendarPageStateShow extends State<ShowCalendar> {
                           vertical: 8.0,
                         ),
                         child: TextFormField(
-                          readOnly: !isEdit,
+                          readOnly: !_isEdit,
                           focusNode: _focusNode1,
                           controller: _namaAcaraController,
                           minLines: 3,
@@ -470,7 +470,7 @@ class _AksiCalendarPageStateShow extends State<ShowCalendar> {
                           vertical: 8.0,
                         ),
                         child: TextFormField(
-                          readOnly: !isEdit,
+                          readOnly: !_isEdit,
                           focusNode: _focusNode2,
                           controller: _deskripsiController,
                           minLines: 3,
@@ -519,7 +519,7 @@ class _AksiCalendarPageStateShow extends State<ShowCalendar> {
                         ),
                       ),
                     ),
-                    isEdit ?
+                    _isEdit ?
                     Container(
                       width: 180,
                       height: 42,
