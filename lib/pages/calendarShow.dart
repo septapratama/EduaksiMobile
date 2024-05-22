@@ -34,11 +34,13 @@ class _AksiCalendarPageStateShow extends State<ShowCalendar> {
   final TextEditingController _deskripsiController = TextEditingController();
   final TextEditingController _tanggalController = TextEditingController();
   final TextEditingController _waktuController = TextEditingController();
+
   final List<String> _categoryList = ['umum', 'penting', 'keluarga'];
-  late DateTime _pickDateShow = DateTime.now();
   late Map<String, dynamic> acaraData;
-  DateTime _pickDateEdit = DateTime.now();
-  DateTime _selectedDay = DateTime.now();
+  late DateTime _inpDate = DateTime.now();
+  late DateTime _pickDateShow = DateTime.now();
+  late DateTime _pickDateEdit = DateTime.now();
+  TimeOfDay _selectedTime = TimeOfDay.now();
   String? _selectedCategory;
   String? _categoryEdited;
   bool _isEdit = false;
@@ -60,35 +62,13 @@ class _AksiCalendarPageStateShow extends State<ShowCalendar> {
         _namaAcaraController.text = acaraData['nama_acara'];
         _deskripsiController.text = acaraData['deskripsi'];
         _selectedCategory = _categoryList.contains(acaraData['kategori']) ? acaraData['kategori'] : null;
-        List<dynamic> datetimee = acaraData['tanggal'].toString().split(' ');
-        _pickDateShow = DateFormat('yyyy-MM-dd').parse(datetimee[0]);
-        _tanggalController.text = DateFormat('EEEE, dd-MM-yyyy', 'id_ID').format(_pickDateShow);
-        _waktuController.text = datetimee[1];
+        _inpDate = DateFormat('yyyy-MM-dd HH:mm').parse(acaraData['tanggal']);
+        _pickDateShow = _inpDate;
+        _pickDateEdit = _inpDate;
+        _selectedTime = TimeOfDay(hour: _inpDate.hour, minute: _inpDate.minute);
+        _tanggalController.text = DateFormat('EEEE, dd-MM-yyyy', 'id_ID').format(_inpDate);
+        _waktuController.text = DateFormat('HH:mm').format(_inpDate);
       });
-    }
-  }
-
-  dynamic _changeDate(String cond){
-    if (cond == 'date' || cond == 'datetime') {
-      DateTime parsedDate = DateFormat('EEEE, dd-MM-yyyy', 'id_ID').parse(_tanggalController.text);
-      int day = parsedDate.day;
-      int month = parsedDate.month;
-      int year = parsedDate.year;
-      if (cond == 'date') {
-        return DateTime(year, month, day);
-      } else {
-        List<String> timeParts = _waktuController.text.split(':');
-        int minute = int.parse(timeParts[0]);
-        int hour = int.parse(timeParts[1]);
-        return DateTime(year, month, day, hour, minute);
-      }
-    } else if (cond == 'time') {
-      List<String> timeParts = _waktuController.text.split(':');
-      int minute = int.parse(timeParts[0]);
-      int hour = int.parse(timeParts[1]);
-      return {'hour': hour, 'minute': minute};
-    } else {
-      return null;
     }
   }
 
@@ -101,59 +81,55 @@ class _AksiCalendarPageStateShow extends State<ShowCalendar> {
       String tanggal = _tanggalController.text;
       String waktu = _waktuController.text;
       //checking if data same
-      List<dynamic> datetimee = acaraData['tanggal'].toString().split(' ');
-      String tanggalDetail = DateFormat('EEEE, dd-MM-yyyy', 'id_ID').format(DateFormat('dd-MM-yyyy').parse(datetimee[0]));
-      if(namaAcara == acaraData['nama_acara'] && deskripsi == acaraData['deskripsi'] && _selectedCategory == acaraData['kategori'] && tanggal == tanggalDetail && waktu == datetimee[1]){
+      if(namaAcara == acaraData['nama_acara'] && deskripsi == acaraData['deskripsi'] && _selectedCategory == acaraData['kategori'] && _pickDateEdit == _inpDate && _selectedTime == TimeOfDay(hour: _inpDate.hour, minute: _inpDate.minute)){
         CostumAlert.show(context, "Data belum diubah !", "gagal edit kalender!",Icons.error, Colors.red);
-        // print('Data belum diubah !');
         return;
       }
       //validator
       if (tanggal.isEmpty) {
         CostumAlert.show(context, "Tanggal tidak boleh kosong !", "gagal edit kalender!",Icons.error, Colors.red);
-        // print('Tanggal tidak boleh kosong !');
         return;
       }
       if (waktu.isEmpty) {
         CostumAlert.show(context, "Waktu tidak boleh kosong !", "gagal edit kalender!",Icons.error, Colors.red);
-        // print('Waktu tidak boleh kosong !');
         return;
       }
       if (namaAcara.isEmpty) {
         CostumAlert.show(context, "Nama acara tidak boleh kosong !", "gagal edit kalender!",Icons.error, Colors.red);
-        // print('Nama acara tidak boleh kosong !');
         return;
       }
       if (deskripsi.isEmpty) {
         CostumAlert.show(context, "Deskripsi tidak boleh kosong !", "gagal edit kalender!",Icons.error, Colors.red);
-        // print('Deskripsi tidak boleh kosong !');
         return;
       }
       if (_selectedCategory!.isEmpty) {
         CostumAlert.show(context, "Kategori tidak boleh kosong !", "gagal edit kalender!",Icons.error, Colors.red);
-        // print('Kategori tidak boleh kosong !');
         return;
       }
-      DateTime pickDatetime = _changeDate('datetime');
+      final DateTime pickDatetime = DateTime(
+        _pickDateEdit.year,
+        _pickDateEdit.month,
+        _pickDateEdit.day,
+        _selectedTime.hour,
+        _selectedTime.minute,
+      );
       if (pickDatetime.isBefore(DateTime.now())){
-        // CostumAlert.show(context, "Tanggal harus setelah atau sama dengan tanggal sekarang !", "gagal edit kalender!",Icons.error, Colors.red);
-        print('Tanggal harus setelah atau sama dengan tanggal sekarang !');
+        CostumAlert.show(context, "Tanggal harus setelah atau sama dengan tanggal sekarang !", "gagal edit kalender!",Icons.error, Colors.red);
       }else if(pickDatetime.isBefore(DateTime.now().add(const Duration(minutes: 5)))) {
-        // CostumAlert.show(context, "Waktu harus lebih dari 5 menit dari waktu sekarang !", "gagal edit kalender!",Icons.error, Colors.red);
-        print('Waktu harus lebih dari 5 menit dari waktu sekarang !');
+        CostumAlert.show(context, "Waktu harus lebih dari 5 menit dari waktu sekarang !", "gagal edit kalender!",Icons.error, Colors.red);
         return;
       }
-      todayAcara.forEach((item) {
-        if(DateTime.parse(item['tanggal']).difference(pickDatetime).inMinutes <  5){
-          // CostumAlert.show(context, "Waktu harus lebih dari 5 menit dari setiap kalender !", "gagal edit kalender!",Icons.error, Colors.red);
-          print('Waktu harus lebih dari 5 menit dari setiap kalender !');
+      for (var item in todayAcara) {
+        int differenceInMinutes = DateFormat('yyyy-MM-dd HH:mm').parse(item['tanggal']).difference(pickDatetime).inMinutes;
+        if (differenceInMinutes < 5 && differenceInMinutes > -5) {
+          CostumAlert.show(context, "Waktu harus lebih dari 5 menit dari setiap kalender !", "gagal edit kalender!",Icons.error, Colors.red);
           return;
         }
-      });
-      String parDa = DateFormat('dd-MM-yyyy HH:mm').format(pickDatetime);
+      }
+      String parDa = DateFormat('yyyy-MM-dd HH:mm').format(pickDatetime);
       CustomLoading.showLoading(context);
       _isEditProcess = true;
-      Map<String, dynamic> response = await apiService.buatAcara(namaAcara, deskripsi, _selectedCategory!, parDa);
+      Map<String, dynamic> response = await apiService.editAcara(widget.idAcara, namaAcara, deskripsi, _selectedCategory!, parDa);
       CustomLoading.closeLoading(context);
       if (response['status'] == 'success') {
         Map<String, dynamic> data = {
@@ -162,9 +138,9 @@ class _AksiCalendarPageStateShow extends State<ShowCalendar> {
           'kategori':_selectedCategory!,
           'tanggal':parDa,
         };
-        acaraClass.editAcara(acaraData['id_acara'], data);
-        _categoryEdited = _selectedCategory;
+        acaraClass.editAcara(widget.idAcara, data);
         CostumAlert.show(context, "Berhasil edit acara","Berhasil edit acara",Icons.check, Colors.green);
+        refreshData();
         Future.delayed(const Duration(seconds: 1), () {
           _isEditProcess = false;
         });
@@ -187,8 +163,7 @@ class _AksiCalendarPageStateShow extends State<ShowCalendar> {
 
   Future<void> _selectTime(BuildContext context) async {
     if(!_isEdit) return;
-    final DateTime now = DateTime.now();
-    final TimeOfDay initialTime = TimeOfDay(hour: now.hour, minute: now.minute);
+    final TimeOfDay initialTime = TimeOfDay(hour: _selectedTime.hour, minute: _selectedTime.minute);
     final TimeOfDay? picked = await showTimePicker(
       context: context,
       initialTime: initialTime,
@@ -200,14 +175,14 @@ class _AksiCalendarPageStateShow extends State<ShowCalendar> {
       },
     );
     if (picked != null) {
-      DateTime pickDate = _changeDate('date');
       final DateTime selectedDateTime = DateTime(
-        pickDate.year,
-        pickDate.month,
-        pickDate.day,
+        _pickDateEdit.year,
+        _pickDateEdit.month,
+        _pickDateEdit.day,
         picked.hour,
         picked.minute,
       );
+      final DateTime  now = DateTime.now();
       if(selectedDateTime.isBefore(now)) {
         CostumAlert.show(context, "Pilih waktu harus lebih dari sekarang !", "Invalid time!",Icons.error, Colors.red);
         return;
@@ -215,12 +190,22 @@ class _AksiCalendarPageStateShow extends State<ShowCalendar> {
         CostumAlert.show(context, "Pilih waktu minimal 5 menit dari sekarang !", "Invalid time!",Icons.error, Colors.red);
         return;
       }
+      _selectedTime = picked;
       setState(() {
-        _waktuController.text = DateFormat('HH:mm').format(selectedDateTime);
+        _waktuController.text = '${picked.hour.toString().padLeft(2, '0')}:${picked.minute.toString().padLeft(2, '0')}';
       });
     }
   }
-
+  void refreshData(){
+    setState(() {
+      _isEdit = false;
+      _categoryEdited = _selectedCategory;
+      acaraData = acaraClass.getAcaraData().firstWhere((item) => item['id_acara'] == widget.idAcara);
+      _inpDate = DateFormat('yyyy-MM-dd HH:mm').parse(acaraData['tanggal']);
+      _tanggalController.text = DateFormat('EEEE, dd-MM-yyyy', 'id_ID').format(_inpDate);
+      _pickDateShow = _inpDate;
+    });
+  }
   void _changeMode(){
     _isEdit = !_isEdit;
     setState(() {
@@ -228,6 +213,10 @@ class _AksiCalendarPageStateShow extends State<ShowCalendar> {
         _focusNode1.unfocus();
         _focusNode2.unfocus();
       }else{
+        _pickDateEdit = _inpDate;
+        _selectedTime = TimeOfDay(hour: _inpDate.hour, minute: _inpDate.minute);
+        _tanggalController.text = DateFormat('EEEE, dd-MM-yyyy', 'id_ID').format(_inpDate);
+        _waktuController.text = DateFormat('HH:mm').format(_inpDate);
         if(_categoryList.contains(acaraData['kategori'])){
           _selectedCategory = _categoryEdited ?? acaraData['kategori'];
         }else{
@@ -263,13 +252,10 @@ class _AksiCalendarPageStateShow extends State<ShowCalendar> {
                   CalendarFormat.month:
                       'Month', // Hanya menampilkan format bulanan
                 },
-                selectedDayPredicate: (day) {
-                  return isSameDay(_selectedDay, day);
-                },
+                selectedDayPredicate: (day) => isSameDay(day, _pickDateEdit),
                 onDaySelected: (selectedDay, focusedDay) {
                   setState(() {
-                    _selectedDay = selectedDay;
-                    _pickDateEdit = focusedDay;
+                    _pickDateEdit = selectedDay;
                     _tanggalController.text = DateFormat('EEEE, dd-MM-yyyy', 'id_ID').format(selectedDay);
                   });
                 },
@@ -286,6 +272,7 @@ class _AksiCalendarPageStateShow extends State<ShowCalendar> {
                   CalendarFormat.month:
                       'Month', // Hanya menampilkan format bulanan
                 },
+                selectedDayPredicate: (day) => isSameDay(day, _pickDateShow),
                 eventLoader: (day) {
                   return _events[day] ?? [];
                 },

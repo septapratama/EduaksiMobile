@@ -756,7 +756,7 @@ class ApiService {
   }
 
   //update acara
-  Future<Map<String, dynamic>> editAcara(String idAcara, String nama_acara) async {
+  Future<Map<String, dynamic>> editAcara(String idAcara, String nama_acara, String deskripsi, String kategori, String tanggal) async {
     try {
       final auth = await getAuthToken();
       if(auth == 'expired' || auth == 'logout'){
@@ -770,6 +770,10 @@ class ApiService {
         },
         body: jsonEncode(<String, String>{
           'id_acara': idAcara,
+          'nama_acara': nama_acara,
+          'deskripsi': deskripsi,
+          'kategori': kategori,
+          'tanggal': tanggal,
         }),
       );
       if (response.statusCode == 200) {

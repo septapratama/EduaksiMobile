@@ -23,9 +23,10 @@ class _AksiCalendarPageState extends State<AksiCalendarPage> {
   final ApiService apiService = ApiService();
   final Acara acaraClass = Acara();
   DateTime _selectedDay = DateTime.now();
+  TimeOfDay _selectedTime = TimeOfDay.now();
   DateTime _focusedDay = DateTime.now();
   Map<DateTime, List> _events = {};
-  final TextEditingController _dateController = TextEditingController();
+  final TextEditingController _tanggalController = TextEditingController();
   final TextEditingController _timeController = TextEditingController();
   final TextEditingController _namaAcaraController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
@@ -35,31 +36,7 @@ class _AksiCalendarPageState extends State<AksiCalendarPage> {
   @override
   void initState() {
     super.initState();
-    _dateController.text = DateFormat('EEEE, dd-MM-yyyy', 'id_ID').format(DateTime.now());
-  }
-
-  dynamic _changeDate(String cond){
-    if (cond == 'date' || cond == 'datetime') {
-      DateTime parsedDate = DateFormat('EEEE, dd-MM-yyyy', 'id_ID').parse(_dateController.text);
-      int day = parsedDate.day;
-      int month = parsedDate.month;
-      int year = parsedDate.year;
-      if (cond == 'date') {
-        return DateTime(year, month, day);
-      } else {
-        List<String> timeParts = _timeController.text.split(':');
-        int minute = int.parse(timeParts[0]);
-        int hour = int.parse(timeParts[1]);
-        return DateTime(year, month, day, hour, minute);
-      }
-    } else if (cond == 'time') {
-      List<String> timeParts = _timeController.text.split(':');
-      int minute = int.parse(timeParts[0]);
-      int hour = int.parse(timeParts[1]);
-      return {'hour': hour, 'minute': minute};
-    } else {
-      return null;
-    }
+    _tanggalController.text = DateFormat('EEEE, dd-MM-yyyy', 'id_ID').format(DateTime.now());
   }
 
   void _tambahAcara(BuildContext context) async {
@@ -68,7 +45,7 @@ class _AksiCalendarPageState extends State<AksiCalendarPage> {
       List<Map<String, dynamic>> todayAcara = await acaraClass.getTodayAcara();
       String namaAcara = _namaAcaraController.text;
       String deskripsi = _descriptionController.text;
-      String tanggal = _dateController.text;
+      String tanggal = _tanggalController.text;
       String waktu = _timeController.text;
       if(todayAcara.length >= 3){
         CostumAlert.show(context, "Jumlah hari ini maksimal 3 acara !", "Gagal tambah acara !",Icons.error, Colors.red);
@@ -94,20 +71,27 @@ class _AksiCalendarPageState extends State<AksiCalendarPage> {
         CostumAlert.show(context, "Kategori tidak boleh kosong !", "Gagal tambah acara !",Icons.error, Colors.red);
         return;
       }
-      DateTime pickDatetime = _changeDate('datetime');
+      final DateTime pickDatetime = DateTime(
+        _selectedDay.year,
+        _selectedDay.month,
+        _selectedDay.day,
+        _selectedTime.hour,
+        _selectedTime.minute,
+      );
       if (pickDatetime.isBefore(DateTime.now())){
         CostumAlert.show(context, "Tanggal harus setelah atau sama dengan tanggal sekarang !", "Gagal tambah acara !",Icons.error, Colors.red);
       }else if(pickDatetime.isBefore(DateTime.now().add(const Duration(minutes: 5)))) {
         CostumAlert.show(context, "Waktu harus lebih dari 5 menit dari waktu sekarang !", "Gagal tambah acara !",Icons.error, Colors.red);
         return;
       }
-      todayAcara.forEach((item) {
-        if(DateTime.parse(item['tanggal']).difference(pickDatetime).inMinutes <  5){
-          CostumAlert.show(context, "Waktu harus lebih dari 5 menit dari setiap acara !", "Gagal tambah acara !",Icons.error, Colors.red);
+      for (var item in todayAcara) {
+        int differenceInMinutes = DateFormat('yyyy-MM-dd HH:mm').parse(item['tanggal']).difference(pickDatetime).inMinutes;
+        if (differenceInMinutes < 5 && differenceInMinutes > -5) {
+          CostumAlert.show(context, "Waktu harus lebih dari 5 menit dari setiap kalender !", "gagal edit kalender!",Icons.error, Colors.red);
           return;
         }
-      });
-      String parDa = DateFormat('dd-MM-yyyy HH:mm').format(pickDatetime);
+      }
+      String parDa = DateFormat('yyyy-MM-dd HH:mm').format(pickDatetime);
       CustomLoading.showLoading(context);
       Map<String, dynamic> response = await apiService.buatAcara(namaAcara, deskripsi, _selectedCategory!, parDa);
       CustomLoading.closeLoading(context);
@@ -145,7 +129,7 @@ class _AksiCalendarPageState extends State<AksiCalendarPage> {
 
   @override
   void dispose() {
-    _dateController.dispose();
+    _tanggalController.dispose();
     _timeController.dispose();
     _namaAcaraController.dispose();
     _descriptionController.dispose();
@@ -153,8 +137,7 @@ class _AksiCalendarPageState extends State<AksiCalendarPage> {
   }
 
   Future<void> _selectTime(BuildContext context) async {
-    final DateTime now = DateTime.now();
-    final TimeOfDay initialTime = TimeOfDay(hour: now.hour, minute: now.minute);
+    final TimeOfDay initialTime = TimeOfDay(hour: _selectedTime.hour, minute: _selectedTime.minute);
     final TimeOfDay? picked = await showTimePicker(
       context: context,
       initialTime: initialTime,
@@ -166,14 +149,14 @@ class _AksiCalendarPageState extends State<AksiCalendarPage> {
       },
     );
     if (picked != null) {
-      DateTime pickDate = _changeDate('date');
       final DateTime selectedDateTime = DateTime(
-        pickDate.year,
-        pickDate.month,
-        pickDate.day,
+        _selectedDay.year,
+        _selectedDay.month,
+        _selectedDay.day,
         picked.hour,
         picked.minute,
       );
+      final DateTime now = DateTime.now();
       if(selectedDateTime.isBefore(now)) {
         CostumAlert.show(context, "Pilih waktu harus lebih dari sekarang !", "Invalid time!",Icons.error, Colors.red);
         return;
@@ -181,6 +164,7 @@ class _AksiCalendarPageState extends State<AksiCalendarPage> {
         CostumAlert.show(context, "Pilih waktu minimal 5 menit dari sekarang !", "Invalid time!",Icons.error, Colors.red);
         return;
       }
+      _selectedTime = picked;
       setState(() {
         _timeController.text = DateFormat('HH:mm').format(selectedDateTime);
       });
@@ -223,7 +207,7 @@ class _AksiCalendarPageState extends State<AksiCalendarPage> {
                   setState(() {
                     _selectedDay = selectedDay;
                     _focusedDay = focusedDay;
-                    _dateController.text = DateFormat('EEEE, dd-MM-yyyy', 'id_ID').format(selectedDay);
+                    _tanggalController.text = DateFormat('EEEE, dd-MM-yyyy', 'id_ID').format(selectedDay);
                   });
                 },
                 eventLoader: (day) {
@@ -254,7 +238,7 @@ class _AksiCalendarPageState extends State<AksiCalendarPage> {
                     vertical: 8.0,
                   ),
                   child: TextFormField(
-                    controller: _dateController,
+                    controller: _tanggalController,
                     readOnly: true, // Mengaktifkan mode hanya baca
                     decoration: const InputDecoration(
                       border: InputBorder.none,

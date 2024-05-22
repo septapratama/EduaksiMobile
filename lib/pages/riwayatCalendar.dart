@@ -152,9 +152,9 @@ class _RiwayatCalendarState extends State<RiwayatCalendar> {
               child: ListView.builder(
                 itemCount: acaraData.length,
                 itemBuilder: (BuildContext context, int index) {
-                  List<dynamic> datetimee = acaraData[index]['tanggal'].toString().split(' ');
-                  String tanggalData = DateFormat('EEEE, dd-MM-yyyy', 'id_ID').format(DateFormat('yy-MM-dd').parse(datetimee[0]));
-                  String waktuData = datetimee[1];
+                  DateTime inpDate = DateFormat('yyyy-MM-dd HH:mm').parse(acaraData[index]['tanggal']);
+                  String tanggalData = DateFormat('EEEE, dd-MM-yyyy', 'id_ID').format(inpDate);
+                  String waktuData = DateFormat('HH:mm').format(inpDate);
                   String indexCheck = 'i${acaraData[index]['id_acara']}';
                   return GestureDetector(
                     onTap: () {
