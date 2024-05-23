@@ -42,6 +42,7 @@ class _AksiCalendarPageState extends State<AksiCalendarPage> {
   void _tambahAcara(BuildContext context) async {
     try{
       if(isTambah) return;
+      await acaraClass.init(apiService);
       List<Map<String, dynamic>> todayAcara = await acaraClass.getTodayAcara();
       String namaAcara = _namaAcaraController.text;
       String deskripsi = _descriptionController.text;
@@ -67,6 +68,10 @@ class _AksiCalendarPageState extends State<AksiCalendarPage> {
         CostumAlert.show(context, "Deskripsi tidak boleh kosong !", "Gagal tambah acara !",Icons.error, Colors.red);
         return;
       }
+      if(_selectedCategory == null){
+        CostumAlert.show(context, "Kategori tidak boleh kosong !", "Gagal tambah acara !",Icons.error, Colors.red);
+        return;
+      }
       if (_selectedCategory!.isEmpty) {
         CostumAlert.show(context, "Kategori tidak boleh kosong !", "Gagal tambah acara !",Icons.error, Colors.red);
         return;
@@ -80,9 +85,9 @@ class _AksiCalendarPageState extends State<AksiCalendarPage> {
       );
       if (pickDatetime.isBefore(DateTime.now())){
         CostumAlert.show(context, "Tanggal harus setelah atau sama dengan tanggal sekarang !", "Gagal tambah acara !",Icons.error, Colors.red);
-      }else if(pickDatetime.isBefore(DateTime.now().add(const Duration(minutes: 5)))) {
-        CostumAlert.show(context, "Waktu harus lebih dari 5 menit dari waktu sekarang !", "Gagal tambah acara !",Icons.error, Colors.red);
-        return;
+      // }else if(pickDatetime.isBefore(DateTime.now().add(const Duration(minutes: 5)))) {
+      //   CostumAlert.show(context, "Waktu harus lebih dari 5 menit dari waktu sekarang !", "Gagal tambah acara !",Icons.error, Colors.red);
+      //   return;
       }
       for (var item in todayAcara) {
         int differenceInMinutes = DateFormat('yyyy-MM-dd HH:mm').parse(item['tanggal']).difference(pickDatetime).inMinutes;
@@ -160,9 +165,9 @@ class _AksiCalendarPageState extends State<AksiCalendarPage> {
       if(selectedDateTime.isBefore(now)) {
         CostumAlert.show(context, "Pilih waktu harus lebih dari sekarang !", "Invalid time!",Icons.error, Colors.red);
         return;
-      }else if(selectedDateTime.isBefore(now.add(const Duration(minutes: 5)))) {
-        CostumAlert.show(context, "Pilih waktu minimal 5 menit dari sekarang !", "Invalid time!",Icons.error, Colors.red);
-        return;
+      // }else if(selectedDateTime.isBefore(now.add(const Duration(minutes: 5)))) {
+      //   CostumAlert.show(context, "Pilih waktu minimal 5 menit dari sekarang !", "Invalid time!",Icons.error, Colors.red);
+      //   return;
       }
       _selectedTime = picked;
       setState(() {

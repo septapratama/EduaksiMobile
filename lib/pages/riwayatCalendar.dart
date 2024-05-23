@@ -15,34 +15,6 @@ import 'package:eduapp/pages/calendarShow.dart';
 import 'package:eduapp/component/custom_appbar.dart';
 import 'package:eduapp/component/custom_button.dart';
 
-// Define your list of data
-// List<EventData> acaraData = [
-//   EventData(
-//     tanggal: '2024-05-08',
-//     waktu: '13:00',
-//     kategori: 'umum',
-//     acara: 'Team meeting for project discussion',
-//   ),
-//   EventData(
-//     tanggal: '2024-05-09',
-//     waktu: '10:30',
-//     kategori: 'penting',
-//     acara: 'Training session on new software tools',
-//   ),
-//   EventData(
-//     tanggal: '2024-05-10',
-//     waktu: '15:45',
-//     kategori: 'keluarga',
-//     acara: 'Client presentation for project proposal',
-//   ),
-//   EventData(
-//     tanggal: '2024-05-12',
-//     waktu: '09:00',
-//     kategori: 'umum',
-//     acara: 'Interview scheduled for new hires',
-//   ),
-// ];`
-
 class RiwayatCalendar extends StatefulWidget {
   const RiwayatCalendar({super.key});
 
@@ -64,7 +36,7 @@ class _RiwayatCalendarState extends State<RiwayatCalendar> {
     fetchData();
   }
   void fetchData() async{
-    await acaraClass.init();
+    await acaraClass.init(apiService);
     acaraData = acaraClass.getAcaraData();
     _selected = List<Map<String, bool>>.generate(acaraData.length, (index) => {'i${acaraData[index]['id_acara']}': false});
     setState(() {});
@@ -155,7 +127,6 @@ class _RiwayatCalendarState extends State<RiwayatCalendar> {
                   DateTime inpDate = DateFormat('yyyy-MM-dd HH:mm').parse(acaraData[index]['tanggal']);
                   String tanggalData = DateFormat('EEEE, dd-MM-yyyy', 'id_ID').format(inpDate);
                   String waktuData = DateFormat('HH:mm').format(inpDate);
-                  String indexCheck = 'i${acaraData[index]['id_acara']}';
                   return GestureDetector(
                     onTap: () {
                       Navigator.push(context, MaterialPageRoute(builder: (context) => ShowCalendar(idAcara: acaraData[index]['id_acara'])));

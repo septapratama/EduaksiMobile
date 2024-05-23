@@ -8,23 +8,26 @@ import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 class Acara{
   late SharedPreferences prefs;
-  late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
-  Acara(){
-    init();
-  }
+  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
-  Future<void> init() async {
+  Future<void> init(ApiService apiService) async {
     prefs = await SharedPreferences.getInstance();
-    _removeExpiredEvents();
+    _removeExpiredEvents(apiService);
   }
 
-  void _removeExpiredEvents(){
+  void _removeExpiredEvents(ApiService apiService) async {
     List<Map<String, dynamic>> acaraData = getAcaraData();
     DateTime now = DateTime.now();
+    List<String> deleted = [];
     acaraData.removeWhere((item) {
       DateTime dateTime = DateFormat('yyyy-MM-dd HH:mm').parse(item['tanggal']);
-      return dateTime.isBefore(now);
+      if(dateTime.isBefore(now)){
+        deleted.add(item['id_acara']);
+        return true;
+      }
+      return false;
     });
+    if (deleted.isNotEmpty) await apiService.hapusAcara(deleted.join(','));
     prefs.setString('acara', json.encode(acaraData));
   }
 
@@ -47,7 +50,6 @@ class Acara{
       if (response['status'] == 'success') {
         prefs.setString('acara', json.encode(response['data']));
         _sorted();
-      } else {
       }
     }
   }
@@ -70,7 +72,7 @@ class Acara{
     acaraData.add(data);
     prefs.setString('acara', json.encode(acaraData));
     _sorted();
-    // await scheduleNotification(acaraData);
+    await scheduleNotification(acaraData);
   }
 
   Future<void> editAcara(String idAcara,Map<String, dynamic> data) async {
@@ -84,7 +86,7 @@ class Acara{
     });
     prefs.setString('acara', json.encode(acaraData));
     _sorted();
-    // await scheduleNotification(acaraData);
+    await scheduleNotification(acaraData);
   }
 
   //delete acara from riwayat acara
@@ -95,7 +97,7 @@ class Acara{
     });
     prefs.setString('acara', json.encode(acaraData));
     _sorted();
-    // await scheduleNotification(acaraData);
+    await scheduleNotification(acaraData);
   }
 
   Future<void> removeAcara() async{
@@ -117,10 +119,8 @@ class Acara{
       iOS: initializationSettingsIOS,
     );
     await flutterLocalNotificationsPlugin.initialize(initializationSettings, onSelectNotification: (String? payload) async {
-        // Handle the notification tapped logic here
-      },
-    );
-    tz.initializeTimeZones();
+      // Handle the notification tapped logic here
+    });
   }
 
   Future<void> scheduleNotification(List<Map<String, dynamic>> acaraList) async {
@@ -134,17 +134,23 @@ class Acara{
         'acara_channel_description', // Change this to a unique channel description for your app
         importance: Importance.max,
         priority: Priority.high,
+        showWhen: false,
+        playSound: true,
+        enableVibration: true,
         ticker: 'ticker',
+        fullScreenIntent: false,
       );
-      const NotificationDetails platformChannelSpecifics = NotificationDetails(android: androidPlatformChannelSpecifics);
+      tz.initializeTimeZones();
+      NotificationDetails platformChannelSpecifics = const NotificationDetails(android: androidPlatformChannelSpecifics);
       await flutterLocalNotificationsPlugin.zonedSchedule(
-        acara['id'],
+        int.parse(acara['id_acara']),
         acara['nama_acara'],
         acara['deskripsi'],
         tz.TZDateTime.from(dateTime, tz.local),
         platformChannelSpecifics,
         androidAllowWhileIdle: true,
         uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
+        payload: acara['deskripsi'],
       );
     });
   }

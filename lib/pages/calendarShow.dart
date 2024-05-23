@@ -53,7 +53,7 @@ class _AksiCalendarPageStateShow extends State<ShowCalendar> {
   }
 
   void fetchData() async{
-    await acaraClass.init();
+    await acaraClass.init(apiService);
     acaraData = acaraClass.getAcaraData().firstWhere((item) => item['id_acara'] == widget.idAcara);
     if(acaraData.isEmpty || acaraData == null){
       Navigator.pushReplacement(context, pageMove.movepage(const RiwayatCalendar()));
@@ -115,17 +115,17 @@ class _AksiCalendarPageStateShow extends State<ShowCalendar> {
       );
       if (pickDatetime.isBefore(DateTime.now())){
         CostumAlert.show(context, "Tanggal harus setelah atau sama dengan tanggal sekarang !", "gagal edit kalender!",Icons.error, Colors.red);
-      }else if(pickDatetime.isBefore(DateTime.now().add(const Duration(minutes: 5)))) {
-        CostumAlert.show(context, "Waktu harus lebih dari 5 menit dari waktu sekarang !", "gagal edit kalender!",Icons.error, Colors.red);
-        return;
+      // }else if(pickDatetime.isBefore(DateTime.now().add(const Duration(minutes: 5)))) {
+      //   CostumAlert.show(context, "Waktu harus lebih dari 5 menit dari waktu sekarang !", "gagal edit kalender!",Icons.error, Colors.red);
+      //   return;
       }
-      for (var item in todayAcara) {
-        int differenceInMinutes = DateFormat('yyyy-MM-dd HH:mm').parse(item['tanggal']).difference(pickDatetime).inMinutes;
-        if (differenceInMinutes < 5 && differenceInMinutes > -5) {
-          CostumAlert.show(context, "Waktu harus lebih dari 5 menit dari setiap kalender !", "gagal edit kalender!",Icons.error, Colors.red);
-          return;
-        }
-      }
+      // for (var item in todayAcara) {
+      //   int differenceInMinutes = DateFormat('yyyy-MM-dd HH:mm').parse(item['tanggal']).difference(pickDatetime).inMinutes;
+      //   if (differenceInMinutes < 5 && differenceInMinutes > -5) {
+      //     CostumAlert.show(context, "Waktu harus lebih dari 5 menit dari setiap kalender !", "gagal edit kalender!",Icons.error, Colors.red);
+      //     return;
+      //   }
+      // }
       String parDa = DateFormat('yyyy-MM-dd HH:mm').format(pickDatetime);
       CustomLoading.showLoading(context);
       _isEditProcess = true;
@@ -186,9 +186,9 @@ class _AksiCalendarPageStateShow extends State<ShowCalendar> {
       if(selectedDateTime.isBefore(now)) {
         CostumAlert.show(context, "Pilih waktu harus lebih dari sekarang !", "Invalid time!",Icons.error, Colors.red);
         return;
-      }else if(selectedDateTime.isBefore(now.add(const Duration(minutes: 5)))) {
-        CostumAlert.show(context, "Pilih waktu minimal 5 menit dari sekarang !", "Invalid time!",Icons.error, Colors.red);
-        return;
+      // }else if(selectedDateTime.isBefore(now.add(const Duration(minutes: 5)))) {
+      //   CostumAlert.show(context, "Pilih waktu minimal 5 menit dari sekarang !", "Invalid time!",Icons.error, Colors.red);
+      //   return;
       }
       _selectedTime = picked;
       setState(() {
@@ -231,11 +231,9 @@ class _AksiCalendarPageStateShow extends State<ShowCalendar> {
     return Scaffold(
       appBar: CustomAppBar(
         title: _isEdit ? 'Edit Kalender' : 'Lihat Kalender',
-        buttonOnPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const RiwayatCalendar()),
-          );
+        leadingOnPressed: () {
+          Navigator.pop(context);
+          Navigator.push(context, pageMove.movepage(const RiwayatCalendar()));
         },
       ),
       body: SafeArea(

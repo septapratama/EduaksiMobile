@@ -74,7 +74,9 @@ class _ProfilPagesState extends State<ProfilPages> {
         });
       } else if (res['status'] == 404 || errRes.contains('not found')) {
         _filePath = 'assets/images/default_profile.jpg'; // Use default profile image
-        setState(() {});
+        if(mounted){
+          setState(() {});
+        }
     }
     }else{
       _filePath = res['data'];
