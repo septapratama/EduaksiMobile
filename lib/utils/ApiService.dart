@@ -10,9 +10,9 @@ import 'package:http/http.dart' as http;
 class ApiService {
   final JwtProvider jwtProvider = JwtProvider();
   final Acara acaraClass = Acara();
-  final String baseURL = "http://192.168.0.105:8000";
+  // final String baseURL = "http://11111111:8000";
   // final String baseURL = "https://eduaksi.tifnganjuk.com";
-  // final String baseURL = "https://eduaksi.amirzanfikri.my.id";
+  final String baseURL = "https://eduaksi.amirzanfikri.my.id";
 
   late String baseMobile = "";
   late String imgUrl = "";
@@ -58,13 +58,13 @@ class ApiService {
       final response = await http.post(
         Uri.parse('$baseMobile/users/login'),
         headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
+          'Content-Type': 'application/json; charset=UTF-8',  
         },
         body: jsonEncode(<String, String>{
-          'email': 'UserTesting2@gmail.com',
-          // 'email': email,
-          // 'password': kataSandi,
-          'password': 'Admin@1234567890',
+          // 'email': 'UserTesting2@gmail.com',
+          // 'password': 'Admin@1234567890',
+          'email': email,
+          'password': kataSandi,
         }),
       );
       if (response.statusCode == 200) {

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:eduapp/component/custom_appbar.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:eduapp/component/custom_textformfieldKonsultasi.dart';
 import 'package:eduapp/pages/konsultasi.dart';
 import 'package:eduapp/pages/login_screen.dart';
@@ -170,42 +171,86 @@ class _KonsultasipagesState extends State<Konsultasipages> {
             ),
             const SizedBox(height: 40),
             Padding(
-              padding: const EdgeInsets.only(
-                  left: 40.0), // Sesuaikan padding dengan kebutuhan Anda
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: ElevatedButton(
-                  onPressed: () {
-                    // _updateProfile(context);
-                  },
-                  style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.zero,
-                    foregroundColor: Colors.white,
-                    backgroundColor: const Color.fromRGBO(30, 84, 135, 1),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(
-                          20.0), // Atur border radius sesuai kebutuhan Anda
-                    ),
-                  ),
-                  child: const Padding(
-                    padding:
-                        EdgeInsets.symmetric(vertical: 12.0, horizontal: 30.0),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          'Kembali',
-                          style: TextStyle(
-                            fontFamily: 'Poppins_SemiBold',
-                            fontWeight: FontWeight.w600,
-                            fontSize: 18,
-                          ),
+              padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20), // Sesuaikan padding dengan kebutuhan Anda
+                  child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                        Navigator.pushReplacement(context, pageMove.movepage(Konsultasi()));
+                      },
+                      style: ElevatedButton.styleFrom(
+                        padding: EdgeInsets.zero,
+                        foregroundColor: Colors.white,
+                        backgroundColor: const Color.fromRGBO(30, 84, 135, 1),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12.0),
                         ),
-                      ],
+                      ),
+                      child: const Padding(
+                        padding: EdgeInsets.symmetric(
+                            vertical: 12.0, horizontal: 20.0),
+                        child: Row(
+                          children: [
+                            Text(
+                              'Kembali',
+                              style: TextStyle(
+                                fontFamily: 'Poppins_SemiBold',
+                                fontWeight: FontWeight.w600,
+                                fontSize: 18,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
-                  ),
+                    ElevatedButton(
+                      onPressed: () async {
+                        String phoneNumber = _noTelponController.text.replaceFirst('0', '62');
+                        String whatsappUrl = 'https://wa.me/$phoneNumber';
+                        if (await canLaunchUrl(Uri.parse(whatsappUrl))) {
+                          await launchUrl(Uri.parse(whatsappUrl));
+                        } else {
+                          print('Could not launch $whatsappUrl');
+                          // throw 'Could not launch $whatsappUrl';
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        padding: EdgeInsets.zero,
+                        foregroundColor: Colors.white,
+                        backgroundColor: const Color.fromRGBO(30, 84, 135, 1),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(
+                              12.0), // Atur border radius sesuai kebutuhan Anda
+                        ),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 13.0),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Image.asset(
+                              'assets/images/wa.png',
+                              width: 24,
+                              height: 24,
+                              fit: BoxFit.cover,
+                            ),
+                            const SizedBox(width: 8),
+                            const Text(
+                              'WhatsApp',
+                              style: TextStyle(
+                                fontFamily: 'Poppins_SemiBold',
+                                fontWeight: FontWeight.w600,
+                                fontSize: 18,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ),
             ),
           ],
         ),

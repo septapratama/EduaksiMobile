@@ -46,12 +46,12 @@ class _LoginScreenState extends State<LoginScreen> {
     String kataSandi = passwordController.text;
     // Validasi form, misalnya memastikan semua field terisi dengan benar
     if (email.isEmpty) {
-      // CostumAlert.show(context, "Email tidak boleh kosong !", "gagal masuk!", Icons.error,Colors.red);
-      // return;
+      CostumAlert.show(context, "Email tidak boleh kosong !", "gagal masuk!", Icons.error,Colors.red);
+      return;
     }
     if (kataSandi.isEmpty) {
-      // CostumAlert.show(context, "Kata sandi tidak boleh kosong !", "gagal masuk!", Icons.error,Colors.red);
-      // return;
+      CostumAlert.show(context, "Kata sandi tidak boleh kosong !", "gagal masuk!", Icons.error,Colors.red);
+      return;
     }
     try {
       CustomLoading.showLoading(context);

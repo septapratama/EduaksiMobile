@@ -71,12 +71,10 @@ class _OTPScreenState extends State<OTPScreen> {
   void sendOTP(BuildContext context) async {
     try {
       if(!widget._timerRunning){
-        print('kode otp sudah terkirim mohon cek kembali');
         CostumAlert.show(context, 'kode otp sudah terkirim mohon cek kembali', "Gagal kirim ulang kode otp!", Icons.error, Colors.red);
         return;
       }
       if (!otpController.every((controller) => controller.text.length == 1)) {
-        print('Semua kotak harus di isi !');
         CostumAlert.show(context, 'Semua kotak harus di isi !', "Gagal kirim ulang kode otp!", Icons.error, Colors.red);
         return;
       }
@@ -93,7 +91,6 @@ class _OTPScreenState extends State<OTPScreen> {
           Navigator.pushReplacement(context, pageMove.movepage(GaPassScreen(gaPassData: {'email': widget.otpData['email'], 'otp': otpCode})));
         }
       } else {
-        print(response['message']);
         CostumAlert.show(context, response['message'], "Gagal kirim ulang kode otp!", Icons.error, Colors.red);
       }
     } catch (e) {

@@ -49,38 +49,42 @@ class _ProfilPagesState extends State<ProfilPages> {
     });
   }
   Future<void> setupProfilePhoto() async {
-    dirPath = '${(await getApplicationDocumentsDirectory()).path}/user/profile';
-    if(!(await Directory(dirPath).exists())){
-      await Directory(dirPath).create(recursive: true);
-    }else{
-      List<FileSystemEntity> files = Directory(dirPath).listSync();
-      if(files.isNotEmpty){
-        FileSystemEntity? file = files.firstWhere(
-          (entity) => entity is File,
-        );
-        if (file != null && file is File) {
-          _filePath = file.path;
-          setState(() {});
-          return;
+    try{
+      dirPath = '${(await getApplicationDocumentsDirectory()).path}/user/profile';
+      if(!(await Directory(dirPath).exists())){
+        await Directory(dirPath).create(recursive: true);
+      }else{
+        List<FileSystemEntity> files = Directory(dirPath).listSync();
+        if(files.isNotEmpty){
+          FileSystemEntity? file = files.firstWhere(
+            (entity) => entity is File,
+          );
+          if (file != null && file is File) {
+            _filePath = file.path;
+            setState(() {});
+            return;
+          }
         }
       }
-    }
-    Map<String, dynamic> res = await apiService.getFotoProfile();
-    if(res['status'] == 'error'){
-      String errRes = res['message'].toString();
-      if(errRes.contains('login') || errRes.contains('expired')){
-        Future.delayed(const Duration(seconds: 2), () {
-          return Navigator.pushReplacement(context, pageMove.movepage(const LoginScreen()));
-        });
-      } else if (res['status'] == 404 || errRes.contains('not found')) {
-        _filePath = 'assets/images/default_profile.jpg'; // Use default profile image
-        if(mounted){
-          setState(() {});
-        }
-    }
-    }else{
-      _filePath = res['data'];
-      setState(() {});
+      Map<String, dynamic> res = await apiService.getFotoProfile();
+      if(res['status'] == 'error'){
+        String errRes = res['message'].toString();
+        if(errRes.contains('login') || errRes.contains('expired')){
+          Future.delayed(const Duration(seconds: 2), () {
+            return Navigator.pushReplacement(context, pageMove.movepage(const LoginScreen()));
+          });
+        } else if (res['status'] == 404 || errRes.contains('not found')) {
+          _filePath = 'assets/images/default_profile.jpg'; // Use default profile image
+          if(mounted){
+            setState(() {});
+          }
+      }
+      }else{
+        _filePath = res['data'];
+        setState(() {});
+      }
+    }catch(e){
+      print('error set profile $e');
     }
   }
   void _updateProfile(BuildContext context) async {
@@ -100,15 +104,15 @@ class _ProfilPagesState extends State<ProfilPages> {
       CostumAlert.show(context, "Email tidak valid!", "Gagal update profile!", Icons.error, Colors.red);
       return;
     }
-    if(nama_lengkap.isEmpty || nama_lengkap == null){
+    if(nama_lengkap.isEmpty){
       CostumAlert.show(context, "Nama Lengkap tidak boleh kosong !", "gagal update profile!",Icons.error, Colors.red);
       return;
     }
-    if(jenisKelamin!.isEmpty || jenisKelamin == null){
+    if(jenisKelamin?.isEmpty ?? true){
       CostumAlert.show(context, "Jenis kelamin tidak boleh kosong !", "gagal update profile!",Icons.error, Colors.red);
       return;
     }
-    if(no_telpon.isEmpty || no_telpon == null){
+    if(no_telpon.isEmpty){
       CostumAlert.show(context, "No telpon tidak boleh kosong !", "gagal update profile!",Icons.error, Colors.red);
       return;
     }
@@ -190,10 +194,8 @@ class _ProfilPagesState extends State<ProfilPages> {
             try {
               if (file is File) {
                 await file.delete();
-                print('Deleted file: ${file.path}');
               } else if (file is Directory) {
                 await file.delete(recursive: true);
-                print('Deleted directory: ${file.path}');
               }
             } catch (e) {
               print('Error deleting file: ${file.path}, error: $e');
